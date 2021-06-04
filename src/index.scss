@@ -1,0 +1,113 @@
+// *************************************************************
+// ************************  Variables  ************************
+
+// Colores
+$rojoMarca: #b30404;
+$tonoClaro: #b9b8b8;
+$tonoMedio: #545454;
+$tonoOscuro: #212121;
+$tonoMuyOscuro: #060606;
+
+// Fuentes
+$fuente-principal: "Montserrat", Helvetica, sans-serif;
+$fuente-secundaria: "Roboto Condensed", Helvetica, sans-serif;
+
+// Mapas
+$mediaBreakpoints: (
+  xs: (
+    max-width: 575px,
+  ),
+  sm: (
+    max-width: 767px,
+  ),
+  md: (
+    max-width: 991px,
+  ),
+  lg: (
+    max-width: 1220px,
+  ),
+  xl: (
+    max-width: 1399px,
+  ),
+);
+
+// *************************************************************
+// ************************  Mixins  ***************************
+
+// Media queries
+@mixin responsive($breakpoint) {
+  @if type-of($breakpoint) ==number {
+    @media only screen and (max-width: $breakpoint) {
+      @content;
+    }
+  } @else if map-has-key($mediaBreakpoints, $breakpoint) {
+    @media only screen and #{map-get($mediaBreakpoints, $breakpoint)} {
+      @content;
+    }
+  } @else {
+    @error "No es valido el breakpoint ingresado, por favor asegúrate que está definido en el mapa '$mediaBreakpoints' o es un valor válido";
+  }
+}
+
+// *************************************************************
+// *****************  Reseteo general CSS   ********************
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;0,700;0,800;1,500;1,700;1,800&family=Roboto+Condensed:wght@300;400;700&display=swap");
+
+/*************** Asignacion general de fuentes ****************/
+html {
+  font-size: 16px;
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: $fuente-principal;
+  }
+
+  p,
+  nav,
+  label {
+    font-family: $fuente-secundaria;
+  }
+
+  @include responsive(1300px) {
+    font-size: 14px;
+  }
+
+  @include responsive(xs) {
+    font-size: 12px;
+  }
+}
+
+/************** Propiedades generales de textos ****************/
+main {
+  h2 {
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 800;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+  }
+
+  h4 {
+    font-size: 1.2rem;
+  }
+}
+
+// para pisar a Bootstrap
+p {
+  margin-bottom: 0;
+}
+.form-control:focus {
+  border-color: #b30404;
+  box-shadow: 0 0 0 0.2rem rgba(94, 24, 15, 0.452);
+}
