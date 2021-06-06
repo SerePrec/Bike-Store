@@ -1,53 +1,5 @@
-// *************************************************************
-// ************************  Variables  ************************
-
-// Colores
-$rojoMarca: #b30404;
-$tonoClaro: #b9b8b8;
-$tonoMedio: #545454;
-$tonoOscuro: #212121;
-$tonoMuyOscuro: #060606;
-
-// Fuentes
-$fuente-principal: "Montserrat", Helvetica, sans-serif;
-$fuente-secundaria: "Roboto Condensed", Helvetica, sans-serif;
-
-// Mapas
-$mediaBreakpoints: (
-  xs: (
-    max-width: 575px,
-  ),
-  sm: (
-    max-width: 767px,
-  ),
-  md: (
-    max-width: 991px,
-  ),
-  lg: (
-    max-width: 1220px,
-  ),
-  xl: (
-    max-width: 1399px,
-  ),
-);
-
-// *************************************************************
-// ************************  Mixins  ***************************
-
-// Media queries
-@mixin responsive($breakpoint) {
-  @if type-of($breakpoint) ==number {
-    @media only screen and (max-width: $breakpoint) {
-      @content;
-    }
-  } @else if map-has-key($mediaBreakpoints, $breakpoint) {
-    @media only screen and #{map-get($mediaBreakpoints, $breakpoint)} {
-      @content;
-    }
-  } @else {
-    @error "No es valido el breakpoint ingresado, por favor asegúrate que está definido en el mapa '$mediaBreakpoints' o es un valor válido";
-  }
-}
+@import "./assets/scss/variables";
+@import "./assets/scss/mixins";
 
 // *************************************************************
 // *****************  Reseteo general CSS   ********************

@@ -1,0 +1,153 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.navbar {
+  background: linear-gradient(
+    90deg,
+    rgba(33, 33, 33, 1) 0%,
+    rgba(84, 84, 84, 1) 75%,
+    rgba(185, 184, 184, 1) 100%
+  );
+  padding: 0;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  .navbar-brand {
+    margin: 0 0.5rem;
+    padding: 0;
+  }
+
+  .navbar-toggler {
+    margin-left: 0.5rem;
+    border-color: white;
+    &:focus {
+      outline-color: black;
+    }
+    img {
+      width: 2.5rem;
+    }
+  }
+
+  form {
+    width: 35%;
+    input {
+      border-radius: 0.25rem 0 0 0.25rem;
+    }
+    button {
+      background-color: $rojoMarca;
+      border: $rojoMarca;
+      border-radius: 0rem 0.25rem 0.25rem 0rem;
+    }
+  }
+
+  #navbar-miCuenta {
+    flex-grow: 0;
+    font-size: 1rem;
+    background-color: $rojoMarca;
+    border-radius: 0.5rem;
+    .nav-link {
+      color: white;
+    }
+    img {
+      width: 1.5rem;
+      margin-right: 0.5rem;
+    }
+  }
+
+  .carritoIcon {
+    color: black;
+  }
+
+  #navbar-categorias {
+    justify-content: center;
+    width: 100%;
+    background-color: $tonoMuyOscuro;
+    padding: 0.25rem 0;
+    .navbar-nav {
+      .nav-link {
+        font-size: 1.25rem;
+        border-left: 3px solid $rojoMarca;
+        margin: 0;
+        padding: 0 4rem 0 0.55rem;
+        transition: all 0.5s;
+        display: inline-block;
+
+        &.active {
+          color: white;
+          font-style: italic;
+          border-radius: 0.4rem 0 0 0;
+          border-width: 7px;
+        }
+
+        &:hover {
+          color: white;
+          border-color: rgba($rojoMarca, 0);
+
+          &::after {
+            width: 150%;
+          }
+        }
+
+        &::after {
+          display: block;
+          content: " ";
+          width: 0;
+          height: 3px;
+          background-image: linear-gradient(
+            90deg,
+            rgba($rojoMarca, 1),
+            rgba($rojoMarca, 0)
+          );
+          transition: all 0.5s ease;
+        }
+      }
+    }
+  }
+
+  @include responsive(md) {
+    #navbar-categorias {
+      .navbar-nav {
+        .nav-link {
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+
+  @include responsive(sm) {
+    .navbar-brand {
+      order: 2;
+    }
+
+    .navbar-toggler {
+      order: 1;
+    }
+
+    .navbar-collapse {
+      order: 4;
+    }
+
+    .carritoIcon {
+      order: 3;
+    }
+
+    form {
+      order: 5;
+      width: 100%;
+      background-color: $tonoMuyOscuro;
+      padding: 0.5rem 2rem;
+    }
+    #navbar-categorias {
+      .navbar-nav {
+        .nav-link {
+          margin-left: 0.5rem;
+          &:hover {
+            &::after {
+              width: 15rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}

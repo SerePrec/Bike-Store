@@ -1,0 +1,17 @@
+// *************************************************************
+// ************************  Mixins  ***************************
+
+// Media queries
+@mixin responsive($breakpoint) {
+  @if type-of($breakpoint) ==number {
+    @media only screen and (max-width: $breakpoint) {
+      @content;
+    }
+  } @else if map-has-key($mediaBreakpoints, $breakpoint) {
+    @media only screen and #{map-get($mediaBreakpoints, $breakpoint)} {
+      @content;
+    }
+  } @else {
+    @error "No es valido el breakpoint ingresado, por favor asegúrate que está definido en el mapa '$mediaBreakpoints' o es un valor válido";
+  }
+}
