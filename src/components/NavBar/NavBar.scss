@@ -54,10 +54,6 @@
     }
   }
 
-  .carritoIcon {
-    color: black;
-  }
-
   #navbar-categorias {
     justify-content: center;
     width: 100%;
@@ -117,6 +113,9 @@
   @include responsive(sm) {
     .navbar-brand {
       order: 2;
+      img {
+        height: 65px;
+      }
     }
 
     .navbar-toggler {

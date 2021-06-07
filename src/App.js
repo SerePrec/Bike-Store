@@ -8,7 +8,9 @@ function App() {
       <header>
         <NavBar />
       </header>
-      <h2 className="text-center mt-5">Nuestros Productos Destacados</h2>
+      <main>
+        <h2 className="text-center mt-5">Nuestros Productos Destacados</h2>
+      </main>
     </div>
   );
 }

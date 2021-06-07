@@ -6,6 +6,7 @@ import iconMenu from "../../assets/img/iconred.png";
 import logoCuenta from "../../assets/img/cuenta.svg";
 import "./NavBar.scss";
 import FormNavBar from "../FormNavBar/FormNavBar";
+import CartWidget from "../CartWidget/CartWidget";
 
 const NavBar = () => {
   return (
@@ -18,7 +19,7 @@ const NavBar = () => {
           <img
             src={logo}
             height="80"
-            className="d-inline-block align-top"
+            className="d-inline-block align-top animate__flipInX"
             alt="Logo de Mamooth - Inicio"
           />
         </Navbar.Brand>
@@ -29,11 +30,9 @@ const NavBar = () => {
             MI CUENTA
           </Nav.Link>
         </Navbar.Collapse>
-        <Nav.Link className="carritoIcon" href="#carrito">
-          MI CARRITO
-        </Nav.Link>
+        <CartWidget />
         <Navbar.Collapse id="navbar-categorias">
-          <Nav className="m-auto">
+          <Nav className="m-auto animate__fadeInDown">
             <Nav.Link href="#bicicletas">BICICLETAS</Nav.Link>
             <Nav.Link href="#componentes">COMPONENTES</Nav.Link>
             <Nav.Link href="#accesorios">ACCESORIOS</Nav.Link>
