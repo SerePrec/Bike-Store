@@ -17,7 +17,7 @@ function App() {
       <main>
         <LandingCarousel />
         <BrandBanner />
-        <ItemListContainer greeting={greeting} leyenda={leyenda} />
+        <ItemListContainer greeting={greeting} legend={leyenda} />
       </main>
       <Footer />
     </div>
