@@ -5,12 +5,12 @@ import prodPueba from "../../assets/img/producto49.jpg"; //TODO:TODO:
 
 const ItemListContainer = ({ greeting, leyenda }) => {
   return (
-    <div className="container-xl destacadosHome">
+    <div className="container-xl homeHighlights">
       <div>
         <h2>{greeting}</h2>
         <p>{leyenda}</p>
       </div>
-      <div className="row row-cols-1 row-cols-md-2 row-cols-xl-3 contProdHome">
+      <div className="row row-cols-1 row-cols-md-2 row-cols-xl-3 homeProductsContainer">
         <div className="col mb-4">
           <div className="card h-100">
             <img
@@ -30,14 +30,14 @@ const ItemListContainer = ({ greeting, leyenda }) => {
               <div className="form-inline">
                 <button
                   type="button"
-                  className="btn btn-danger w-50 btnAgregar"
+                  className="btn btn-danger w-50 btn-add"
                   data-producto-id="49"
                 >
                   Agregar
                 </button>
                 <input
                   type="number"
-                  className="form-control ml-2 inputCantidad"
+                  className="form-control ml-2 input-Quantity"
                   defaultValue="1"
                   min="1"
                   max="4"

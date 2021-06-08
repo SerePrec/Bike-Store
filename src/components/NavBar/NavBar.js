@@ -1,6 +1,6 @@
 import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
-import FormNavBar from "../FormNavBar/FormNavBar";
+import SearchForm from "../SearchForm/SearchForm";
 import CartWidget from "../CartWidget/CartWidget";
 import logo from "../../assets/img/logo.svg";
 import iconMenu from "../../assets/img/iconred.png";
@@ -11,7 +11,7 @@ const NavBar = () => {
   return (
     <>
       <Navbar collapseOnSelect expand="md" variant="dark">
-        <Navbar.Toggle aria-controls="navbar-categorias">
+        <Navbar.Toggle aria-controls="navbar-categories">
           <img src={iconMenu} alt="Icono menú" />
         </Navbar.Toggle>
         <Navbar.Brand href="#home">
@@ -22,15 +22,15 @@ const NavBar = () => {
             alt="Logo de Mamooth - Inicio"
           />
         </Navbar.Brand>
-        <FormNavBar />
-        <Navbar.Collapse id="navbar-miCuenta">
+        <SearchForm />
+        <Navbar.Collapse id="navbar-myAccount">
           <Nav.Link href="#miCuenta">
             <img src={logoCuenta} alt="Mi cuenta" />
             MI CUENTA
           </Nav.Link>
         </Navbar.Collapse>
         <CartWidget />
-        <Navbar.Collapse id="navbar-categorias">
+        <Navbar.Collapse id="navbar-categories">
           <Nav className="m-auto animate__fadeInDown">
             <Nav.Link href="#bicicletas">BICICLETAS</Nav.Link>
             <Nav.Link href="#componentes">COMPONENTES</Nav.Link>

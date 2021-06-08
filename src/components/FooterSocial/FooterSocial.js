@@ -8,7 +8,7 @@ import "./FooterSocial.scss";
 const FormSocial = () => {
   return (
     <section className="social">
-      <div className="social__titulo">SOCIAL</div>
+      <div className="social__title">SOCIAL</div>
       <a href="">
         <img src={facebook} alt="Facebook" />
       </a>

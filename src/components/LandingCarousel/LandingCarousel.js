@@ -4,9 +4,9 @@ import imgCarousel1 from "../../assets/img/Carousel1.jpeg";
 import imgCarousel2 from "../../assets/img/Carousel2.jpeg";
 import imgCarousel3 from "../../assets/img/Carousel3.jpeg";
 import imgCarousel4 from "../../assets/img/Carousel4.jpeg";
-import "./Carrusel.scss";
+import "./LandingCarousel.scss";
 
-const Carrusel = () => {
+const LandingCarousel = () => {
   return (
     <Carousel fade>
       <Carousel.Item>
@@ -43,4 +43,4 @@ const Carrusel = () => {
   );
 };
 
-export default Carrusel;
+export default LandingCarousel;

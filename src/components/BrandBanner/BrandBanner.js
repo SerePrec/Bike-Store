@@ -6,11 +6,11 @@ import logoGiant from "../../assets/img/logo_Giant.png";
 import logoCube from "../../assets/img/logo_Cube.png";
 import logoCannodale from "../../assets/img/logo_Cannondale.png";
 import logoMerida from "../../assets/img/logo_Merida.png";
-import "./BannerMarcas.scss";
+import "./BrandBanner.scss";
 
-const BannerMarcas = () => {
+const BrandBanner = () => {
   return (
-    <div className="marcas">
+    <div className="brands">
       <a
         href="https://www.specialized.com/ar/es"
         target="_blank"
@@ -60,4 +60,4 @@ const BannerMarcas = () => {
   );
 };
 
-export default BannerMarcas;
+export default BrandBanner;

@@ -7,7 +7,7 @@
   grid-template-rows: repeat(3, 1fr);
   align-items: start;
   justify-items: center;
-  .social__titulo {
+  .social__title {
     background-color: $tonoMedio;
     color: white;
     font: {
@@ -43,7 +43,7 @@
   }
 
   @include responsive(md) {
-    .social__titulo {
+    .social__title {
       font-size: 1rem;
     }
   }

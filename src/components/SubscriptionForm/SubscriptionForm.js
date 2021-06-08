@@ -2,11 +2,11 @@ import React from "react";
 import { FormControl } from "react-bootstrap";
 import { InputGroup } from "react-bootstrap";
 import { Form } from "react-bootstrap";
-import "./FormFooter.scss";
+import "./SubscriptionForm.scss";
 
-const FormFooter = () => {
+const SubscriptionForm = () => {
   return (
-    <Form className="formFooter">
+    <Form className="subscriptionForm">
       <InputGroup>
         <FormControl
           type="email"
@@ -20,8 +20,7 @@ const FormFooter = () => {
       </InputGroup>
       <Form.Check
         type="checkbox"
-        id="aceptar"
-        name="aceptar"
+        name="subscribe"
         value="1"
         label={
           <>
@@ -36,4 +35,4 @@ const FormFooter = () => {
   );
 };
 
-export default FormFooter;
+export default SubscriptionForm;

@@ -1,7 +1,7 @@
 @import "../../assets/scss/variables";
 @import "../../assets/scss/mixins";
 
-.destacadosHome {
+.homeHighlights {
   background-color: $tonoMedio;
   border: 0.5rem solid $rojoMarca;
   border-radius: 1rem;
@@ -18,7 +18,7 @@
       font-size: 1.25rem;
     }
   }
-  .contProdHome {
+  .homeProductsContainer {
     background-color: #e9ecef;
     margin: 1rem 0 0.75rem 0;
     padding-top: 0.5rem;
@@ -27,7 +27,7 @@
     min-height: 33rem;
 
     .card {
-      .descuento {
+      .discount {
         position: absolute;
         width: 3.5rem;
         height: 3rem;
@@ -100,13 +100,13 @@
         }
       }
 
-      .inputCantidad {
+      .input-Quantity {
         width: 40%;
         max-width: 4.5rem;
       }
     }
 
-    .errorResultadoBuscar {
+    .searchError {
       background-color: #e9ecef;
       border-radius: 0.25rem;
       margin: 1.5rem 0;
@@ -137,7 +137,7 @@
     padding-left: 0;
     padding-right: 0;
 
-    #contenedorProductos {
+    .homeProductsContainer {
       margin-left: 1rem;
       margin-right: 1rem;
     }

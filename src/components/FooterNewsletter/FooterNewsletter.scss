@@ -2,7 +2,7 @@
 @import "../../assets/scss/mixins";
 
 .newsletter {
-  .newsletter__titulo {
+  .newsletter__title {
     background-color: $tonoMedio;
     color: white;
     font: {
@@ -23,7 +23,7 @@
 
   @include responsive(md) {
     padding-bottom: 2vh;
-    .newsletter__titulo {
+    .newsletter__title {
       font-size: 1rem;
     }
   }

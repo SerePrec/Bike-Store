@@ -28,11 +28,11 @@
     }
   }
 
-  .formNavBar {
+  .searchForm {
     width: 35%;
   }
 
-  #navbar-miCuenta {
+  #navbar-myAccount {
     flex-grow: 0;
     font-size: 1rem;
     background-color: $rojoMarca;
@@ -46,7 +46,7 @@
     }
   }
 
-  #navbar-categorias {
+  #navbar-categories {
     justify-content: center;
     width: 100%;
     background-color: $tonoMuyOscuro;
@@ -93,7 +93,7 @@
   }
 
   @include responsive(md) {
-    #navbar-categorias {
+    #navbar-categories {
       .navbar-nav {
         .nav-link {
           font-size: 1rem;
@@ -122,12 +122,12 @@
       order: 3;
     }
 
-    .formNavBar {
+    .searchForm {
       order: 5;
       width: 100%;
     }
 
-    #navbar-categorias {
+    #navbar-categories {
       .navbar-nav {
         .nav-link {
           margin-left: 0.5rem;

@@ -6,8 +6,8 @@ import "./CartWidget.scss";
 const CartWidget = () => {
   return (
     <>
-      <Nav.Link className="carritoIcon" href="#carrito">
-        <span className="numItems">0</span>
+      <Nav.Link className="cartWidget" href="#carrito">
+        <span className="itemsQuantity">0</span>
         <img src={iconCart} alt="Carrito" />
       </Nav.Link>
     </>

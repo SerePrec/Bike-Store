@@ -1,12 +1,12 @@
 import React from "react";
 import { Form, FormControl, Button } from "react-bootstrap";
 import iconSearch from "../../assets/img/icon_search_w.png";
-import "./FormNavBar.scss";
+import "./SearchForm.scss";
 
-const FormNavBar = () => {
+const SearchForm = () => {
   return (
     <>
-      <Form className="d-flex formNavBar">
+      <Form className="d-flex searchForm">
         <FormControl
           type="search"
           placeholder="Descripción, marca, tipo, ..."
@@ -20,4 +20,4 @@ const FormNavBar = () => {
   );
 };
 
-export default FormNavBar;
+export default SearchForm;

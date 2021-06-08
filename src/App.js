@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.scss";
-import BannerMarcas from "./components/BannerMarcas/BannerMarcas";
-import Carrusel from "./components/Carrusel/Carrusel";
+import BrandBanner from "./components/BrandBanner/BrandBanner";
+import LandingCarousel from "./components/LandingCarousel/LandingCarousel";
 import Footer from "./components/Footer/Footer";
 import ItemListContainer from "./components/ItemListContainer/ItemListContainer";
 import NavBar from "./components/NavBar/NavBar";
@@ -15,8 +15,8 @@ function App() {
         <NavBar />
       </header>
       <main>
-        <Carrusel />
-        <BannerMarcas />
+        <LandingCarousel />
+        <BrandBanner />
         <ItemListContainer greeting={greeting} leyenda={leyenda} />
       </main>
       <Footer />
