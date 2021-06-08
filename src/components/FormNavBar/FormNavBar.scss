@@ -1,0 +1,17 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.formNavBar {
+  input {
+    border-radius: 0.25rem 0 0 0.25rem;
+  }
+  button {
+    background-color: $rojoMarca;
+    border: $rojoMarca;
+    border-radius: 0rem 0.25rem 0.25rem 0rem;
+  }
+  @include responsive(sm) {
+    background-color: $tonoMuyOscuro;
+    padding: 0.5rem 2rem;
+  }
+}

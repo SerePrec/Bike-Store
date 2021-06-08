@@ -1,0 +1,19 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.info {
+  overflow: hidden;
+  padding: 1em 3vw;
+
+  p:nth-child(2) {
+    padding-bottom: 1rem;
+  }
+
+  @include responsive(xs) {
+    padding-top: 0;
+    p:nth-child(1),
+    p:nth-child(2) {
+      display: none;
+    }
+  }
+}

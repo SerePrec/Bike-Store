@@ -1,12 +1,11 @@
 import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
-
+import FormNavBar from "../FormNavBar/FormNavBar";
+import CartWidget from "../CartWidget/CartWidget";
 import logo from "../../assets/img/logo.svg";
 import iconMenu from "../../assets/img/iconred.png";
 import logoCuenta from "../../assets/img/cuenta.svg";
 import "./NavBar.scss";
-import FormNavBar from "../FormNavBar/FormNavBar";
-import CartWidget from "../CartWidget/CartWidget";
 
 const NavBar = () => {
   return (

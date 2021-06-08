@@ -1,268 +1,52 @@
 @import "../../assets/scss/variables";
 @import "../../assets/scss/mixins";
 
-/***************************************************************/
-/************************ Footer - Inicio  *********************/
-footer {
-  .contenidoFooter {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    background-color: $tonoOscuro;
-    color: white;
-    height: auto;
-    text-align: center;
-    padding: 1.5rem 0 1rem 0;
-
-    .info {
-      overflow: hidden;
-      width: 25%;
-      padding: 1em 3vw;
-
-      p:nth-child(2) {
-        padding-bottom: 1rem;
-      }
-    }
+.contenidoFooter {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  background-color: $tonoOscuro;
+  color: white;
+  text-align: center;
+  padding: 1.5rem 0 1rem 0;
+  .info {
+    width: 25%;
   }
-
-  address {
-    background-color: $tonoMuyOscuro;
-    text-align: center;
-    color: white;
-    padding: 1.5rem 0.625rem;
-    margin-bottom: 0;
-    /* para pisar a Bootstrap */
+  .social {
+    width: 25%;
   }
-
-  @include responsive(md) {
-    .contenidoFooter {
-      flex-wrap: wrap;
-
-      .info {
-        width: 50%;
-      }
-    }
-  }
-
-  @include responsive(xs) {
-    .contenidoFooter {
-      .info {
-        width: 100%;
-        padding-top: 0;
-
-        p:nth-child(1),
-        p:nth-child(2) {
-          display: none;
-        }
-      }
-    }
-  }
-}
-
-/************************ Footer - Fin  ************************/
-/***************************************************************/
-
-/***************************************************************/
-/************************ Footer - Inicio  *********************/
-/********************* Flexbox anidados row ********************/
-footer {
-  .contenidoFooter {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    background-color: $tonoOscuro;
-    color: white;
-    height: auto;
-    text-align: center;
-    padding: 1.5rem 0 1rem 0;
-
-    .info {
-      overflow: hidden;
-      width: 25%;
-      padding: 1em 3vw;
-
-      p:nth-child(2) {
-        padding-bottom: 1rem;
-      }
-    }
-  }
-
-  address {
-    background-color: $tonoMuyOscuro;
-    text-align: center;
-    color: white;
-    padding: 1.5rem 0.625rem;
-    margin-bottom: 0;
-    /* para pisar a Bootstrap */
-  }
-
-  @include responsive(md) {
-    .contenidoFooter {
-      flex-wrap: wrap;
-
-      .info {
-        width: 50%;
-      }
-    }
-  }
-
-  @include responsive(xs) {
-    .contenidoFooter {
-      .info {
-        width: 100%;
-        padding-top: 0;
-
-        p:nth-child(1),
-        p:nth-child(2) {
-          display: none;
-        }
-      }
-    }
-  }
-}
-
-/************************ Footer - Fin  ************************/
-/***************************************************************/
-/********************** Redes sociales *************************/
-/****** se uso grid para acomodar los iconos y el título *******/
-.social {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  width: 25%;
-  align-items: start;
-  justify-items: center;
-  .social__titulo {
-    background-color: $tonoMedio;
-    color: white;
-    font: {
-      family: "Roboto Condensed", Helvetica, sans-serif;
-      size: 1.2rem;
-      weight: 500;
-    }
-    letter-spacing: 0.25rem;
-    width: 90%;
-    height: auto;
-    text-transform: uppercase;
-    border-radius: 0.25rem;
-    margin: 0 auto 1rem auto;
-  }
-
-  :nth-child(1) {
-    grid-area: 1 / 1 / 2 / 5;
-  }
-  :nth-child(2) {
-    grid-area: 2 / 1 / 3 / 2;
-  }
-  :nth-child(3) {
-    grid-area: 2 / 2 / 3 / 3;
-  }
-  :nth-child(4) {
-    grid-area: 2 / 3 / 3 / 4;
-  }
-  :nth-child(5) {
-    grid-area: 2 / 4 / 3 / 5;
-  }
-  img {
-    width: 2.5rem;
-  }
-  @include responsive(md) {
+  .newsletter {
     width: 50%;
-    .social__titulo {
-      font-size: 1rem;
-    }
   }
-  @include responsive(xs) {
-    width: 100%;
-    grid-template-rows: repeat(2, 1fr);
-    img {
-      width: 30px;
-    }
-  }
-}
-/************************* Redes - Fin *************************/
-/***************************************************************/
-/************************ Newsletter ***************************/
-/*************** Incluye Formulario Bootstrap ******************/
-.newsletter {
-  width: 50%;
-  .newsletter__titulo {
-    background-color: $tonoMedio;
-    color: white;
-    font: {
-      family: "Roboto Condensed", Helvetica, sans-serif;
-      size: 1.2rem;
-      weight: 500;
-    }
-    letter-spacing: 0.25rem;
-    width: 90%;
-    height: auto;
-    text-transform: uppercase;
-    border-radius: 0.25rem;
-    margin: 0 auto 1rem auto;
-  }
-  span {
-    color: $rojoMarca;
-  }
-  form {
-    padding-top: 0.9rem;
-    .input-group {
-      width: 70%;
-      margin: auto;
-      margin-bottom: 1rem;
-      input {
-        &[type="email"] {
-          height: 2rem;
-        }
-        &[type="submit"] {
-          width: 8vw;
-          min-width: 7rem;
-          height: 2rem;
-          line-height: 1rem;
-          background-color: $rojoMarca;
-          color: white;
-          border: none;
-          border-radius: 0.25rem;
-          font: {
-            weight: 500;
-            style: normal;
-            size: 1rem;
-          }
-          letter-spacing: 0.07rem;
-        }
-      }
-    }
-    a {
-      margin-left: 0.25rem;
-    }
-  }
+
   @include responsive(md) {
-    order: -1;
-    width: 100%;
-    padding-bottom: 2vh;
-    .newsletter__titulo {
-      font-size: 1rem;
+    flex-wrap: wrap;
+    .info {
+      width: 50%;
     }
-    form {
-      .input-group {
-        width: 55%;
-      }
+    .social {
+      width: 50%;
+    }
+    .newsletter {
+      order: -1;
+      width: 100%;
     }
   }
+
   @include responsive(xs) {
-    form {
-      .input-group {
-        width: 80%;
-      }
+    .info {
+      width: 100%;
     }
-  }
-  @include responsive(500px) {
-    form {
-      .custom-control-label {
-        width: 85%;
-      }
+    .social {
+      width: 100%;
     }
   }
 }
-/********************** Newsletter - Fin ***********************/
-/***************************************************************/
+
+address {
+  background-color: $tonoMuyOscuro;
+  text-align: center;
+  color: white;
+  padding: 1.5rem 0.625rem;
+  margin-bottom: 0;
+}

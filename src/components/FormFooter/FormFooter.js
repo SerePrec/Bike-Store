@@ -2,10 +2,11 @@ import React from "react";
 import { FormControl } from "react-bootstrap";
 import { InputGroup } from "react-bootstrap";
 import { Form } from "react-bootstrap";
+import "./FormFooter.scss";
 
 const FormFooter = () => {
   return (
-    <Form>
+    <Form className="formFooter">
       <InputGroup>
         <FormControl
           type="email"

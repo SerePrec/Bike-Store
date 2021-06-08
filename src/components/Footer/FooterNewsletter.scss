@@ -1,0 +1,30 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.newsletter {
+  .newsletter__titulo {
+    background-color: $tonoMedio;
+    color: white;
+    font: {
+      family: "Roboto Condensed", Helvetica, sans-serif;
+      size: 1.2rem;
+      weight: 500;
+    }
+    letter-spacing: 0.25rem;
+    width: 90%;
+    height: auto;
+    text-transform: uppercase;
+    border-radius: 0.25rem;
+    margin: 0 auto 1rem auto;
+  }
+  span {
+    color: $rojoMarca;
+  }
+
+  @include responsive(md) {
+    padding-bottom: 2vh;
+    .newsletter__titulo {
+      font-size: 1rem;
+    }
+  }
+}
