@@ -37,6 +37,10 @@
     font-size: 1rem;
     background-color: $rojoMarca;
     border-radius: 0.5rem;
+    &:hover {
+      background-color: #c82333;
+      border-color: #bd2130;
+    }
     .nav-link {
       color: white;
     }
@@ -118,7 +122,7 @@
       order: 4;
     }
 
-    .carritoIcon {
+    .cartWidget {
       order: 3;
     }
 

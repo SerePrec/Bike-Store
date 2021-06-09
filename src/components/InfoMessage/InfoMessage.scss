@@ -1,0 +1,21 @@
+.infoMessage {
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  background-color: bgColor;
+  border-radius: 0.25rem;
+  &.warning {
+    background-color: #f9e0b5;
+    border: 1px solid #ffa500;
+  }
+
+  &.danger {
+    color: #fff;
+    background-color: #fb4e4e;
+    border: 1px solid #ff0000;
+  }
+
+  &.animate__slideInUp {
+    animation-duration: 0.75s;
+  }
+}

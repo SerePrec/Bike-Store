@@ -22,7 +22,7 @@ const NavBar = () => {
             alt="Logo de Mamooth - Inicio"
           />
         </Navbar.Brand>
-        <SearchForm />
+        <SearchForm placeholder={`Descripción, marca, tipo, ...`} />
         <Navbar.Collapse id="navbar-myAccount">
           <Nav.Link href="#miCuenta">
             <img src={logoCuenta} alt="Mi cuenta" />
