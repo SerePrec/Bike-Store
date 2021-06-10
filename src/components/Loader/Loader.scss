@@ -1,3 +1,5 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
 $loader: url("../../assets/img/puff.svg");
 
 .loader {
@@ -30,5 +32,10 @@ $loader: url("../../assets/img/puff.svg");
     font-size: 1.25rem;
     width: 100%;
     margin-bottom: 0.5rem;
+  }
+
+  @include responsive(xs) {
+    height: 15rem;
+    background-size: 80%;
   }
 }
