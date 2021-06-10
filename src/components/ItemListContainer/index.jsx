@@ -1,12 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ItemCount from "../ItemCount";
-import Item from "../Item";
+import ItemList from "../ItemList";
+import Loader from "../Loader";
 import "./itemListcontainer.scss";
 
-import products from "../../services/productos.json";
-console.log(products);
+//TODO:
+import productsServer from "../../services/productos.json";
 
 const ItemListContainer = ({ greeting, legend }) => {
+  const [productsHome, setProductsHome] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    let temp;
+    const callProducts = new Promise((resolve, reject) => {
+      setIsLoading(true);
+      temp = setTimeout(() => {
+        resolve(productsServer);
+      }, 2000);
+    });
+    callProducts.then(res => {
+      setProductsHome(res);
+      setIsLoading(false);
+    });
+
+    return () => {
+      clearInterval(temp);
+    };
+  }, []);
+
   return (
     <div className="container-xl homeHighlights">
       <div>
@@ -14,7 +36,10 @@ const ItemListContainer = ({ greeting, legend }) => {
         <p>{legend}</p>
       </div>
       <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 homeProductsContainer">
-        <div className="col mb-4">
+        {isLoading && <Loader msg={"Cargando..."} />}
+        {productsHome && <ItemList products={productsHome} />}
+
+        {/* <div className="col mb-4">
           <h3>Producto ....</h3>
           <h4>Stock: 12u</h4>
           <ItemCount
@@ -22,10 +47,7 @@ const ItemListContainer = ({ greeting, legend }) => {
             initial={1}
             onAdd={qty => alert(`Se agregaron ${qty} productos al carrito`)}
           />
-        </div>
-        <div className="col mb-4">
-          <Item product={products[0]} />
-        </div>
+        </div> */}
       </div>
     </div>
   );
