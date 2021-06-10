@@ -1,8 +1,8 @@
 import React from "react";
+import ItemCount from "../ItemCount";
 import "./itemListcontainer.scss";
 
 import prodPueba from "../../assets/img/producto49.jpg"; //TODO:TODO:
-import ItemCount from "../ItemCount/ItemCount";
 
 const ItemListContainer = ({ greeting, legend }) => {
   return (

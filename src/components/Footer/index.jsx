@@ -1,8 +1,8 @@
 import React from "react";
+import FooterInfo from "../FooterInfo";
+import FooterNewsletter from "../FooterNewsletter";
+import FooterSocial from "../FooterSocial";
 import "./Footer.scss";
-import FooterInfo from "../FooterInfo/FooterInfo";
-import FooterNewsletter from "../FooterNewsletter/FooterNewsletter";
-import FooterSocial from "../FooterSocial/FooterSocial";
 
 const Footer = () => {
   return (

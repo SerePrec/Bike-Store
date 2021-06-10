@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { InputGroup, FormControl, Button } from "react-bootstrap";
-import InfoMessage from "../InfoMessage/InfoMessage";
+import InfoMessage from "../InfoMessage";
 import "./ItemCount.scss";
 
 const ItemCount = ({ stock, initial, onAdd }) => {

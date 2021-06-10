@@ -1,5 +1,5 @@
 import React from "react";
-import SubscriptionForm from "../SubscriptionForm/SubscriptionForm";
+import SubscriptionForm from "../SubscriptionForm";
 import "./FooterNewsletter.scss";
 
 const FormNewsletter = () => {

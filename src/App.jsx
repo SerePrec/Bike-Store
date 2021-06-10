@@ -1,9 +1,9 @@
 import React from "react";
-import BrandBanner from "./components/BrandBanner/BrandBanner";
-import LandingCarousel from "./components/LandingCarousel/LandingCarousel";
-import Footer from "./components/Footer/Footer";
-import ItemListContainer from "./components/ItemListContainer/ItemListContainer";
-import NavBar from "./components/NavBar/NavBar";
+import BrandBanner from "./components/BrandBanner";
+import LandingCarousel from "./components/LandingCarousel";
+import Footer from "./components/Footer";
+import ItemListContainer from "./components/ItemListContainer";
+import NavBar from "./components/NavBar";
 import { BRANDS } from "./services/brands";
 import "./App.scss";
 

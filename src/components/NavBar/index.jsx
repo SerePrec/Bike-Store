@@ -1,7 +1,7 @@
 import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
-import SearchForm from "../SearchForm/SearchForm";
-import CartWidget from "../CartWidget/CartWidget";
+import SearchForm from "../SearchForm";
+import CartWidget from "../CartWidget";
 import logo from "../../assets/img/logo.svg";
 import iconMenu from "../../assets/img/iconred.png";
 import logoCuenta from "../../assets/img/cuenta.svg";

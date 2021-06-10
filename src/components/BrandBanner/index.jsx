@@ -1,6 +1,5 @@
 import React from "react";
-import BrandItem from "../BrandItem/BrandItem";
-
+import BrandItem from "../BrandItem";
 import "./BrandBanner.scss";
 
 const BrandBanner = ({ brands }) => {
