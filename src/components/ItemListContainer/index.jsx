@@ -39,7 +39,7 @@ const ItemListContainer = ({ greeting, legend }) => {
   }, []);
 
   return (
-    <div className="container-xl homeHighlights">
+    <div className={`container-xl homeHighlights ${isLoading && "loaded"}`}>
       <div>
         <h2>{greeting}</h2>
         <p>{legend}</p>

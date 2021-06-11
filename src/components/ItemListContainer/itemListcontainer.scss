@@ -7,6 +7,11 @@
   border-radius: 1rem;
   padding-bottom: 0.25rem;
   margin: 2rem auto;
+  transition: all 0.75s;
+
+  &.loaded {
+    opacity: 0.5;
+  }
 
   & > div:first-child {
     color: white;
