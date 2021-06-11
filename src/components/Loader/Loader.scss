@@ -25,13 +25,15 @@ $loader: url("../../assets/img/puff.svg");
 
   h3 {
     width: 100%;
-    margin-bottom: 2rem;
   }
 
   p {
     font-size: 1.25rem;
     width: 100%;
     margin-bottom: 0.5rem;
+    &:first-of-type {
+      margin-top: 2rem;
+    }
   }
 
   @include responsive(xs) {

@@ -1,6 +1,8 @@
 .card {
   overflow: hidden;
   border-radius: 0.5rem;
+  transition: all 0.5s ease-out;
+
   .discount {
     position: absolute;
     width: 3.5rem;
@@ -19,8 +21,10 @@
   }
 
   .card-img-top {
+    background: #fff url("../../assets/img/preloader.gif") no-repeat center
+      center;
     width: 80%;
-    margin: auto;
+    margin: 1rem auto 0 auto;
   }
 
   .card-body p:nth-of-type(1) {
@@ -68,5 +72,13 @@
       opacity: 0.6;
       filter: blur(1.5px);
     }
+  }
+
+  &:not(.soldOut) {
+    cursor: pointer;
+  }
+
+  &:hover:not(.soldOut) {
+    transform: scale(1.03);
   }
 }

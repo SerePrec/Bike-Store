@@ -5,9 +5,9 @@ const Loader = ({ message }) => {
   const { title, msg1, msg2 } = message || {};
   return (
     <div className="loader">
-      <h3>{title}</h3>
-      <p>{msg1}</p>
-      <p>{msg2}</p>
+      {title && <h3>{title}</h3>}
+      {msg1 && <p>{msg1}</p>}
+      {msg2 && <p>{msg2}</p>}
     </div>
   );
 };
