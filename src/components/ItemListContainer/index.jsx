@@ -10,19 +10,29 @@ import productsServer from "../../services/productos.json";
 const ItemListContainer = ({ greeting, legend }) => {
   const [productsHome, setProductsHome] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     let temp;
-    const callProducts = new Promise((resolve, reject) => {
+    const getProducts = new Promise((resolve, reject) => {
       setIsLoading(true);
       temp = setTimeout(() => {
         resolve(productsServer);
+        //reject("Error de Carga");
       }, 2000);
     });
-    callProducts.then(res => {
-      setProductsHome(res);
-      setIsLoading(false);
-    });
+    getProducts
+      .then(res => {
+        setProductsHome(res);
+        setIsError(false);
+      })
+      .catch(err => {
+        setProductsHome(null);
+        setIsError(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
 
     return () => {
       clearInterval(temp);
@@ -36,7 +46,16 @@ const ItemListContainer = ({ greeting, legend }) => {
         <p>{legend}</p>
       </div>
       <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 homeProductsContainer">
-        {isLoading && <Loader msg={"Cargando..."} />}
+        {isLoading && <Loader message={{ title: "Cargando..." }} />}
+        {isError && (
+          <Loader
+            message={{
+              title: isError,
+              msg1: "Intenta recargar la página o regresa más tarde.",
+              msg2: "Disculpe las molestias."
+            }}
+          />
+        )}
         {productsHome && <ItemList products={productsHome} />}
 
         {/* <div className="col mb-4">
