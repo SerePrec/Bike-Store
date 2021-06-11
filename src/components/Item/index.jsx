@@ -11,20 +11,14 @@ const Item = ({ product }) => {
   const [fakeLoad, setFakeLoad] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => {
-      setFakeLoad(true);
-    }, Math.random() * 2000);
-  }, []);
-
-  useEffect(() => {
     let temp;
-    const getImage = new Promise((resolve, reject) => {
+    const getImage = new Promise(resolve => {
       temp = setTimeout(() => {
-        resolve();
+        resolve(true);
       }, Math.random() * 2000);
     });
     getImage.then(res => {
-      setFakeLoad(true);
+      setFakeLoad(res);
     });
 
     return () => {

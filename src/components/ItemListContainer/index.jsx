@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import ItemCount from "../ItemCount";
 import ItemList from "../ItemList";
 import Loader from "../Loader";
 import "./itemListcontainer.scss";
@@ -57,16 +56,6 @@ const ItemListContainer = ({ greeting, legend }) => {
           />
         )}
         {productsHome && <ItemList products={productsHome} />}
-
-        {/* <div className="col mb-4">
-          <h3>Producto ....</h3>
-          <h4>Stock: 12u</h4>
-          <ItemCount
-            stock={12}
-            initial={1}
-            onAdd={qty => alert(`Se agregaron ${qty} productos al carrito`)}
-          />
-        </div> */}
       </div>
     </div>
   );
