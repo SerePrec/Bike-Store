@@ -3,35 +3,23 @@ import ItemList from "../ItemList";
 import Loader from "../Loader";
 import "./itemListcontainer.scss";
 
+//TODO:
+import productsServer from "../../services/productos.json";
+
 const ItemListContainer = ({ greeting, legend }) => {
   const [productsHome, setProductsHome] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true);
     let temp;
-    const getProducts = fetch("/productos.json")
-      .then(res => {
-        return res.json();
-      })
-      .catch(
-        err =>
-          new Promise((resolve, reject) => {
-            temp = setTimeout(() => {
-              reject("Error De Carga");
-            }, 2000);
-          })
-      )
-      .then(
-        data =>
-          new Promise(resolve => {
-            temp = setTimeout(() => {
-              resolve(data);
-            }, 2000);
-          })
-      );
-
+    const getProducts = new Promise((resolve, reject) => {
+      setIsLoading(true);
+      temp = setTimeout(() => {
+        resolve(productsServer);
+        //reject("Error de Carga");
+      }, 2000);
+    });
     getProducts
       .then(res => {
         setProductsHome(res);
