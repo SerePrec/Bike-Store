@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "./components/Header";
 import Home from "./pages/Home";
+import ItemDetailContainer from "./pages/ItemDetailContainer";
 import Footer from "./components/Footer";
 import "./App.scss";
 
@@ -23,7 +24,10 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <Home dollar={dollar} />
+      <main>
+        {/* <Home dollar={dollar} /> */}
+        <ItemDetailContainer />
+      </main>
       <Footer />
     </div>
   );

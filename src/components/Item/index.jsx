@@ -34,7 +34,7 @@ const Item = ({ product }) => {
         src={
           fakeLoad ? process.env.PUBLIC_URL + `/img/${pictureURL}` : imgBlank
         }
-        alt="Pulsómetro De Bicicleta Bryton Rider 750 T Cadencia, FC Y Veloc."
+        alt={title}
       />
       <Card.Body>
         <Card.Title>{brand}</Card.Title>

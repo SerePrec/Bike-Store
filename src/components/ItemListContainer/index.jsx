@@ -7,26 +7,27 @@ import "./itemListcontainer.scss";
 import productsServer from "../../services/productos.json";
 
 const ItemListContainer = ({ greeting, legend }) => {
-  const [productsHome, setProductsHome] = useState(null);
+  const [products, setProducts] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     let temp;
-    const getProducts = new Promise((resolve, reject) => {
-      setIsLoading(true);
-      temp = setTimeout(() => {
-        resolve(productsServer);
-        //reject("Error de Carga");
-      }, 2000);
-    });
-    getProducts
+    setIsLoading(true);
+    const getProducts = () =>
+      new Promise((resolve, reject) => {
+        temp = setTimeout(() => {
+          resolve(productsServer);
+          //reject("Error de Carga");
+        }, 2000);
+      });
+    getProducts()
       .then(res => {
-        setProductsHome(res);
+        setProducts(res);
         setIsError(false);
       })
       .catch(err => {
-        setProductsHome(null);
+        setProducts(null);
         setIsError(err);
       })
       .finally(() => {
@@ -39,7 +40,7 @@ const ItemListContainer = ({ greeting, legend }) => {
   }, []);
 
   return (
-    <div className={`container-xl homeHighlights ${isLoading && "loaded"}`}>
+    <div className={`container-xl homeHighlights ${isLoading && "loading"}`}>
       <div>
         <h2>{greeting}</h2>
         <p>{legend}</p>
@@ -55,7 +56,7 @@ const ItemListContainer = ({ greeting, legend }) => {
             }}
           />
         )}
-        {productsHome && <ItemList products={productsHome} />}
+        {products && <ItemList products={products} />}
       </div>
     </div>
   );

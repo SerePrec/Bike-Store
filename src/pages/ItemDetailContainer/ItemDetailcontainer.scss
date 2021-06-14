@@ -1,0 +1,21 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.productDetailContainer {
+  background-color: $tonoMedio;
+  border: 0.5rem solid $rojoMarca;
+  border-radius: 1rem;
+  color: black;
+  padding: 1rem;
+  margin: 1rem auto 2rem auto;
+  transition: all 0.75s;
+  min-height: 45rem;
+
+  &.loaded {
+    opacity: 0.5;
+  }
+
+  .loader {
+    min-height: 45rem;
+  }
+}

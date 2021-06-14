@@ -10,14 +10,14 @@ const Home = ({ dollar }) => {
   const greeting = `Destacados Del Mes`;
   const legend = `Los productos que nuestros clientes eligen`;
   return (
-    <main>
+    <>
       <LandingCarousel />
       <BrandBanner brands={BRANDS} />
       <InfoBar title="HOME">
         <InfoDollar dollar={dollar} />
       </InfoBar>
       <ItemListContainer greeting={greeting} legend={legend} />
-    </main>
+    </>
   );
 };
 

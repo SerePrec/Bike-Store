@@ -1,0 +1,96 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.productDetail {
+  background-color: #fff;
+  border-radius: 0.25rem;
+  padding: 1rem;
+  .productDetail_title {
+    justify-content: space-between;
+    align-items: center;
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    & > div:last-child {
+      display: flex;
+      justify-content: flex-end;
+      h3 {
+        display: inline-block;
+        color: #fff;
+        font-size: 1.25rem;
+        text-align: center;
+        background-color: $tonoOscuro;
+        padding: 0.5rem;
+        border-radius: 0.25rem;
+        margin-bottom: 0;
+        margin-left: 1rem;
+      }
+    }
+  }
+
+  .productDetail_data {
+    div:first-child {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      img {
+        width: 90%;
+        object-fit: contain;
+      }
+      .discount {
+        position: absolute;
+        width: 5rem;
+        height: 4rem;
+        top: 0;
+        right: 1.25rem;
+        z-index: 1;
+        background-color: #b30404;
+        border-radius: 40% 0% 40% 0%;
+        color: white;
+        font-weight: 700;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+    div:last-child {
+      h4 {
+        color: $rojoMarca;
+      }
+      .price {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: nowrap;
+        padding: 4rem 0;
+        border-top: 1px solid $tonoClaro;
+        border-bottom: 1px solid $tonoClaro;
+        text-align: center;
+        margin: 1rem 0;
+        b {
+          font-size: 2.5rem;
+          color: $rojoMarca;
+        }
+        del {
+          font-size: 1.25rem;
+          margin-left: 1rem;
+          color: $tonoMedio;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+
+  @include responsive(md) {
+    .productDetail_data {
+      div:first-child {
+        img {
+          margin-bottom: 1rem;
+        }
+      }
+    }
+  }
+}
