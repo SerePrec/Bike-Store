@@ -1,0 +1,25 @@
+.dollar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0.5rem;
+  right: 1.25rem;
+  font-weight: 500;
+  color: black;
+  background-color: white;
+  padding-right: 1rem;
+  padding-left: 0.25rem;
+  border-radius: 0.25rem;
+  min-width: 8.5rem;
+  transition: opacity 3s ease;
+  opacity: 0;
+
+  &.loaded {
+    opacity: 1;
+  }
+
+  img {
+    width: 1rem;
+    margin: 0 0.5rem;
+  }
+}

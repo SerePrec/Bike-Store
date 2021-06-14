@@ -1,0 +1,15 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.breadcrumb {
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  position: relative;
+  color: #fff;
+  background-color: $tonoMedio;
+  h4 {
+    margin: 0;
+    padding-left: 1rem;
+    font-weight: 500;
+  }
+}
