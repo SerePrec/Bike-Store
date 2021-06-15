@@ -42,6 +42,7 @@ const ItemDetailContainer = () => {
       clearInterval(temp);
     };
   }, []);
+
   return (
     <>
       <InfoBar title="DETALLE DEL PRODUCTO"></InfoBar>

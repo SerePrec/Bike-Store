@@ -5,6 +5,7 @@
   background-color: #fff;
   border-radius: 0.25rem;
   padding: 1rem;
+
   &.productDetail--noStock {
     opacity: 0.6;
     filter: grayscale(1);
@@ -18,9 +19,11 @@
       font-size: 2rem;
       margin-bottom: 0.5rem;
     }
+
     & > div:last-child {
       display: flex;
       justify-content: flex-end;
+
       h3 {
         display: inline-block;
         color: #fff;
@@ -40,10 +43,12 @@
       display: flex;
       justify-content: center;
       align-items: flex-start;
+
       img {
         width: 90%;
         object-fit: contain;
       }
+
       .discount {
         position: absolute;
         width: 5rem;
@@ -61,10 +66,12 @@
         align-items: center;
       }
     }
+
     & > div:last-child {
       h4 {
         color: $rojoMarca;
       }
+
       .price {
         display: flex;
         justify-content: center;
@@ -75,10 +82,12 @@
         border-bottom: 1px solid $tonoClaro;
         text-align: center;
         margin: 1rem 0;
+
         b {
           font-size: 2.5rem;
           color: $rojoMarca;
         }
+
         del {
           font-size: 1.25rem;
           margin-left: 1rem;
@@ -86,6 +95,7 @@
           font-weight: 700;
         }
       }
+
       .productDetail_stock {
         padding-top: 1rem;
         font-weight: bold;
