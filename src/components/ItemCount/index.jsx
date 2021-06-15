@@ -1,14 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { InputGroup, FormControl, Button } from "react-bootstrap";
 import InfoMessage from "../InfoMessage";
 import "./ItemCount.scss";
 
 const ItemCount = ({ stock, initial, onAdd }) => {
   const [count, setCount] = useState(initial);
+  const [alertStockLimit, setAlertStockLimit] = useState(false);
+
+  useEffect(() => {
+    if (alertStockLimit) {
+      let temp;
+      temp = setTimeout(() => {
+        setAlertStockLimit(false);
+      }, 3000);
+
+      return () => {
+        clearInterval(temp);
+      };
+    }
+  }, [alertStockLimit]);
 
   const handleChange = e => {
     const valor = e.target.value;
     if (/^\d*$/.test(valor)) {
+      setAlertStockLimit && setAlertStockLimit(false);
       setCount(parseInt(valor) || valor);
     }
   };
@@ -17,6 +32,7 @@ const ItemCount = ({ stock, initial, onAdd }) => {
     if (count > 0 && count < stock) {
       setCount(count => count + 1);
     } else if (count >= stock) {
+      setAlertStockLimit(true);
       setCount(stock);
     } else {
       setCount(1);
@@ -24,6 +40,7 @@ const ItemCount = ({ stock, initial, onAdd }) => {
   };
 
   const handleClickResta = () => {
+    setAlertStockLimit && setAlertStockLimit(false);
     if (count > 1 && count <= stock) {
       setCount(count => count - 1);
     } else if (count > stock) {
@@ -65,6 +82,13 @@ const ItemCount = ({ stock, initial, onAdd }) => {
         <InfoMessage
           msg={`Stock insuficiente. Disponible ${stock}u`}
           type="danger"
+          animation="animate__slideInUp"
+        />
+      )}
+      {alertStockLimit && (
+        <InfoMessage
+          msg={`No puedes aumentar la cantidad. Stock insuficiente`}
+          type="warning"
           animation="animate__slideInUp"
         />
       )}
