@@ -52,25 +52,27 @@ const ItemCount = ({ stock, initial, onAdd }) => {
 
   return (
     <div className="itemCount">
-      <InputGroup className="mb-3">
-        <InputGroup.Prepend>
-          <Button variant="outline-secondary" onClick={handleClickResta}>
-            -
-          </Button>
-        </InputGroup.Prepend>
-        <FormControl
-          type="text"
-          value={count}
-          onChange={handleChange}
-          aria-label="Cantidad del producto"
-          className="text-center"
-        />
-        <InputGroup.Append>
-          <Button variant="outline-secondary" onClick={handleClickSuma}>
-            +
-          </Button>
-        </InputGroup.Append>
-      </InputGroup>
+      {stock > 0 && (
+        <InputGroup className="mb-3">
+          <InputGroup.Prepend>
+            <Button variant="outline-secondary" onClick={handleClickResta}>
+              -
+            </Button>
+          </InputGroup.Prepend>
+          <FormControl
+            type="text"
+            value={count}
+            onChange={handleChange}
+            aria-label="Cantidad del producto"
+            className="text-center"
+          />
+          <InputGroup.Append>
+            <Button variant="outline-secondary" onClick={handleClickSuma}>
+              +
+            </Button>
+          </InputGroup.Append>
+        </InputGroup>
+      )}
       {!(count > 0) && (
         <InfoMessage
           msg={`Introduzca una cantidad válida`}
