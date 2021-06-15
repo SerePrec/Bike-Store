@@ -73,7 +73,6 @@ const ItemDetailContainer = () => {
               }}
             />
           ))}
-        {/* {product && product.stock <= 0 && } */}
       </div>
     </>
   );
