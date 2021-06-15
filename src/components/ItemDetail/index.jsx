@@ -2,9 +2,11 @@ import React from "react";
 import { Row, Col } from "react-bootstrap";
 import "./ItemDetail.scss";
 import { priceFormat } from "../../services/formatPrice";
+import ItemCount from "../ItemCount";
+import ShipmentInfo from "../ShipmentInfo";
 
 const ItemDetail = ({ product }) => {
-  const {
+  let {
     id,
     title,
     brand,
@@ -17,7 +19,9 @@ const ItemDetail = ({ product }) => {
   } = product;
 
   return (
-    <div className="productDetail">
+    <div
+      className={`productDetail ${stock < 1 ? "productDetail--noStock" : null}`}
+    >
       <Row className="productDetail_title mb-5">
         <Col xs={12} sm={9}>
           <h1>{title}</h1>
@@ -42,6 +46,13 @@ const ItemDetail = ({ product }) => {
           </p>
           <h3>DETALLE</h3>
           <p>{detail}</p>
+          <p className="productDetail_stock">Disponible: {stock}u</p>
+          <ItemCount
+            stock={stock}
+            initial={1}
+            onAdd={qty => alert(`Agregaste ${qty} producto/s al carrito`)}
+          />
+          <ShipmentInfo />
         </Col>
       </Row>
     </div>

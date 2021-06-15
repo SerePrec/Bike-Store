@@ -18,7 +18,8 @@ const ItemDetailContainer = () => {
     const getProduct = () =>
       new Promise((resolve, reject) => {
         temp = setTimeout(() => {
-          const i = Math.round(Math.random() * 2);
+          const i = Math.round(Math.random() * 11);
+          console.log("index", i);
           resolve(productsServer[i]);
           //reject("Error de Carga");
         }, 2000);
@@ -62,13 +63,13 @@ const ItemDetailContainer = () => {
           />
         )}
         {product &&
-          (product.stock > 0 ? (
+          (product.id ? (
             <ItemDetail product={product}></ItemDetail>
           ) : (
             <Loader
               message={{
-                title: "Producto Inexistente O Agotado",
-                msg1: "Es posible que el producto se haya agotado o discontinuado",
+                title: "Producto Inexistente",
+                msg1: "Es posible que el producto se haya discontinuado o no exista",
                 msg2: "Disculpe las molestias."
               }}
             />

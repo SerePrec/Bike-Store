@@ -1,0 +1,44 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.shipmentInfo {
+  padding: 1rem 0;
+  border-top: 1px solid $tonoClaro;
+  border-bottom: 1px solid $tonoClaro;
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  & > div {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    &:first-child img {
+      width: 2rem;
+    }
+    &:nth-child(2) img {
+      width: 2.5rem;
+    }
+    &:last-child {
+      display: block;
+      padding: 0.25rem 0 0.25rem 1rem;
+      margin-top: 0.5rem;
+      background: linear-gradient(
+        90deg,
+        $tonoClaro 0%,
+        $tonoMedio 25%,
+        $tonoMedio 75%,
+        $tonoClaro 100%
+      );
+      color: #fff;
+      text-align: center;
+      border-radius: 35% 0.25rem 35% 0.25rem;
+      width: 100%;
+    }
+    span {
+      padding-left: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+  }
+}

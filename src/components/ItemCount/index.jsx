@@ -94,14 +94,16 @@ const ItemCount = ({ stock, initial, onAdd }) => {
           animation="animate__slideInUp"
         />
       )}
-      <Button
-        variant="danger"
-        onClick={count > 0 && count <= stock ? () => onAdd(count) : null}
-        block
-        disabled={!(count > 0 && count <= stock)}
-      >
-        Añadir Al Carrito
-      </Button>
+      {stock > 0 && (
+        <Button
+          variant="danger"
+          onClick={count > 0 && count <= stock ? () => onAdd(count) : null}
+          block
+          disabled={!(count > 0 && count <= stock)}
+        >
+          Añadir Al Carrito
+        </Button>
+      )}
     </div>
   );
 };

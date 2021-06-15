@@ -27,7 +27,7 @@ const Item = ({ product }) => {
   }, []);
 
   return (
-    <Card className={`h-100 shadow ${stock < 1 ? "soldOut" : null}`}>
+    <Card className={`h-100 shadow ${stock < 1 ? "card--noStock" : null}`}>
       {discount !== 0 && <div className="discount">{discount}%</div>}
       <Card.Img
         variant="top"
@@ -44,7 +44,7 @@ const Item = ({ product }) => {
           <del>${priceFormat(price * 100)}</del>
         </Card.Text>
       </Card.Body>
-      {stock < 1 && <div className="noStock">AGOTADO</div>}
+      {stock < 1 && <div className="text--noStock">AGOTADO</div>}
     </Card>
   );
 };

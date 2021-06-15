@@ -47,7 +47,7 @@
     }
   }
 
-  .noStock {
+  .text--noStock {
     position: absolute;
     text-align: center;
     background-color: #545454bf;
@@ -61,7 +61,7 @@
     width: 200%;
   }
 
-  &.soldOut {
+  &.card--noStock {
     .card-img-top {
       opacity: 0.6;
     }

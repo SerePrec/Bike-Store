@@ -5,6 +5,11 @@
   background-color: #fff;
   border-radius: 0.25rem;
   padding: 1rem;
+  &.productDetail--noStock {
+    opacity: 0.6;
+    filter: grayscale(1);
+  }
+
   .productDetail_title {
     justify-content: space-between;
     align-items: center;
@@ -31,7 +36,7 @@
   }
 
   .productDetail_data {
-    div:first-child {
+    & > div:first-child {
       display: flex;
       justify-content: center;
       align-items: flex-start;
@@ -56,7 +61,7 @@
         align-items: center;
       }
     }
-    div:last-child {
+    & > div:last-child {
       h4 {
         color: $rojoMarca;
       }
@@ -80,6 +85,10 @@
           color: $tonoMedio;
           font-weight: 700;
         }
+      }
+      .productDetail_stock {
+        padding-top: 1rem;
+        font-weight: bold;
       }
     }
   }
