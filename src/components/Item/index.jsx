@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router";
 import { Card } from "react-bootstrap";
 import { priceFormat } from "../../services/formatPrice";
 import "./Item.scss";
@@ -9,6 +10,8 @@ const Item = ({ product }) => {
   const { id, title, brand, price, discount, pictureURL, stock } = product;
 
   const [fakeLoad, setFakeLoad] = useState(false);
+
+  let history = useHistory();
 
   useEffect(() => {
     let temp;
@@ -26,8 +29,15 @@ const Item = ({ product }) => {
     };
   }, []);
 
+  const goDetail = id => {
+    history.push(`/item/${id}`);
+  };
+
   return (
-    <Card className={`h-100 shadow ${stock < 1 ? "card--noStock" : null}`}>
+    <Card
+      className={`h-100 shadow ${stock < 1 ? "card--noStock" : null}`}
+      onClick={stock > 0 && (() => goDetail(id))}
+    >
       {discount !== 0 && <div className="discount">{discount}%</div>}
       <Card.Img
         variant="top"

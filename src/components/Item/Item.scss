@@ -74,11 +74,11 @@
     }
   }
 
-  &:not(.soldOut) {
+  &:not(.card--noStock) {
     cursor: pointer;
   }
 
-  &:hover:not(.soldOut) {
+  &:hover:not(.card--noStock) {
     transform: scale(1.03);
   }
 }

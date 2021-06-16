@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Category from "./pages/Category";
+import Error404 from "./pages/Error404";
+import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import ItemDetailContainer from "./pages/ItemDetailContainer";
-import ItemListContainer from "./components/ItemListContainer";
-import Footer from "./components/Footer";
 import "./App.scss";
 
 import { URLDOLAR, dolarOficial } from "./services/dolar";
@@ -31,10 +32,13 @@ function App() {
           <Home dollar={dollar} />
         </Route>
         <Route exact path="/category/:id">
-          <ItemListContainer />
+          <Category />
         </Route>
         <Route exact path="/item/:id">
           <ItemDetailContainer />
+        </Route>
+        <Route path="*">
+          <Error404 />
         </Route>
       </Switch>
       <Footer />

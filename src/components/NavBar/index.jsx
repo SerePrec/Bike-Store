@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Navbar, Nav } from "react-bootstrap";
+import { Link, NavLink } from "react-router-dom";
 import CartWidget from "../CartWidget";
 import SearchForm from "../SearchForm";
 import iconMenu from "../../assets/img/iconred.png";
@@ -32,7 +33,7 @@ const NavBar = () => {
         <Navbar.Toggle aria-controls="navbar-categories">
           <img src={iconMenu} alt="Icono menú" />
         </Navbar.Toggle>
-        <Navbar.Brand href="#home">
+        <Navbar.Brand as={Link} to={`/`}>
           <img
             src={logo}
             height="80"
@@ -42,7 +43,7 @@ const NavBar = () => {
         </Navbar.Brand>
         <SearchForm placeholder={`Descripción, marca, tipo, ...`} />
         <Navbar.Collapse id="navbar-myAccount">
-          <Nav.Link href="#miCuenta">
+          <Nav.Link as={Link} to={`/myaccount`}>
             <img src={logoCuenta} alt="Mi cuenta" />
             MI CUENTA
           </Nav.Link>
@@ -52,7 +53,12 @@ const NavBar = () => {
           {categories && (
             <Nav className="m-auto animate__navbar-nav--loaded">
               {categories.map(cat => (
-                <Nav.Link href={`#${cat.key}`}>
+                <Nav.Link
+                  as={NavLink}
+                  exact
+                  to={`/category/${cat.key}`}
+                  activeClassName="active"
+                >
                   {cat.description.toUpperCase()}
                 </Nav.Link>
               ))}
