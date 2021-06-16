@@ -19,7 +19,6 @@ const ItemDetailContainer = () => {
       new Promise((resolve, reject) => {
         temp = setTimeout(() => {
           const i = Math.round(Math.random() * 11);
-          console.log("index", i);
           resolve(productsServer[i]);
           //reject("Error de Carga");
         }, 2000);

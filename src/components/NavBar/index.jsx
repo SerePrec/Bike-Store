@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import SearchForm from "../SearchForm";
 import CartWidget from "../CartWidget";
@@ -8,6 +8,24 @@ import logoCuenta from "../../assets/img/cuenta.svg";
 import "./NavBar.scss";
 
 const NavBar = () => {
+  const [categories, setCategories] = useState(null);
+
+  useEffect(() => {
+    const getCategories = fetch("/data/categories.json").then(res => {
+      return res.json();
+    });
+
+    getCategories
+      .then(res => {
+        setCategories(res);
+        console.log(res);
+      })
+      .catch(err => {
+        setCategories(null);
+        console.log("Error pidiendo categorías en NavBar:", err);
+      });
+  }, []);
+
   return (
     <>
       <Navbar collapseOnSelect expand="md" variant="dark">
@@ -31,13 +49,15 @@ const NavBar = () => {
         </Navbar.Collapse>
         <CartWidget />
         <Navbar.Collapse id="navbar-categories">
-          <Nav className="m-auto animate__fadeInDown">
-            <Nav.Link href="#bicicletas">BICICLETAS</Nav.Link>
-            <Nav.Link href="#componentes">COMPONENTES</Nav.Link>
-            <Nav.Link href="#accesorios">ACCESORIOS</Nav.Link>
-            <Nav.Link href="#equipamiento">EQUIPAMIENTO</Nav.Link>
-            <Nav.Link href="#indumentaria">INDUMENTARIA</Nav.Link>
-          </Nav>
+          {categories && (
+            <Nav className="m-auto animate__navbar-nav--loaded">
+              {categories.map(cat => (
+                <Nav.Link href={`#${cat.key}`}>
+                  {cat.description.toUpperCase()}
+                </Nav.Link>
+              ))}
+            </Nav>
+          )}
         </Navbar.Collapse>
       </Navbar>
     </>

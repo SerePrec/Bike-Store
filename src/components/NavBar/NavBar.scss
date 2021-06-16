@@ -55,14 +55,17 @@
     width: 100%;
     background-color: $tonoMuyOscuro;
     padding: 0.25rem 0;
+    overflow: hidden;
+
     .navbar-nav {
+      height: 2rem;
+
       .nav-link {
         font-size: 1.25rem;
         border-left: 3px solid $rojoMarca;
         margin: 0;
         padding: 0 4rem 0 0.55rem;
         transition: all 0.5s;
-        display: inline-block;
 
         &.active {
           color: white;
@@ -99,8 +102,12 @@
   @include responsive(md) {
     #navbar-categories {
       .navbar-nav {
+        animation-name: fadeInDown;
+        height: auto;
         .nav-link {
           font-size: 1rem;
+          padding-top: 0.25rem;
+          padding-bottom: 0;
         }
       }
     }
@@ -135,6 +142,8 @@
       .navbar-nav {
         .nav-link {
           margin-left: 0.5rem;
+          padding-bottom: 0.25rem;
+
           &:hover {
             &::after {
               width: 15rem;
