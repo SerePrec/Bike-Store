@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import ItemDetailContainer from "./pages/ItemDetailContainer";
+import ItemListContainer from "./components/ItemListContainer";
 import Footer from "./components/Footer";
 import "./App.scss";
 
@@ -22,14 +24,21 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <Router>
       <Header />
-      <main>
-        {/* <Home dollar={dollar} /> */}
-        <ItemDetailContainer />
-      </main>
+      <Switch>
+        <Route exact path="/">
+          <Home dollar={dollar} />
+        </Route>
+        <Route exact path="/category/:id">
+          <ItemListContainer />
+        </Route>
+        <Route exact path="/item/:id">
+          <ItemDetailContainer />
+        </Route>
+      </Switch>
       <Footer />
-    </div>
+    </Router>
   );
 }
 

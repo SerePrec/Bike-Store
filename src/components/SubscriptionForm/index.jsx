@@ -1,7 +1,5 @@
 import React from "react";
-import { FormControl } from "react-bootstrap";
-import { InputGroup } from "react-bootstrap";
-import { Form } from "react-bootstrap";
+import { FormControl, InputGroup, Form } from "react-bootstrap";
 import "./SubscriptionForm.scss";
 
 const SubscriptionForm = () => {

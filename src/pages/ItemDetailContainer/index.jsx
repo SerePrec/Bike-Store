@@ -43,7 +43,7 @@ const ItemDetailContainer = () => {
   }, []);
 
   return (
-    <>
+    <main>
       <InfoBar title="DETALLE DEL PRODUCTO"></InfoBar>
       <div
         className={`container-xl productDetailContainer ${
@@ -75,7 +75,7 @@ const ItemDetailContainer = () => {
             />
           ))}
       </div>
-    </>
+    </main>
   );
 };
 

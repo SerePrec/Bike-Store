@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Navbar, Nav } from "react-bootstrap";
-import SearchForm from "../SearchForm";
 import CartWidget from "../CartWidget";
-import logo from "../../assets/img/logo.svg";
+import SearchForm from "../SearchForm";
 import iconMenu from "../../assets/img/iconred.png";
+import logo from "../../assets/img/logo.svg";
 import logoCuenta from "../../assets/img/cuenta.svg";
 import "./NavBar.scss";
 

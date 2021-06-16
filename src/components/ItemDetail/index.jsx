@@ -1,9 +1,9 @@
 import React from "react";
 import { Row, Col } from "react-bootstrap";
-import "./ItemDetail.scss";
-import { priceFormat } from "../../services/formatPrice";
 import ItemCount from "../ItemCount";
 import ShipmentInfo from "../ShipmentInfo";
+import { priceFormat } from "../../services/formatPrice";
+import "./ItemDetail.scss";
 
 const ItemDetail = ({ product }) => {
   let {
