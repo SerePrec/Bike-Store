@@ -1,4 +1,4 @@
-export const URLDOLAR =
+export const URLDOLLAR =
   "https://www.dolarsi.com/api/api.php?type=valoresprincipales";
 
 // Recorre el array devuelto por el sitio dolarsi.com y obtiene la cotización del Dolar Oficial
