@@ -121,7 +121,7 @@
     "price": 178.0,
     "discount": 0,
     "stock": 0,
-    "home": true,
+    "home": false,
     "pictureURL": "producto27.jpg",
     "highlight": true
   },

@@ -18,10 +18,10 @@ function App() {
         <Route exact path="/">
           <Home dollar={dollar} />
         </Route>
-        <Route exact path="/category/:id">
+        <Route exact path="/category/:catId">
           <Category />
         </Route>
-        <Route exact path="/item/:id">
+        <Route exact path="/item/:itemId">
           <ItemDetailContainer />
         </Route>
         <Route path="*">

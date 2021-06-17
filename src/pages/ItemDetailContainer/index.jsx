@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router";
 import InfoBar from "../../components/InfoBar";
 import ItemDetail from "../../components/ItemDetail";
 import Loader from "../../components/Loader";
@@ -11,6 +12,7 @@ const ItemDetailContainer = () => {
   const [product, setProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const { itemId } = useParams();
 
   useEffect(() => {
     let temp;
@@ -18,8 +20,8 @@ const ItemDetailContainer = () => {
     const getProduct = () =>
       new Promise((resolve, reject) => {
         temp = setTimeout(() => {
-          const i = Math.round(Math.random() * 11);
-          resolve(productsServer[i]);
+          const product = productsServer.find(elem => elem.id === itemId);
+          resolve(product);
           //reject("Error de Carga");
         }, 2000);
       });

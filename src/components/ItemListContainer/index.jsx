@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router";
 import ItemList from "../ItemList";
 import Loader from "../Loader";
 import "./itemListcontainer.scss";
@@ -6,10 +7,11 @@ import "./itemListcontainer.scss";
 //TODO:
 import productsServer from "../../services/productos.json";
 
-const ItemListContainer = ({ greeting, legend }) => {
+const ItemListContainer = ({ greeting, legend, home }) => {
   const [products, setProducts] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const { catId } = useParams();
 
   useEffect(() => {
     let temp;
@@ -23,7 +25,13 @@ const ItemListContainer = ({ greeting, legend }) => {
       });
     getProducts()
       .then(res => {
-        setProducts(res);
+        let productstFiltered;
+        if (home) {
+          productstFiltered = res.filter(elem => elem.home === true);
+        } else {
+          productstFiltered = res.filter(elem => elem.category === catId);
+        }
+        setProducts(productstFiltered);
         setIsError(false);
       })
       .catch(err => {
@@ -37,17 +45,18 @@ const ItemListContainer = ({ greeting, legend }) => {
     return () => {
       clearInterval(temp);
     };
-  }, []);
+  }, [catId, home]);
 
   return (
     <div className={`container-xl homeHighlights ${isLoading && "loading"}`}>
       <div>
-        <h2>{greeting}</h2>
-        <p>{legend}</p>
+        {greeting && <h2>{greeting}</h2>}
+        {legend && <p>{legend}</p>}
+        {catId && <h3 className="text-left w-100">{catId.toUpperCase()}</h3>}
       </div>
       <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 homeProductsContainer">
         {isLoading && <Loader message={{ title: "Cargando..." }} />}
-        {isError && (
+        {!isLoading && isError && (
           <Loader
             message={{
               title: isError,
@@ -56,7 +65,7 @@ const ItemListContainer = ({ greeting, legend }) => {
             }}
           />
         )}
-        {products && <ItemList products={products} />}
+        {!isLoading && products && <ItemList products={products} />}
       </div>
     </div>
   );

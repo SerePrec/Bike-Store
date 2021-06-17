@@ -4,7 +4,7 @@ import ItemListContainer from "../../components/ItemListContainer";
 const Category = () => {
   return (
     <main>
-      <ItemListContainer greeting={"Categoria..."} legend={"leyenda..."} />
+      <ItemListContainer />
     </main>
   );
 };
