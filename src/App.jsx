@@ -22,7 +22,7 @@ function App() {
           <Home dollar={dollar} />
         </Route>
         <Route exact path="/category/:catId">
-          <Category />
+          <Category categories={categories} />
         </Route>
         <Route exact path="/item/:itemId">
           <ItemDetailContainer />

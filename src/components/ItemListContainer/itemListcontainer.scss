@@ -1,7 +1,7 @@
 @import "../../assets/scss/variables";
 @import "../../assets/scss/mixins";
 
-.homeHighlights {
+.showRoom {
   background-color: $tonoMedio;
   border: 0.5rem solid $rojoMarca;
   border-radius: 1rem;
@@ -23,8 +23,17 @@
     p {
       font-size: 1.25rem;
     }
+
+    .showRoom__total {
+      background-color: #dedede;
+      font-family: $fuente-principal;
+      font-size: 0.9rem;
+      color: $tonoMedio;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.75rem;
+    }
   }
-  .homeProductsContainer {
+  .productsContainer {
     background-color: #e9ecef;
     margin: 1rem 0 0.75rem 0;
     padding-top: 0.5rem;
@@ -37,7 +46,11 @@
     padding-left: 0;
     padding-right: 0;
 
-    .homeProductsContainer {
+    & > div:first-child {
+      padding-left: 1rem;
+    }
+
+    .productsContainer {
       margin-left: 1rem;
       margin-right: 1rem;
       min-height: 15rem;

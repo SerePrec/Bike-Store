@@ -22,12 +22,23 @@ const ItemDetailContainer = () => {
         temp = setTimeout(() => {
           const product = productsServer.find(elem => elem.id === itemId);
           resolve(product);
-          //reject("Error de Carga");
+          // reject({
+          //   title: "Error de Carga",
+          //   msg1: "Intenta recargar la página o regresa más tarde.",
+          //   msg2: "Disculpe las molestias."
+          // });
         }, 2000);
       });
 
     getProduct()
       .then(res => {
+        if (!res) {
+          return Promise.reject({
+            title: "Producto Inexistente",
+            msg1: "Es posible que el producto se haya discontinuado o no exista.",
+            msg2: "Disculpe las molestias."
+          });
+        }
         setProduct(res);
         setIsError(false);
       })
@@ -42,7 +53,7 @@ const ItemDetailContainer = () => {
     return () => {
       clearInterval(temp);
     };
-  }, []);
+  }, [itemId]);
 
   return (
     <main>
@@ -55,27 +66,8 @@ const ItemDetailContainer = () => {
         {isLoading && (
           <Loader message={{ title: "Cargando Detalle Del Producto..." }} />
         )}
-        {isError && (
-          <Loader
-            message={{
-              title: isError,
-              msg1: "Intenta recargar la página o regresa más tarde.",
-              msg2: "Disculpe las molestias."
-            }}
-          />
-        )}
-        {product &&
-          (product.id ? (
-            <ItemDetail product={product}></ItemDetail>
-          ) : (
-            <Loader
-              message={{
-                title: "Producto Inexistente",
-                msg1: "Es posible que el producto se haya discontinuado o no exista",
-                msg2: "Disculpe las molestias."
-              }}
-            />
-          ))}
+        {isError && <Loader message={isError} />}
+        {product && <ItemDetail product={product}></ItemDetail>}
       </div>
     </main>
   );
