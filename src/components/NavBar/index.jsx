@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { Link, NavLink } from "react-router-dom";
 import CartWidget from "../CartWidget";
@@ -8,24 +8,7 @@ import logo from "../../assets/img/logo.svg";
 import logoCuenta from "../../assets/img/cuenta.svg";
 import "./NavBar.scss";
 
-const NavBar = () => {
-  const [categories, setCategories] = useState(null);
-
-  useEffect(() => {
-    const getCategories = fetch("/data/categories.json").then(res => {
-      return res.json();
-    });
-
-    getCategories
-      .then(res => {
-        setCategories(res);
-      })
-      .catch(err => {
-        setCategories(null);
-        console.log("Error pidiendo categorías en NavBar:", err);
-      });
-  }, []);
-
+const NavBar = ({ categories }) => {
   return (
     <>
       <Navbar collapseOnSelect expand="md" variant="dark">

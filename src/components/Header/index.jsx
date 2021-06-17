@@ -2,10 +2,10 @@ import React from "react";
 import NavBar from "../NavBar";
 import "./Header.scss";
 
-const Header = () => {
+const Header = ({ categories }) => {
   return (
     <header>
-      <NavBar />
+      <NavBar categories={categories} />
     </header>
   );
 };
