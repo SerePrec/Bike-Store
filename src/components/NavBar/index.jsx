@@ -19,7 +19,6 @@ const NavBar = () => {
     getCategories
       .then(res => {
         setCategories(res);
-        console.log(res);
       })
       .catch(err => {
         setCategories(null);
@@ -54,6 +53,7 @@ const NavBar = () => {
             <Nav className="m-auto animate__navbar-nav--loaded">
               {categories.map(cat => (
                 <Nav.Link
+                  key={cat.id}
                   as={NavLink}
                   exact
                   to={`/category/${cat.key}`}

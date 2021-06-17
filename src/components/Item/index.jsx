@@ -36,7 +36,7 @@ const Item = ({ product }) => {
   return (
     <Card
       className={`h-100 shadow ${stock < 1 ? "card--noStock" : null}`}
-      onClick={stock > 0 && (() => goDetail(id))}
+      onClick={stock > 0 ? () => goDetail(id) : null}
     >
       {discount !== 0 && <div className="discount">{discount}%</div>}
       <Card.Img
