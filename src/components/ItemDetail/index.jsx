@@ -42,7 +42,7 @@ const ItemDetail = ({ product }) => {
           <h4>{category.toUpperCase()}</h4>
           <p className="price">
             <b>${priceFormat(price * (1 - discount / 100) * 100)}</b>
-            <del>${priceFormat(price * 100)}</del>
+            {discount !== 0 && <del>${priceFormat(price * 100)}</del>}
           </p>
           <h3>DETALLE</h3>
           <p>{detail}</p>

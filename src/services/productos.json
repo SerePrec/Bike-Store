@@ -98,6 +98,20 @@
     "highlight": true
   },
   {
+    "id": "9",
+    "category": "bicicletas",
+    "code": "CODIGO",
+    "brand": "ORBEA",
+    "title": "Bicicleta Ruta Orbea Gain M10 2019",
+    "detail": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum, id placeat praesentium non perspiciatis velit. Optio cupiditate animi harum vel omnis tenetur temporibus quasi possimus, aut deserunt vitae facere facilis.",
+    "price": 3740.0,
+    "discount": 20,
+    "stock": 2,
+    "home": true,
+    "pictureURL": "producto9.jpg",
+    "highlight": false
+  },
+  {
     "id": "15",
     "category": "bicicletas",
     "code": "code",
@@ -110,6 +124,20 @@
     "home": true,
     "pictureURL": "producto15.jpg",
     "highlight": false
+  },
+  {
+    "id": "22",
+    "category": "bicicletas",
+    "code": "CODIGO",
+    "brand": "BH",
+    "title": "Bicicleta Urbana BH Ibiza 2021",
+    "detail": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum, id placeat praesentium non perspiciatis velit. Optio cupiditate animi harum vel omnis tenetur temporibus quasi possimus, aut deserunt vitae facere facilis.",
+    "price": 680.0,
+    "discount": 0,
+    "stock": 2,
+    "home": true,
+    "pictureURL": "producto22.jpg",
+    "highlight": true
   },
   {
     "id": "27",

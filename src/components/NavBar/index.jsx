@@ -40,7 +40,9 @@ const NavBar = ({ categories }) => {
                   as={NavLink}
                   exact
                   to={`/category/${cat.key}`}
-                  activeClassName="active"
+                  activeClassName="activeLink"
+                  eventKey={cat.id}
+                  active={false}
                 >
                   {cat.description.toUpperCase()}
                 </Nav.Link>

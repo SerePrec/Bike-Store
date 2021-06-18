@@ -7,7 +7,7 @@ import "./itemListcontainer.scss";
 //TODO:
 import productsServer from "../../services/productos.json";
 
-const ItemListContainer = ({ categories, home, greeting, legend }) => {
+const ItemListContainer = ({ home, greeting, legend }) => {
   const [products, setProducts] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -64,7 +64,7 @@ const ItemListContainer = ({ categories, home, greeting, legend }) => {
         {greeting && <h2>{greeting}</h2>}
         {legend && <p>{legend}</p>}
         {catId && <h3 className="showRoom__category">{catId.toUpperCase()}</h3>}
-        {!isLoading && products && (
+        {!home && !isLoading && products && (
           <p className="showRoom__total">
             {products.length} {products.length === 1 ? "producto" : "productos"}
           </p>

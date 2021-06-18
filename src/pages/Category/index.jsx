@@ -1,10 +1,10 @@
 import React from "react";
 import ItemListContainer from "../../components/ItemListContainer";
 
-const Category = ({ categories }) => {
+const Category = () => {
   return (
     <main>
-      <ItemListContainer categories={categories} />
+      <ItemListContainer />
     </main>
   );
 };
