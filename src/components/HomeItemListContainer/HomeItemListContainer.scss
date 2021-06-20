@@ -1,7 +1,7 @@
 @import "../../assets/scss/variables";
 @import "../../assets/scss/mixins";
 
-.showRoom {
+.highlights {
   background-color: $tonoMedio;
   border: 0.5rem solid $rojoMarca;
   border-radius: 1rem;
@@ -24,7 +24,7 @@
       font-size: 1.25rem;
     }
 
-    .showRoom__total {
+    .highlights__total {
       background-color: #dedede;
       font-family: $fuente-principal;
       font-size: 0.9rem;
@@ -33,14 +33,6 @@
       border-radius: 0.75rem;
     }
   }
-  .productsContainer {
-    background-color: #e9ecef;
-    margin: 1rem 0 0.75rem 0;
-    padding-top: 0.5rem;
-    border: 3px solid #e9ecef;
-    border-radius: 0.25rem;
-    min-height: 27rem;
-  }
 
   @include responsive(xs) {
     padding-left: 0;
@@ -48,12 +40,6 @@
 
     & > div:first-child {
       padding-left: 1rem;
-    }
-
-    .productsContainer {
-      margin-left: 1rem;
-      margin-right: 1rem;
-      min-height: 15rem;
     }
   }
 }

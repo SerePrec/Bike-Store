@@ -12,7 +12,7 @@ const ItemDetailContainer = () => {
   const [product, setProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const { itemId } = useParams();
+  let { itemId } = useParams();
 
   useEffect(() => {
     let temp;

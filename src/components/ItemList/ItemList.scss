@@ -1,0 +1,17 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.productsContainer {
+  background-color: #e9ecef;
+  margin: 1rem 0 0.75rem 0;
+  padding-top: 0.5rem;
+  border: 3px solid #e9ecef;
+  border-radius: 0.25rem;
+  min-height: 27rem;
+
+  @include responsive(xs) {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    min-height: 15rem;
+  }
+}

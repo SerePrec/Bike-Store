@@ -2,7 +2,7 @@ import React from "react";
 import BrandBanner from "../../components/BrandBanner";
 import InfoBar from "../../components/InfoBar";
 import InfoDollar from "../../components/InfoDollar";
-import ItemListContainer from "../../components/ItemListContainer";
+import HomeItemListContainer from "../../components/HomeItemListContainer";
 import LandingCarousel from "../../components/LandingCarousel";
 import { BRANDS } from "../../services/brands";
 
@@ -14,10 +14,9 @@ const Home = ({ dollar }) => {
       <InfoBar title="HOME">
         <InfoDollar dollar={dollar} />
       </InfoBar>
-      <ItemListContainer
+      <HomeItemListContainer
         greeting={`Destacados Del Mes`}
         legend={`Los productos que nuestros clientes eligen`}
-        home
       />
     </main>
   );

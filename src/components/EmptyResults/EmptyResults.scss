@@ -1,0 +1,25 @@
+.emptyResults {
+  background-color: #e9ecef;
+  border-radius: 0.25rem;
+  margin: 1.5rem 0;
+  text-align: center;
+  margin: auto;
+  flex: 0 0 80%;
+  max-width: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+
+  img {
+    display: block;
+    width: 5rem;
+    margin-bottom: 1rem;
+  }
+
+  h2,
+  h3,
+  p {
+    width: 100%;
+  }
+}

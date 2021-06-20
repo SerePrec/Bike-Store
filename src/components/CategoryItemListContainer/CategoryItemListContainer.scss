@@ -1,0 +1,45 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.categoryShowRoom {
+  background-color: $tonoMedio;
+  border: 0.5rem solid $rojoMarca;
+  border-radius: 1rem;
+  padding-bottom: 0.25rem;
+  margin: 1rem auto 2rem auto;
+  transition: all 0.75s;
+
+  &.loading {
+    opacity: 0.5;
+  }
+
+  & > div:first-child {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem 0 1rem 0;
+    text-align: center;
+    p {
+      font-size: 1.25rem;
+    }
+
+    .categoryShowRoom__total {
+      background-color: #dedede;
+      font-family: $fuente-principal;
+      font-size: 0.9rem;
+      color: $tonoMedio;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.75rem;
+    }
+  }
+
+  @include responsive(xs) {
+    padding-left: 0;
+    padding-right: 0;
+
+    & > div:first-child {
+      padding-left: 1rem;
+    }
+  }
+}
