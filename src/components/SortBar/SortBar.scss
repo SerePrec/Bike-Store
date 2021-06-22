@@ -1,0 +1,17 @@
+.sortBar {
+  background-color: #e9ecef;
+  border-radius: 0.25rem;
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h4 {
+    display: inline-block;
+    padding-right: 0.5rem;
+  }
+
+  .form-control {
+    width: 40%;
+  }
+}

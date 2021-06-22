@@ -2,7 +2,7 @@ import React from "react";
 import { Row, Col } from "react-bootstrap";
 import ItemCount from "../ItemCount";
 import ShipmentInfo from "../ShipmentInfo";
-import { priceFormat } from "../../services/formatPrice";
+import { priceFormat } from "../../services/priceFormat";
 import "./ItemDetail.scss";
 
 const ItemDetail = ({ product }) => {
@@ -20,7 +20,7 @@ const ItemDetail = ({ product }) => {
 
   return (
     <div
-      className={`productDetail ${stock < 1 ? "productDetail--noStock" : null}`}
+      className={`productDetail ${stock < 1 ? "productDetail--noStock" : ""}`}
     >
       <Row className="productDetail_title mb-5">
         <Col xs={12} sm={9}>
@@ -41,8 +41,8 @@ const ItemDetail = ({ product }) => {
         <Col xs={12} md={5}>
           <h4>{category.toUpperCase()}</h4>
           <p className="price">
-            <b>${priceFormat(price * (1 - discount / 100) * 100)}</b>
-            {discount !== 0 && <del>${priceFormat(price * 100)}</del>}
+            <b>${priceFormat(price * (1 - discount / 100))}</b>
+            {discount !== 0 && <del>${priceFormat(price)}</del>}
           </p>
           <h3>DETALLE</h3>
           <p>{detail}</p>

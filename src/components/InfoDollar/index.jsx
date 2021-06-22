@@ -1,6 +1,6 @@
 import React from "react";
 import imgDollar from "../../assets/img/dolar.png";
-import { priceFormat } from "../../services/formatPrice";
+import { priceFormat } from "../../services/priceFormat";
 import "./InfoDollar.scss";
 
 const InfoDollar = ({ dollar }) => {

@@ -8,8 +8,8 @@ export function priceFormat(num) {
   }
   let enteroFormateado = "";
   for (let i = 1; i <= entero.length; i++) {
-    if (i % 3 == 0) {
-      if (i == entero.length) {
+    if (i % 3 === 0) {
+      if (i === entero.length) {
         enteroFormateado =
           entero.substr(entero.length - i, 3) + enteroFormateado;
         break;

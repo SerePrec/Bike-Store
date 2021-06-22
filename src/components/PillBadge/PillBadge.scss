@@ -1,0 +1,15 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.pillBadge {
+  display: inline-block;
+  font-family: $fuente-principal;
+  font-size: 0.9rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.75rem;
+  font-weight: 400;
+  &.secondary {
+    background-color: #dedede;
+    color: $tonoMedio;
+  }
+}

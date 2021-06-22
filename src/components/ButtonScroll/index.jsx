@@ -41,7 +41,7 @@ const ButtonScroll = () => {
 
   return (
     <div
-      className={`buttonScroll ${active ? "active" : null}`}
+      className={`buttonScroll ${active ? "active" : ""}`}
       onClick={handleClick}
     >
       <div className="buttonScroll__link">

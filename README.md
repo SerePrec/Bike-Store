@@ -39,6 +39,11 @@ A continuación, hago un punteo de algunos temas referidos a la lógica funciona
 - Page ItemDetailcontainer
 - Page Error404
 
+- ScrollToTop TODO: (efecto. React-router)
+- ButtonScroll TODO: (estado y eventos)
+- Reestructuración ItemListContainner (Home/Categor/Search) TODO:
+- SearchForm TODO: (estado y evento)
+
 ### Estructura de archivos
 
 Luego de crear la App con **React-Create-App**, se procedió a "limpiar" tanto la carpeta `public` como la carpeta `src` de los archivos iniciales de ejemplo que provee la app. Se eliminaron archivos innecesarios y modificaron el contenido de otros, adaptándolos a mi proyecto.

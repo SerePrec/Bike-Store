@@ -1,0 +1,10 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.typicBtn {
+  background-color: $rojoMarca;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}

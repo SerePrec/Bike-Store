@@ -4,10 +4,16 @@ import Item from "../Item";
 import Loader from "../Loader";
 import "./ItemList.scss";
 
-const ItemList = ({ isLoading, isError, products }) => {
+const ItemList = ({ isLoading, isError, products, filters }) => {
   return (
     <>
-      <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 productsContainer">
+      <div
+        className={`row row-cols-1 productsContainer ${
+          filters
+            ? "row-cols-md-2 row-cols-xl-3 filters"
+            : "row-cols-sm-2 row-cols-lg-3 row-cols-xl-4"
+        }`}
+      >
         {isLoading && <Loader message={{ title: "Cargando..." }} />}
         {!isLoading && isError && <Loader message={isError} />}
         {!isLoading &&
