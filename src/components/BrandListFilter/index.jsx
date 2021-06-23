@@ -10,7 +10,6 @@ const BrandListFilter = ({ filters, brands, handleChangeBrands }) => {
   return (
     <div className="brandsFilter">
       <TypicButton className="mb-3">
-        <img src={plusIcon} alt="" />
         MARCAS
         {filters.brands.length === 0 ? (
           <img src={toogleOff} alt="" />

@@ -1,9 +1,15 @@
-.minPriceInput,.maxPriceInput {
+.minPriceInput,
+.maxPriceInput {
+  text-align: center;
+  margin-bottom: 1rem;
+  label {
+    margin-bottom: 0;
+  }
   input[type="text"] {
-      height: 1.7rem;
-      max-width: 8rem;
-      margin: auto;
-      background-color: #545454;
-      color: white;
-    }
+    height: 1.7rem;
+    max-width: 8rem;
+    margin: auto;
+    background-color: #545454;
+    color: white;
+  }
 }

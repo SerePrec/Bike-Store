@@ -43,7 +43,7 @@ const PriceRangeFilter = ({ priceRange, setPriceRange, clean }) => {
   return (
     <div>
       <Form.Group className="minPriceInput">
-        <Form.Label>Precio Mínimo $</Form.Label>
+        <Form.Label>Precio Mínimo</Form.Label>
         <Form.Control
           name="minRange"
           type="range"
@@ -64,7 +64,7 @@ const PriceRangeFilter = ({ priceRange, setPriceRange, clean }) => {
         />
       </Form.Group>
       <Form.Group className="maxPriceInput">
-        <Form.Label>Precio Máximo $</Form.Label>
+        <Form.Label>Precio Máximo</Form.Label>
         <Form.Control
           name="maxRange"
           type="range"

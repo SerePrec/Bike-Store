@@ -7,14 +7,9 @@
   margin-bottom: 1rem;
   font-size: 0.9rem;
   width: 100%;
-  .btn {
+  .typicBtn {
     width: 100%;
     img {
-      &:first-child {
-        width: 0.9rem;
-        margin-right: 1rem;
-        margin-left: 0;
-      }
       &:last-child {
         width: 1.25rem;
         margin-left: 1rem;
@@ -23,22 +18,52 @@
     }
   }
   .brandList {
+    background: linear-gradient(90deg, $tonoOscuro 0%, transparent 100%);
+    border-radius: 0.25rem;
     max-height: 15rem;
     overflow-y: auto;
+
     .form-check {
       line-height: 1.5rem;
       margin-bottom: 0.5rem;
+    }
+
+    &::-webkit-scrollbar {
+      -webkit-appearance: none;
+    }
+
+    &::-webkit-scrollbar:vertical {
+      width: 0.5rem;
+    }
+
+    &::-webkit-scrollbar-button:increment,
+    &::-webkit-scrollbar-button {
+      display: none;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $tonoClaro;
+      border-radius: 20px;
+    }
+
+    &::-webkit-scrollbar-track {
+      border-radius: 10px;
+      background-color: $tonoOscuro;
     }
   }
 
   @include responsive(xs) {
     .brandList {
+      width: 80%;
+      margin: auto;
       max-height: 12rem;
-      .form-check {
-        margin-bottom: 0.5rem;
+      .form-group {
+        .form-check {
+          margin-bottom: 0.5rem;
 
-        label {
-          vertical-align: sub;
+          label {
+            vertical-align: sub;
+          }
         }
       }
     }

@@ -34,6 +34,7 @@ const CategoryItemListContainer = () => {
   const [isError, setIsError] = useState(false);
   const [filters, setFilters] = useState(initialFilters);
   const [clean, setClean] = useState(0);
+  const [hide, setHide] = useState(true);
   let { catId } = useParams();
 
   useEffect(() => {
@@ -129,12 +130,16 @@ const CategoryItemListContainer = () => {
         )}
       </div>
       <div className="row mx-0 mr-sm-n3">
-        <div className="col-sm-3 col-xl-2 mb-4 filtersCol">
-          <h3>
+        <div className="col-sm-3 col-xl-2 filtersCol">
+          <h3
+            onClick={() => {
+              setHide(hide => !hide);
+            }}
+          >
             Filtros
             <img src={filtersIcon} alt="" />
           </h3>
-          <div className="row filtersContainer">
+          <div className={`row filtersContainer ${hide ? "hide" : ""}`}>
             <div className="col-sm-12 px-1">
               <Form.Group controlId="highlightsCheck" className="mb-3">
                 <Form.Check

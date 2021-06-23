@@ -27,6 +27,7 @@
   .filtersCol {
     color: white;
     padding: 0.5rem 0.5rem 0.5rem 1rem;
+    margin-bottom: 1.5rem;
 
     h3 {
       font-size: 1.25rem;
@@ -57,13 +58,13 @@
     #highlightsCheck {
       padding-left: 2rem;
     }
+  }
 
-    .btn {
-      width: 100%;
-      img {
-        width: 1.25rem;
-        margin-left: 1rem;
-      }
+  .typicBtn {
+    width: 100%;
+    img {
+      width: 1.1rem;
+      margin-left: 1rem;
     }
   }
 
@@ -77,13 +78,27 @@
 
     .filtersCol {
       padding: 0.5rem;
+      margin-bottom: 0.5rem;
+      background-color: rgba($tonoOscuro, 0.7);
+      border-radius: 0.5rem;
 
       h3 {
         cursor: pointer;
+        margin-bottom: 0;
+        background-color: $tonoOscuro;
       }
 
       .filtersContainer {
-        //display: none;
+        height: 37rem;
+        overflow: hidden;
+        margin-top: 1rem;
+        transition: all 1s ease;
+
+        &.hide {
+          height: 0;
+          margin-top: 0;
+          opacity: 0;
+        }
 
         .form-check {
           width: 70%;
@@ -98,6 +113,7 @@
         .maxPriceInput {
           width: 85%;
           margin: auto;
+          margin-bottom: 1rem;
           padding-left: 0;
         }
 
