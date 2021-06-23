@@ -1,12 +1,15 @@
 @import "../../assets/scss/variables";
 @import "../../assets/scss/mixins";
 
-.brandsFilter {
+.propFilter {
   padding: 1rem 0;
   color: white;
-  margin-bottom: 1rem;
   font-size: 0.9rem;
   width: 100%;
+  &:nth-last-child(3) {
+    margin-bottom: 1rem;
+  }
+
   .typicBtn {
     width: 100%;
     img {
@@ -17,7 +20,8 @@
       }
     }
   }
-  .brandList {
+
+  .propList {
     background: linear-gradient(90deg, $tonoOscuro 0%, transparent 100%);
     padding-top: 1rem;
     border-radius: 0.25rem;
@@ -54,7 +58,7 @@
   }
 
   @include responsive(xs) {
-    .brandList {
+    .propList {
       width: 80%;
       margin: auto;
       max-height: 12rem;

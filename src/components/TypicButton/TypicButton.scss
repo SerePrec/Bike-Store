@@ -7,4 +7,12 @@
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
+  &.black {
+    background-color: $tonoMuyOscuro;
+    border-color: $tonoMuyOscuro;
+  }
+  &.soft {
+    background-color: rgba($rojoMarca, 0.5);
+    border-color: $rojoMarca;
+  }
 }

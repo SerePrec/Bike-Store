@@ -113,22 +113,22 @@ const sortHigherDiscount = (a, b) => {
   return b.discount - a.discount;
 };
 
-function filterBrands(arrayToFilter, brandsArray) {
+function filterProp(arrayToFilter, propToFilter, matchArray) {
   // filtra los productos del array pasado en funcion de un array de marcas
-  let brandsFilterProducts = [];
-  if (brandsArray.length === 0) {
-    brandsFilterProducts = arrayToFilter;
+  let propFilteredProducts = [];
+  if (matchArray.length === 0) {
+    propFilteredProducts = arrayToFilter;
   } else {
-    brandsFilterProducts = arrayToFilter.filter(elem => {
-      for (const selectedBrand of brandsArray) {
-        if (elem.brand === selectedBrand) {
+    propFilteredProducts = arrayToFilter.filter(elem => {
+      for (const selectedProp of matchArray) {
+        if (elem[propToFilter].toLowerCase() === selectedProp.toLowerCase()) {
           return true;
         }
       }
       return false;
     });
   }
-  return brandsFilterProducts;
+  return propFilteredProducts;
 }
 
 export const setPriceLimits = prodsArray => {
@@ -160,7 +160,7 @@ export const filterPriceRange = (prodsToFilter, filters) => {
 };
 
 export const productsFilter = (prodsToFilter, filters) => {
-  prodsToFilter = filterBrands(prodsToFilter, filters.brands);
+  prodsToFilter = filterProp(prodsToFilter, "brand", filters.brands);
   prodsToFilter = filterPriceRange(prodsToFilter, filters);
   productsSort(filters.sort, prodsToFilter);
   return prodsToFilter;
@@ -168,6 +168,11 @@ export const productsFilter = (prodsToFilter, filters) => {
 
 export const mainSelect = (products, filters) => {
   let mainSelectedProducts = [...products];
+  mainSelectedProducts = filterProp(
+    mainSelectedProducts,
+    "category",
+    filters.categories
+  );
   if (filters.onlyOff) {
     mainSelectedProducts = mainSelectedProducts.filter(
       prod => prod.discount !== 0
@@ -176,22 +181,22 @@ export const mainSelect = (products, filters) => {
   return mainSelectedProducts;
 };
 
-export const brandList = vectorAProcesar => {
+export const propertyList = (arrayToProcess, propToList) => {
   // Encuentra las marcas y los productos dentro de cada una de ellas que
   //corresponden a la selección madre (Filtro de Busqueda por palabra, categoria o destacado) del usuario
-  let brandList = [];
-  let brand;
-  for (const producto of vectorAProcesar) {
-    brand = producto.brand;
-    let match = brandList.find(prod => prod.brand === brand);
+  let valueList = [];
+  let value;
+  for (const elem of arrayToProcess) {
+    value = elem[propToList];
+    let match = valueList.find(elem => elem.name === value.toLowerCase());
     if (match) {
       // si ya existía la marca en el array, le suma una unidad
       match.qty++;
     } else {
       // sino, agrega la marca al listado
-      brandList.push({ brand, qty: 1 });
+      valueList.push({ name: value.toLowerCase(), qty: 1 });
     }
   }
-  brandList.sort((a, b) => a.brand.localeCompare(b.brand));
-  return brandList;
+  valueList.sort((a, b) => a.name.localeCompare(b.name));
+  return valueList;
 };

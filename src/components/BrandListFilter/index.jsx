@@ -10,6 +10,7 @@ const BrandListFilter = ({ filters, brands, handleChangeBrands }) => {
   return (
     <div className="brandsFilter">
       <TypicButton className="mb-3">
+        <img src={plusIcon} alt="" />
         MARCAS
         {filters.brands.length === 0 ? (
           <img src={toogleOff} alt="" />
@@ -26,7 +27,7 @@ const BrandListFilter = ({ filters, brands, handleChangeBrands }) => {
                 type="checkbox"
                 label={`${elem.brand} (${elem.qty})`}
                 onChange={handleChangeBrands}
-                checked={filters.brands.some(brand => brand === elem.brand)}
+                checked={filters.brands.some(brand => brand === elem.name)}
               />
             </Form.Group>
           ))}

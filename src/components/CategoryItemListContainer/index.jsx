@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { Form } from "react-bootstrap";
-import BrandListFilter from "../BrandListFilter";
 import ItemList from "../ItemList";
 import PillBadge from "../PillBadge";
 import PriceRangeFilter from "../PriceRangeFilter";
+import PropertyListFilter from "../PropertyListFilter";
 import SortBar from "../SortBar";
 import TypicButton from "../TypicButton";
 import filtersIcon from "../../assets/img/filters.png";
 import times from "../../assets/img/times-circle.svg";
-import "./CategoryItemListContainer.scss";
 import {
   productsFilter,
   mainSelect,
-  brandList,
+  propertyList,
   setPriceLimits
 } from "../../services/productsFilter";
 
@@ -23,6 +22,7 @@ import productsServer from "../../services/productos.json";
 const initialFilters = {
   sort: "p",
   onlyOff: false,
+  categories: [],
   brands: [],
   minPriceSel: 0,
   maxPriceSel: +Infinity
@@ -83,7 +83,11 @@ const CategoryItemListContainer = () => {
     const target = e.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
-    setFilters({ ...filters, [name]: value });
+    if (name === "onlyOff") {
+      setFilters({ ...filters, [name]: value, brands: [] });
+    } else {
+      setFilters({ ...filters, [name]: value });
+    }
   };
 
   const handleChangeBrands = e => {
@@ -106,21 +110,23 @@ const CategoryItemListContainer = () => {
   };
 
   const cleanFilters = () => {
-    setFilters({ ...filters, onlyOff: false, brands: [] });
+    setFilters({ ...filters, onlyOff: false, brands: [], categories: [] });
     setClean(cl => cl + 1);
   };
 
   let mainSelection = null;
   let filteredProducts = null;
   let brands = null;
+  let categories = null;
   if (products) {
+    categories = propertyList(products, "category");
     mainSelection = mainSelect(products, filters);
-    brands = brandList(mainSelection);
+    brands = propertyList(mainSelection, "brand");
     filteredProducts = productsFilter(mainSelection, filters);
   }
 
   return (
-    <div className={`container-xl categoryShowRoom ${isLoading && "loading"}`}>
+    <div className={`container-xl searchShowRoom ${isLoading && "loading"}`}>
       <div>
         <h3>{catId.toUpperCase()}</h3>
         {!isLoading && products && (
@@ -150,19 +156,20 @@ const CategoryItemListContainer = () => {
                   onChange={handleChangeFilters}
                 />
               </Form.Group>
-              <BrandListFilter
-                filters={filters}
-                brands={brands}
-                handleChangeBrands={handleChangeBrands}
+              <PropertyListFilter
+                title="MARCAS"
+                filterProp={filters.brands}
+                valuesToList={brands}
+                handleChangeProp={handleChangeBrands}
               />
-              {products && (
+              {mainSelection && mainSelection.length > 1 && (
                 <PriceRangeFilter
                   priceRange={setPriceLimits(mainSelection)}
                   setPriceRange={setPriceRange}
                   clean={clean}
                 />
               )}
-              <TypicButton className="mt-4" onClick={cleanFilters}>
+              <TypicButton className="mt-4 soft" onClick={cleanFilters}>
                 LIMPIAR FILTROS
                 <img src={times} alt="" />
               </TypicButton>
