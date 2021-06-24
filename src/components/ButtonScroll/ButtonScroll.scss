@@ -41,6 +41,7 @@
       height: 2.5rem;
       border-radius: 0.75rem;
       background-color: rgba($tonoMuyOscuro, 0.2);
+      cursor: pointer;
       transition: transform 0.3s ease, background 0.2s ease;
       &:hover {
         background-color: rgba($tonoMuyOscuro, 0.3);
