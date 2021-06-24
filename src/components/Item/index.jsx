@@ -41,7 +41,7 @@ const Item = ({ product }) => {
         <Card.Text>{title}</Card.Text>
         <Card.Text className="mt-2">
           <b>${priceFormat(price * (1 - discount / 100) * 100)}</b>
-          <del>${priceFormat(price * 100)}</del>
+          {discount !== 0 && <del>${priceFormat(price * 100)}</del>}
         </Card.Text>
       </Card.Body>
       {stock < 1 && <div className="text--noStock">AGOTADO</div>}
