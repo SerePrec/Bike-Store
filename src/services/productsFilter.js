@@ -201,15 +201,18 @@ export const propertyList = (arrayToProcess, propToList) => {
 
 export const searchQuery = (products, query) => {
   let patt;
-  let firstLargeWord = query.match(/^\w{3,}/gi);
+  //primero quito los acentos introducidos
+  query = query.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+  let firstLargeWord = query.match(/^\w{3,}\b/gi);
   if (!firstLargeWord) {
     patt = new RegExp(query, "gi");
-  } else if (firstLargeWord[0].match(/^\w{3,}es/gi)) {
+  } else if (firstLargeWord[0].match(/^\w{3,}es\b/gi)) {
     let reduceWord = firstLargeWord[0].slice(0, -2);
     let auxExp = `${reduceWord}?e?s`;
     let auxPatt = query.replace(firstLargeWord[0], auxExp);
     patt = new RegExp(auxPatt, "gi");
-  } else if (firstLargeWord[0].match(/^\w{3,}s/gi)) {
+  } else if (firstLargeWord[0].match(/^\w{3,}s\b/gi)) {
     let auxExp = `${firstLargeWord[0]}?`;
     let auxPatt = query.replace(firstLargeWord[0], auxExp);
     patt = new RegExp(auxPatt, "gi");
@@ -219,11 +222,22 @@ export const searchQuery = (products, query) => {
     patt = new RegExp(auxPatt, "gi");
   }
   let matchesProducts = products.filter(elem => {
-    if (elem.title.search(patt) !== -1) {
+    if (
+      elem.title
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .search(patt) !== -1
+    ) {
       return true;
     } else {
-      return elem.detail.search(patt) !== -1;
+      return (
+        elem.detail
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .search(patt) !== -1
+      );
     }
   });
+  console.log(patt);
   return matchesProducts;
 };
