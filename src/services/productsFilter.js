@@ -238,6 +238,5 @@ export const searchQuery = (products, query) => {
       );
     }
   });
-  console.log(patt);
   return matchesProducts;
 };

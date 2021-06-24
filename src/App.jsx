@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import ButtonScroll from "./components/ButtonScroll";
-import CategoryResults from "./pages/CategoryResults";
 import Error404 from "./pages/Error404";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
@@ -26,7 +25,7 @@ function App() {
           <Home dollar={dollar} />
         </Route>
         <Route exact path="/category/:catId">
-          <CategoryResults />
+          <SearchResults />
         </Route>
         <Route exact path="/search">
           <SearchResults />
