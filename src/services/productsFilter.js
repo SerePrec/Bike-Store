@@ -114,7 +114,7 @@ const sortHigherDiscount = (a, b) => {
 };
 
 function filterProp(arrayToFilter, propToFilter, matchArray) {
-  // filtra los productos del array pasado en funcion de un array de marcas
+  // filtra los productos del array pasado en funcion de un array de comparación
   let propFilteredProducts = [];
   if (matchArray.length === 0) {
     propFilteredProducts = arrayToFilter;
@@ -132,8 +132,7 @@ function filterProp(arrayToFilter, propToFilter, matchArray) {
 }
 
 export const setPriceLimits = prodsArray => {
-  // Controla la selección del rango de precios por el usuario y colocar su valor en los input respectivos
-
+  // obtiene los limites del rango de precio para la sslección principal
   let minPrice = +Infinity;
   let maxPrice = -Infinity;
   let price;
@@ -159,13 +158,6 @@ export const filterPriceRange = (prodsToFilter, filters) => {
   return auxArray;
 };
 
-export const productsFilter = (prodsToFilter, filters) => {
-  prodsToFilter = filterProp(prodsToFilter, "brand", filters.brands);
-  prodsToFilter = filterPriceRange(prodsToFilter, filters);
-  productsSort(filters.sort, prodsToFilter);
-  return prodsToFilter;
-};
-
 export const mainSelect = (products, filters) => {
   let mainSelectedProducts = [...products];
   mainSelectedProducts = filterProp(
@@ -181,9 +173,16 @@ export const mainSelect = (products, filters) => {
   return mainSelectedProducts;
 };
 
+export const productsFilter = (prodsToFilter, filters) => {
+  let prodsFiltered = filterProp(prodsToFilter, "brand", filters.brands);
+  prodsFiltered = filterPriceRange(prodsFiltered, filters);
+  productsSort(filters.sort, prodsFiltered);
+  return prodsFiltered;
+};
+
 export const propertyList = (arrayToProcess, propToList) => {
-  // Encuentra las marcas y los productos dentro de cada una de ellas que
-  //corresponden a la selección madre (Filtro de Busqueda por palabra, categoria o destacado) del usuario
+  // Encuentra las marcas/categorias y los productos dentro de cada una de ellas que
+  //corresponden a la selección principal (Filtro de Busqueda por palabra, categoria o solo ofertas) del usuario
   let valueList = [];
   for (const elem of arrayToProcess) {
     let value = elem[propToList];
@@ -198,4 +197,33 @@ export const propertyList = (arrayToProcess, propToList) => {
   }
   valueList.sort((a, b) => a.name.localeCompare(b.name));
   return valueList;
+};
+
+export const searchQuery = (products, query) => {
+  let patt;
+  let firstLargeWord = query.match(/^\w{3,}/gi);
+  if (!firstLargeWord) {
+    patt = new RegExp(query, "gi");
+  } else if (firstLargeWord[0].match(/^\w{3,}es/gi)) {
+    let reduceWord = firstLargeWord[0].slice(0, -2);
+    let auxExp = `${reduceWord}?e?s`;
+    let auxPatt = query.replace(firstLargeWord[0], auxExp);
+    patt = new RegExp(auxPatt, "gi");
+  } else if (firstLargeWord[0].match(/^\w{3,}s/gi)) {
+    let auxExp = `${firstLargeWord[0]}?`;
+    let auxPatt = query.replace(firstLargeWord[0], auxExp);
+    patt = new RegExp(auxPatt, "gi");
+  } else {
+    let auxExp = `${firstLargeWord[0]}e?s?`;
+    let auxPatt = query.replace(firstLargeWord[0], auxExp);
+    patt = new RegExp(auxPatt, "gi");
+  }
+  let matchesProducts = products.filter(elem => {
+    if (elem.title.search(patt) !== -1) {
+      return true;
+    } else {
+      return elem.detail.search(patt) !== -1;
+    }
+  });
+  return matchesProducts;
 };

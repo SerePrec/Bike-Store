@@ -14,7 +14,8 @@ import {
   productsFilter,
   mainSelect,
   propertyList,
-  setPriceLimits
+  setPriceLimits,
+  searchQuery
 } from "../../services/productsFilter";
 
 //TODO:
@@ -59,9 +60,7 @@ const SearchItemListContainer = () => {
         let productsFiltered;
         let query = new URLSearchParams(search);
         let searchText = query.get("q").toLowerCase();
-        productsFiltered = res.filter(
-          elem => elem.title.toLowerCase().indexOf(searchText) !== -1
-        );
+        productsFiltered = searchQuery(res, searchText);
         setProducts(productsFiltered);
         setIsError(false);
       })
