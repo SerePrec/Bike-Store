@@ -185,9 +185,8 @@ export const propertyList = (arrayToProcess, propToList) => {
   // Encuentra las marcas y los productos dentro de cada una de ellas que
   //corresponden a la selección madre (Filtro de Busqueda por palabra, categoria o destacado) del usuario
   let valueList = [];
-  let value;
   for (const elem of arrayToProcess) {
-    value = elem[propToList];
+    let value = elem[propToList];
     let match = valueList.find(elem => elem.name === value.toLowerCase());
     if (match) {
       // si ya existía la marca en el array, le suma una unidad
