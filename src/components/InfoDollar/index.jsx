@@ -1,5 +1,6 @@
 import React from "react";
 import imgDollar from "../../assets/img/dolar.png";
+import { priceFormat } from "../../services/formatPrice";
 import "./InfoDollar.scss";
 
 const InfoDollar = ({ dollar }) => {
@@ -8,7 +9,9 @@ const InfoDollar = ({ dollar }) => {
       <img src={imgDollar} alt="Dolar" />
       <p>
         {dollar
-          ? `${dollar.dolarCompra} / ${dollar.dolarVenta}`
+          ? `${priceFormat(dollar.dolarCompra)} / ${priceFormat(
+              dollar.dolarVenta
+            )}`
           : `--.-- / --.--`}
       </p>
     </div>
