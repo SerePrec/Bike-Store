@@ -288,6 +288,18 @@ Es un componente construido en base a la documentación oficial de **React Route
 
 Es un botón con posición `fixed` que aparece en la parte inferior derecha de la pantalla. Posee estado para controlar el despliegue u ocultamiento de sus opciones al apretarlo y mediante eventos, lleva a la parte superior o inferior del documento. Se utiliza el método del objeto `window` llamado `scrollTo()` al igual que en el componente **ScrollTop**, solo que esta vez en ambas direcciones del eje vertical del documento.
 
+### Hooks personalizados
+
+Listado a modo de resumen ya que se mencionan en cada sección específica
+
+- `useCategories`: Hace uso de los hooks `useState` y `useEffect`. Maneja la lógica de la petición de la categorías a la base de datos, para luego hidratar al NavBar con la data obtenida.
+
+- `useDollar`: Hace uso de los hooks `useState` y `useEffect`. Maneja la lógica de la petición del valor del dólar a una API, para luego hidratar al componente InfoDollar con la data obtenida.
+
+- `useFilters`: Hace uso del hook `useState` y diversas funciones contenidas en el archivo `productsFilter.js` de la carpeta `utils`. Contiene las funcionalidades para el manejo de los filtros dentro del SearchItemListContainer
+
+- `useSearch`: Hace uso de los hooks `useState`, `useEffect`, `useParams`, `useLocation` y de algunas funciones contenidas en la carpeta `utils`. Contiene la lógica completa relacionada a la petición a la base de datos de los productos que son consultados. Maneja el estado de loading y de error.
+
 ---
 
 ## Dependencias
