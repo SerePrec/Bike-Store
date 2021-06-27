@@ -1,12 +1,16 @@
 import React from "react";
 import "./InfoMessage.scss";
 
-const Message = ({ msg, type, animation }) => {
+const InfoMessage = ({ msg, className, type, animation }) => {
   return (
-    <div className={`infoMessage ${type} ${animation}`}>
+    <div
+      className={`infoMessage ${type ? type : ""} ${
+        animation ? animation : ""
+      } ${className ? className : ""}`}
+    >
       <p>{msg}</p>
     </div>
   );
 };
 
-export default Message;
+export default InfoMessage;

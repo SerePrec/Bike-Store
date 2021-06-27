@@ -8,22 +8,12 @@
   border: 3px solid #e9ecef;
   border-radius: 0.25rem;
   min-height: 27rem;
-  &.filters {
-    //max-height: 100vh;
-    //overflow-y: scroll;
-    // overflow-x: hidden;
-    // min-height: 33rem;
-  }
 
   @include responsive(xs) {
     margin-left: 1rem;
     margin-right: 1rem;
     min-height: 15rem;
     &.filters {
-      // max-height: unset;
-      // overflow-y: hidden;
-      // overflow-x: hidden;
-      // min-height: 33rem;
       margin-left: 0;
       margin-right: 0;
     }

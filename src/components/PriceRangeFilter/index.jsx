@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
-import { priceFormat, noDecimals } from "../../services/priceFormat";
+import { priceFormat, noDecimals } from "../../utils/priceFormat";
 import "./PriceRangeFilter.scss";
 
 const initialRange = { minRange: 0, maxRange: 100 };

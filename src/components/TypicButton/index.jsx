@@ -2,12 +2,13 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import "./TypicButton.scss";
 
-const TypicButton = ({ children, className, onClick }) => {
+const TypicButton = props => {
+  const { children, className, ...rest } = props;
   return (
     <Button
       variant="danger"
-      className={`typicBtn ${className}`}
-      onClick={onClick}
+      className={`typicBtn ${className ? className : ""}`}
+      {...rest}
     >
       {children}
     </Button>

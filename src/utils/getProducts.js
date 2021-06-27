@@ -1,5 +1,5 @@
 //TODO:
-import productsServer from "../services/productos.json";
+import productsServer from "../utils/productos.json";
 
 export let temp;
 

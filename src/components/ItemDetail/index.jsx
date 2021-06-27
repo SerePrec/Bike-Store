@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import ItemCount from "../ItemCount";
 import ShipmentInfo from "../ShipmentInfo";
-import { priceFormat } from "../../services/priceFormat";
+import { priceFormat } from "../../utils/priceFormat";
 import "./ItemDetail.scss";
 
+import InfoMessage from "../InfoMessage";
+import TypicButton from "../TypicButton";
+import { Link } from "react-router-dom";
+
 const ItemDetail = ({ product }) => {
+  const [itemAddedData, setItemAddedData] = useState(null);
+
   let {
     id,
     title,
@@ -17,6 +23,10 @@ const ItemDetail = ({ product }) => {
     category,
     stock
   } = product;
+
+  const onAdd = qty => {
+    setItemAddedData({ product, qty });
+  };
 
   return (
     <div
@@ -46,12 +56,27 @@ const ItemDetail = ({ product }) => {
           </p>
           <h3>DETALLE</h3>
           <p>{detail}</p>
-          <p className="productDetail_stock">Disponible: {stock}u</p>
-          <ItemCount
-            stock={stock}
-            initial={1}
-            onAdd={qty => alert(`Agregaste ${qty} producto/s al carrito`)}
-          />
+          {itemAddedData ? (
+            <InfoMessage
+              className="mt-2"
+              msg={`Seleccionaste ${itemAddedData.qty}u para agregar a tu carrito`}
+              type="info"
+              animation="animate__fadeIn"
+            />
+          ) : (
+            <p className="productDetail_stock">Disponible: {stock}u</p>
+          )}
+          {itemAddedData ? (
+            <TypicButton
+              as={Link}
+              to={"/cart"}
+              className="w-100 font-weight-bold animate__slideInUp"
+            >
+              TERMINAR MI COMPRA
+            </TypicButton>
+          ) : (
+            <ItemCount stock={stock} initial={1} onAdd={onAdd} />
+          )}
           <ShipmentInfo />
         </Col>
       </Row>

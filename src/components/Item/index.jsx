@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { Card } from "react-bootstrap";
-import { priceFormat } from "../../services/priceFormat";
+import { priceFormat } from "../../utils/priceFormat";
 import "./Item.scss";
 
 import imgBlank from "../../assets/img/blank.gif";

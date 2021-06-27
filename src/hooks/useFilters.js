@@ -4,7 +4,7 @@ import {
   mainSelect,
   propertyList,
   setPriceLimits
-} from "../services/productsFilter.js";
+} from "../utils/productsFilter.js";
 
 export const initialFilters = {
   sort: "p",

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { URLDOLLAR, dolarOficial } from "../services/dolar";
+import { URLDOLLAR, dolarOficial } from "../utils/dolar";
 
 export const useDollar = () => {
   const [dollar, setDollar] = useState(null);

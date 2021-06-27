@@ -3,7 +3,7 @@ import ItemList from "../ItemList";
 import "./HomeItemListContainer.scss";
 
 //TODO:
-import productsServer from "../../services/productos.json";
+import productsServer from "../../utils/productos.json";
 
 const HomeItemListContainer = ({ greeting, legend }) => {
   const [products, setProducts] = useState(null);
@@ -45,7 +45,7 @@ const HomeItemListContainer = ({ greeting, legend }) => {
   }, []);
 
   return (
-    <div className={`container-xl highlights ${isLoading && "loading"}`}>
+    <div className={`container-xl highlights ${isLoading ? "loading" : ""}`}>
       <div>
         {greeting && <h2>{greeting}</h2>}
         {legend && <p>{legend}</p>}

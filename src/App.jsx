@@ -1,11 +1,12 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import ButtonScroll from "./components/ButtonScroll";
+import Cart from "./pages/Cart";
 import Error404 from "./pages/Error404";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import ScrollToTop from "./components/ScrollToTop";
-import SearchResults from "./pages/SearchResults";
+import SearchItemListContainer from "./pages/SearchItemListContainer";
 import { useCategories } from "./hooks/useCategories";
 import { useDollar } from "./hooks/useDollar";
 import ItemDetailContainer from "./pages/ItemDetailContainer";
@@ -25,13 +26,16 @@ function App() {
           <Home dollar={dollar} />
         </Route>
         <Route exact path="/category/:catId">
-          <SearchResults />
+          <SearchItemListContainer />
         </Route>
         <Route exact path="/search">
-          <SearchResults />
+          <SearchItemListContainer />
         </Route>
         <Route exact path="/item/:itemId">
           <ItemDetailContainer />
+        </Route>
+        <Route exact path="/cart">
+          <Cart />
         </Route>
         <Route path="*">
           <Error404 />

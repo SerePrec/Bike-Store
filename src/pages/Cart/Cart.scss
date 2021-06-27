@@ -1,0 +1,12 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.cartDetailContainer {
+  background-color: $tonoMedio;
+  border: 0.5rem solid $rojoMarca;
+  border-radius: 1rem;
+  color: black;
+  padding: 1rem;
+  margin: 1rem auto 2rem auto;
+  transition: all 0.75s;
+}

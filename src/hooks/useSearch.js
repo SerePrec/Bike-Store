@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router";
-import { searchQuery } from "../services/productsFilter";
-import { getProducts, temp } from "../services/getProducts";
+import { searchQuery } from "../utils/productsFilter";
+import { getProducts, temp } from "../utils/getProducts";
 
 export const useSearch = () => {
   const [products, setProducts] = useState(null);

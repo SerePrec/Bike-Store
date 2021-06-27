@@ -4,7 +4,7 @@ import InfoBar from "../../components/InfoBar";
 import InfoDollar from "../../components/InfoDollar";
 import HomeItemListContainer from "../../components/HomeItemListContainer";
 import LandingCarousel from "../../components/LandingCarousel";
-import { BRANDS } from "../../services/brands";
+import { BRANDS } from "../../utils/brands";
 
 const Home = ({ dollar }) => {
   return (
