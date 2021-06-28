@@ -18,6 +18,9 @@
     display: flex;
     justify-content: initial;
     align-items: center;
+    animation-name: fadeIn;
+    animation-duration: 0.75s;
+    transition: background-image 1s ease, background-position 0.5s ease-in-out;
 
     h1 {
       padding-left: 3rem;

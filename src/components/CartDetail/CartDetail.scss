@@ -6,4 +6,160 @@
   border-radius: 0.25rem;
   padding: 1rem;
   min-height: 27rem;
+  overflow: hidden;
+
+  .row:nth-child(1) p {
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  .table {
+    thead {
+      th {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        border: none;
+      }
+
+      th:first-child {
+        border-top-left-radius: 0.75rem;
+      }
+
+      th:last-child {
+        border-top-right-radius: 0.75rem;
+        text-align: right;
+      }
+    }
+
+    tbody {
+      background-color: white;
+
+      td {
+        vertical-align: middle;
+      }
+
+      td:nth-child(1) {
+        width: 3%;
+        img {
+          width: 1.25rem;
+          cursor: pointer;
+        }
+      }
+
+      td:nth-child(2) {
+        width: 15%;
+      }
+
+      td:nth-child(3) {
+        width: 42%;
+        p:nth-child(3) {
+          display: none;
+        }
+      }
+
+      td:nth-child(4) {
+        width: 20%;
+      }
+
+      td:nth-child(5) {
+        width: 20%;
+      }
+    }
+
+    tfoot {
+      td {
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+        font-size: 1.4rem;
+      }
+      p {
+        font-family: inherit;
+      }
+      tr td:first-child {
+        border-bottom-left-radius: 0.75rem;
+        p {
+          display: none;
+        }
+      }
+      tr td:nth-child(2) {
+        p:last-child {
+          display: none;
+        }
+      }
+      tr td:last-child {
+        border-bottom-right-radius: 0.75rem;
+      }
+    }
+  }
+
+  @include responsive(sm) {
+    padding: 0;
+    .row:nth-child(1) p {
+      padding-left: 1rem;
+      padding-top: 1rem;
+    }
+
+    .table {
+      thead {
+        th:nth-child(3) {
+          border-top-right-radius: 0.75rem;
+          text-align: right;
+        }
+
+        th:last-child {
+          display: none;
+        }
+      }
+
+      tbody {
+        td:nth-child(1) {
+          padding-right: 0;
+          padding-left: 0.5rem;
+        }
+
+        td:nth-child(2) {
+          width: 25%;
+        }
+
+        td:nth-child(3) {
+          padding-right: 0;
+          padding-left: 0;
+          width: 50%;
+          p:nth-child(3) {
+            margin-top: 1rem;
+            display: block;
+          }
+        }
+
+        td:nth-child(4) {
+          width: 22%;
+        }
+
+        td:nth-child(5) {
+          display: none;
+        }
+      }
+
+      tfoot {
+        tr td:first-child {
+          p {
+            display: block;
+          }
+        }
+        tr td:nth-child(2) {
+          border-bottom-right-radius: 0.75rem;
+          p:first-child {
+            display: none;
+          }
+          p:last-child {
+            display: block;
+          }
+        }
+        tr td:last-child {
+          border-bottom-right-radius: 0.75rem;
+          display: none;
+        }
+      }
+    }
+  }
 }
