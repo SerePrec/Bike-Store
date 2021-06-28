@@ -103,9 +103,6 @@ const CartDetail = () => {
           </tfoot>
         </Table>
       </Row>
-      <TypicButton className="mb-3 mx-auto soft">
-        VACIAR CARRITO <img src={trash} alt="" />
-      </TypicButton>
     </div>
   );
 };
