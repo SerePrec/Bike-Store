@@ -2,6 +2,7 @@
 @import "../../assets/scss/mixins";
 
 .carousel {
+  background-color: $tonoOscuro;
   img {
     object-fit: cover;
   }

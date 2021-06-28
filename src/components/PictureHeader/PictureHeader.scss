@@ -11,6 +11,7 @@
   &.indumentaria,
   &.search {
     height: 26vw;
+    background-color: $tonoOscuro;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center 5rem;
@@ -98,6 +99,7 @@
       background-attachment: initial;
       background-position: 70% center;
       background-size: 180%;
+      transition: none;
       h1 {
         font-size: 2rem;
         padding-left: 1rem;
