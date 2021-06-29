@@ -15,6 +15,13 @@
     border: 1px solid #ff0000;
   }
 
+  &.info {
+    font-weight: 300;
+    color: #fff;
+    background-color: #4d727d;
+    border: 1px solid #314950;
+  }
+
   &.animate__slideInUp {
     animation-duration: 0.75s;
   }

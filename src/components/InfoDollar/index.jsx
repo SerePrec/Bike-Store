@@ -1,11 +1,11 @@
 import React from "react";
 import imgDollar from "../../assets/img/dolar.png";
-import { priceFormat } from "../../services/formatPrice";
+import { priceFormat } from "../../utils/priceFormat";
 import "./InfoDollar.scss";
 
 const InfoDollar = ({ dollar }) => {
   return (
-    <div className={`dollar ${dollar && "loaded"}`}>
+    <div className={`dollar ${dollar ? "loaded" : ""}`}>
       <img src={imgDollar} alt="Dolar" />
       <p>
         {dollar

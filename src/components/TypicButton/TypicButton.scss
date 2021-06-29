@@ -1,0 +1,19 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.typicBtn {
+  background-color: $rojoMarca;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  &.black {
+    background-color: $tonoMuyOscuro;
+    border-color: $tonoMuyOscuro;
+  }
+  &.soft {
+    background-color: #e9ecef;
+    border-color: #e9ecef;
+    color: $tonoOscuro;
+  }
+}

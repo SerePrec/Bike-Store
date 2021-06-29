@@ -1,0 +1,76 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.propFilter {
+  padding: 1rem 0;
+  color: white;
+  font-size: 0.9rem;
+  width: 100%;
+  &:nth-last-child(3) {
+    margin-bottom: 1rem;
+  }
+
+  .typicBtn {
+    width: 100%;
+    img {
+      &:last-child {
+        width: 1.25rem;
+        margin-left: 1rem;
+        margin-right: 0;
+      }
+    }
+  }
+
+  .propList {
+    background: linear-gradient(90deg, $tonoOscuro 0%, transparent 100%);
+    padding-top: 1rem;
+    border-radius: 0.25rem;
+    max-height: 16rem;
+    overflow-y: auto;
+
+    .form-check {
+      line-height: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    &::-webkit-scrollbar {
+      -webkit-appearance: none;
+    }
+
+    &::-webkit-scrollbar:vertical {
+      width: 0.5rem;
+    }
+
+    &::-webkit-scrollbar-button:increment,
+    &::-webkit-scrollbar-button {
+      display: none;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $tonoClaro;
+      border-radius: 20px;
+    }
+
+    &::-webkit-scrollbar-track {
+      border-radius: 10px;
+      background-color: $tonoOscuro;
+    }
+  }
+
+  @include responsive(xs) {
+    .propList {
+      width: 80%;
+      margin: auto;
+      max-height: 12rem;
+      .form-group {
+        .form-check {
+          margin-bottom: 0.5rem;
+
+          label {
+            vertical-align: sub;
+          }
+        }
+      }
+    }
+  }
+}

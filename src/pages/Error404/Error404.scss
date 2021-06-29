@@ -1,10 +1,49 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
 .error404Page {
-  color: red;
-  height: 40rem;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 4rem;
+  color: $rojoMarca;
+  background-color: $tonoOscuro;
+  min-height: 40rem;
+  font-family: $fuente-principal;
   font-style: italic;
-  font-weight: bold;
+  img {
+    width: 70%;
+  }
+  h1 {
+    font-size: 6rem;
+    line-height: 6rem;
+    font-weight: bold;
+    margin-bottom: 0;
+  }
+  p {
+    &:first-of-type {
+      font-size: 2rem;
+      line-height: 2rem;
+      margin-bottom: 2rem;
+    }
+    &:last-of-type {
+      font-size: 1.5rem;
+      font-style: normal;
+      color: $tonoClaro;
+    }
+  }
+
+  @include responsive(lg) {
+    font-size: 5rem;
+    img {
+      width: 90%;
+    }
+  }
+  @include responsive(sm) {
+    min-height: 30rem;
+    font-size: 4rem;
+    img {
+      width: 100%;
+    }
+  }
 }

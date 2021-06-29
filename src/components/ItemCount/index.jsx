@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { InputGroup, FormControl, Button } from "react-bootstrap";
 import InfoMessage from "../InfoMessage";
+import TypicButton from "../TypicButton";
 import "./ItemCount.scss";
 
 const ItemCount = ({ stock, initial, onAdd }) => {
-  const [count, setCount] = useState(initial);
+  const [quantity, setQuantity] = useState(initial);
   const [alertStockLimit, setAlertStockLimit] = useState(false);
 
   useEffect(() => {
@@ -24,29 +25,29 @@ const ItemCount = ({ stock, initial, onAdd }) => {
     const valor = e.target.value;
     if (/^\d*$/.test(valor)) {
       setAlertStockLimit && setAlertStockLimit(false);
-      setCount(parseInt(valor) || valor);
+      setQuantity(parseInt(valor) || valor);
     }
   };
 
   const handleClickSuma = () => {
-    if (count > 0 && count < stock) {
-      setCount(count => count + 1);
-    } else if (count >= stock) {
+    if (quantity > 0 && quantity < stock) {
+      setQuantity(quantity => quantity + 1);
+    } else if (quantity >= stock) {
       setAlertStockLimit(true);
-      setCount(stock);
+      setQuantity(stock);
     } else {
-      setCount(1);
+      setQuantity(1);
     }
   };
 
   const handleClickResta = () => {
     setAlertStockLimit && setAlertStockLimit(false);
-    if (count > 1 && count <= stock) {
-      setCount(count => count - 1);
-    } else if (count > stock) {
-      setCount(stock);
+    if (quantity > 1 && quantity <= stock) {
+      setQuantity(quantity => quantity - 1);
+    } else if (quantity > stock) {
+      setQuantity(stock);
     } else {
-      setCount(1);
+      setQuantity(1);
     }
   };
 
@@ -61,7 +62,7 @@ const ItemCount = ({ stock, initial, onAdd }) => {
           </InputGroup.Prepend>
           <FormControl
             type="text"
-            value={count}
+            value={quantity}
             onChange={handleChange}
             aria-label="Cantidad del producto"
             className="text-center"
@@ -73,14 +74,14 @@ const ItemCount = ({ stock, initial, onAdd }) => {
           </InputGroup.Append>
         </InputGroup>
       )}
-      {!(count > 0) && (
+      {!(quantity > 0) && (
         <InfoMessage
           msg={`Introduzca una cantidad válida`}
           type="warning"
           animation="animate__slideInUp"
         />
       )}
-      {count > stock && (
+      {quantity > stock && (
         <InfoMessage
           msg={`Stock insuficiente. Disponible ${stock}u`}
           type="danger"
@@ -95,14 +96,16 @@ const ItemCount = ({ stock, initial, onAdd }) => {
         />
       )}
       {stock > 0 && (
-        <Button
-          variant="danger"
-          onClick={count > 0 && count <= stock ? () => onAdd(count) : null}
+        <TypicButton
+          className="font-weight-bold"
           block
-          disabled={!(count > 0 && count <= stock)}
+          onClick={
+            quantity > 0 && quantity <= stock ? () => onAdd(quantity) : null
+          }
+          disabled={!(quantity > 0 && quantity <= stock)}
         >
           Añadir Al Carrito
-        </Button>
+        </TypicButton>
       )}
     </div>
   );

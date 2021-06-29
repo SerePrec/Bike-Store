@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import ItemCount from "../ItemCount";
 import ShipmentInfo from "../ShipmentInfo";
-import { priceFormat } from "../../services/formatPrice";
+import { priceFormat } from "../../utils/priceFormat";
 import "./ItemDetail.scss";
 
+import InfoMessage from "../InfoMessage";
+import TypicButton from "../TypicButton";
+import { Link } from "react-router-dom";
+
 const ItemDetail = ({ product }) => {
+  const [itemAddedData, setItemAddedData] = useState(null);
+
   let {
     id,
     title,
@@ -18,9 +24,13 @@ const ItemDetail = ({ product }) => {
     stock
   } = product;
 
+  const onAdd = qty => {
+    setItemAddedData({ product, qty });
+  };
+
   return (
     <div
-      className={`productDetail ${stock < 1 ? "productDetail--noStock" : null}`}
+      className={`productDetail ${stock < 1 ? "productDetail--noStock" : ""}`}
     >
       <Row className="productDetail_title mb-5">
         <Col xs={12} sm={9}>
@@ -41,17 +51,32 @@ const ItemDetail = ({ product }) => {
         <Col xs={12} md={5}>
           <h4>{category.toUpperCase()}</h4>
           <p className="price">
-            <b>${priceFormat(price * (1 - discount / 100) * 100)}</b>
-            {discount !== 0 && <del>${priceFormat(price * 100)}</del>}
+            <b>${priceFormat(price * (1 - discount / 100))}</b>
+            {discount !== 0 && <del>${priceFormat(price)}</del>}
           </p>
           <h3>DETALLE</h3>
           <p>{detail}</p>
-          <p className="productDetail_stock">Disponible: {stock}u</p>
-          <ItemCount
-            stock={stock}
-            initial={1}
-            onAdd={qty => alert(`Agregaste ${qty} producto/s al carrito`)}
-          />
+          {itemAddedData ? (
+            <InfoMessage
+              className="mt-2"
+              msg={`Seleccionaste ${itemAddedData.qty}u para agregar a tu carrito`}
+              type="info"
+              animation="animate__fadeIn"
+            />
+          ) : (
+            <p className="productDetail_stock">Disponible: {stock}u</p>
+          )}
+          {itemAddedData ? (
+            <TypicButton
+              as={Link}
+              to={"/cart"}
+              className="w-100 font-weight-bold animate__slideInUp"
+            >
+              TERMINAR MI COMPRA
+            </TypicButton>
+          ) : (
+            <ItemCount stock={stock} initial={1} onAdd={onAdd} />
+          )}
           <ShipmentInfo />
         </Col>
       </Row>

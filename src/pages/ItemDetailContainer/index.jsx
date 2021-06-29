@@ -6,13 +6,13 @@ import Loader from "../../components/Loader";
 import "./ItemDetailcontainer.scss";
 
 //TODO:
-import productsServer from "../../services/productos.json";
+import productsServer from "../../utils/productos.json";
 
 const ItemDetailContainer = () => {
   const [product, setProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const { itemId } = useParams();
+  let { itemId } = useParams();
 
   useEffect(() => {
     let temp;
@@ -60,7 +60,7 @@ const ItemDetailContainer = () => {
       <InfoBar title="DETALLE DEL PRODUCTO"></InfoBar>
       <div
         className={`container-xl productDetailContainer ${
-          isLoading && "loaded"
+          isLoading ? "loaded" : ""
         }`}
       >
         {isLoading && (
