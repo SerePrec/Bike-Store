@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Row, Col } from "react-bootstrap";
 import { CartContext } from "../../context/CartContext";
 import ItemCount from "../ItemCount";
@@ -11,7 +11,7 @@ import TypicButton from "../TypicButton";
 import { Link } from "react-router-dom";
 
 const ItemDetail = ({ product }) => {
-  const [itemAddedData, setItemAddedData] = useState(null);
+  const [addedItemQuantity, setAddedItemQuantity] = useState(null);
   const { addToCart } = useContext(CartContext);
 
   let {
@@ -29,8 +29,20 @@ const ItemDetail = ({ product }) => {
   const onAdd = qty => {
     const selection = { product, qty };
     const addedQty = addToCart(selection);
-    setItemAddedData(selection);
+    setAddedItemQuantity(addedQty);
   };
+
+  useEffect(() => {
+    let temp;
+    if (addedItemQuantity < 0) {
+      temp = setTimeout(() => {
+        setAddedItemQuantity(null);
+      }, 4000);
+    }
+    return () => {
+      clearInterval(temp);
+    };
+  }, [addedItemQuantity]);
 
   return (
     <div
@@ -60,17 +72,25 @@ const ItemDetail = ({ product }) => {
           </p>
           <h3>DETALLE</h3>
           <p>{detail}</p>
-          {itemAddedData ? (
+          {addedItemQuantity > 0 ? (
             <InfoMessage
               className="mt-2"
-              msg={`Seleccionaste ${itemAddedData.qty}u para agregar a tu carrito`}
+              msg={`Seleccionaste ${addedItemQuantity}u para agregar a tu carrito`}
               type="info"
               animation="animate__fadeIn"
             />
           ) : (
             <p className="productDetail_stock">Disponible: {stock}u</p>
           )}
-          {itemAddedData ? (
+          {addedItemQuantity < 0 && (
+            <InfoMessage
+              className="mt-2"
+              msg={`No puedes sumar esta cantidad al carrito. El total agregado excede por ${-addedItemQuantity}u el stock disponible`}
+              type="danger"
+              animation="animate__fadeIn"
+            />
+          )}
+          {addedItemQuantity > 0 ? (
             <TypicButton
               as={Link}
               to={"/cart"}
