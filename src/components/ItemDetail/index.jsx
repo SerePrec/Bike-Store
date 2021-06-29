@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Row, Col } from "react-bootstrap";
+import { CartContext } from "../../context/CartContext";
 import ItemCount from "../ItemCount";
 import ShipmentInfo from "../ShipmentInfo";
 import { priceFormat } from "../../utils/priceFormat";
@@ -11,6 +12,7 @@ import { Link } from "react-router-dom";
 
 const ItemDetail = ({ product }) => {
   const [itemAddedData, setItemAddedData] = useState(null);
+  const { addToCart } = useContext(CartContext);
 
   let {
     id,
@@ -25,7 +27,9 @@ const ItemDetail = ({ product }) => {
   } = product;
 
   const onAdd = qty => {
-    setItemAddedData({ product, qty });
+    const selection = { product, qty };
+    const addedQty = addToCart(selection);
+    setItemAddedData(selection);
   };
 
   return (
