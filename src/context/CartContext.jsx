@@ -60,7 +60,7 @@ const CartContextProvider = ({ children, defaultValue = [] }) => {
   };
 
   const removeFromCart = id => {
-    let updatedCart = cart.map(elem => elem.product.id !== id);
+    let updatedCart = cart.filter(elem => elem.product.id !== id);
     setCart(updatedCart);
   };
 
