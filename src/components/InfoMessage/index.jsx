@@ -6,7 +6,7 @@ const InfoMessage = ({ msg, className, type, animation }) => {
     <div
       className={`infoMessage ${type ? type : ""} ${
         animation ? animation : ""
-      } ${className ? className : ""}`}
+      } ${className || ""}`}
     >
       <p>{msg}</p>
     </div>

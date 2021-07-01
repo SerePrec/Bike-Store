@@ -13,5 +13,10 @@
     text-align: center;
     color: white;
     font-size: 1rem;
+    animation-duration: 0.5s;
+    transition: opacity 0.5s;
+    &.hidden {
+      opacity: 0;
+    }
   }
 }

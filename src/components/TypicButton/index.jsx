@@ -7,7 +7,7 @@ const TypicButton = props => {
   return (
     <Button
       variant="danger"
-      className={`typicBtn ${className ? className : ""}`}
+      className={`typicBtn ${className || ""}`}
       {...rest}
     >
       {children}

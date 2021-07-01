@@ -20,6 +20,14 @@ const CartContextProvider = ({ children, defaultValue = [] }) => {
     }
   });
 
+  const totQtyInCart = cart.reduce((total, elem) => total + elem.qty, 0);
+
+  const totPriceInCart = cart.reduce(
+    (total, elem) =>
+      total + elem.product.price * (1 - elem.product.discount / 100) * elem.qty,
+    0
+  );
+
   const getFromCart = id => {
     return cart.find(elem => elem.product.id === id);
   };
@@ -60,9 +68,7 @@ const CartContextProvider = ({ children, defaultValue = [] }) => {
   };
 
   const removeFromCart = id => {
-    console.log(id);
     let updatedCart = cart.filter(elem => elem.product.id !== id);
-    console.log(updatedCart);
     setCart(updatedCart);
   };
 
@@ -77,13 +83,15 @@ const CartContextProvider = ({ children, defaultValue = [] }) => {
 
   useEffect(() => {
     saveCartInStorage(cart);
-    console.log("Mi Carrito", cart);
+    //console.log("Mi Carrito", cart);
   }, [cart]);
 
   return (
     <CartContext.Provider
       value={{
         cart,
+        totQtyInCart,
+        totPriceInCart,
         isInCart,
         getFromCart,
         addToCart,

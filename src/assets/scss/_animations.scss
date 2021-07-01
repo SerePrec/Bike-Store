@@ -44,6 +44,21 @@
   animation-duration: 1s;
 }
 
+@keyframes fadeOutUp {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(0, -100%, 0);
+  }
+}
+.animate__fadeOutUp {
+  animation-name: fadeOutUp;
+  animation-duration: 1s;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -71,21 +86,6 @@
 }
 .animate__slideInUp {
   animation-name: slideInUp;
-  animation-duration: 1s;
-}
-
-@keyframes slideInDown {
-  from {
-    transform: translate3d(0, -100%, 0);
-    visibility: visible;
-  }
-
-  to {
-    transform: translate3d(0, 0, 0);
-  }
-}
-.animate__slideInDown {
-  animation-name: slideInDown;
   animation-duration: 1s;
 }
 

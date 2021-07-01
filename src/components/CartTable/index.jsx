@@ -4,13 +4,12 @@ import CartRow from "../CartRow";
 import { priceFormat } from "../../utils/priceFormat";
 import "./CartTable.scss";
 
-const CartTable = ({ cart, removeFromCart, updateFromCart }) => {
-  const totalPrice = cart.reduce(
-    (total, elem) =>
-      total + elem.product.price * (1 - elem.product.discount / 100) * elem.qty,
-    0
-  );
-
+const CartTable = ({
+  cart,
+  removeFromCart,
+  updateFromCart,
+  totPriceInCart
+}) => {
   return (
     <Table className="cartTable">
       <thead className="table-dark">
@@ -48,10 +47,10 @@ const CartTable = ({ cart, removeFromCart, updateFromCart }) => {
           </td>
           <td className="text-center font-weight-bold">
             <p>TOTAL</p>
-            <p>${priceFormat(totalPrice)}</p>
+            <p>${priceFormat(totPriceInCart)}</p>
           </td>
           <td className="text-right font-weight-bold">
-            ${priceFormat(totalPrice)}
+            ${priceFormat(totPriceInCart)}
           </td>
         </tr>
       </tfoot>
