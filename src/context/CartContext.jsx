@@ -5,8 +5,8 @@ export const CartContext = React.createContext([]);
 const CartContextProvider = ({ children, defaultValue = [] }) => {
   const [cart, setCart] = useState(() => {
     const savedCart =
-      localStorage.getItem("myCart") &&
-      JSON.parse(localStorage.getItem("myCart"));
+      sessionStorage.getItem("myMammothCart") &&
+      JSON.parse(sessionStorage.getItem("myMammothCart"));
     //verifico que exista y sea de un formato válido
     if (
       savedCart &&
@@ -78,7 +78,7 @@ const CartContextProvider = ({ children, defaultValue = [] }) => {
 
   const saveCartInStorage = cart => {
     const JSONCart = JSON.stringify(cart);
-    localStorage.setItem("myCart", JSONCart);
+    sessionStorage.setItem("myMammothCart", JSONCart);
   };
 
   useEffect(() => {

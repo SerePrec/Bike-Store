@@ -293,7 +293,7 @@ Es un botón con posición `fixed` que aparece en la parte inferior derecha de l
 
 Sirve para mantener el estado de la compra del usuario. Generé un componente **CartContextProvider** que hace el papel de un provider personalizado para el contexto `CartContext`.
 
-Incorpora distintas funciones que permiten consultar un ítem del carrito, verificar si determinado producto está en el carrito, agregar, remover y actualizar productos (su cantidad), vaciar el carrito y guardar/obtener el mismo desde el **localStorage**.
+Incorpora distintas funciones que permiten consultar un ítem del carrito, verificar si determinado producto está en el carrito, agregar, remover y actualizar productos (su cantidad), vaciar el carrito y guardar/obtener el mismo desde el **sessionStorage**.
 
 Dentro de la función addToCart, verifica si el producto se encuentra ya en el carrito. En caso de no encontrarse, lo agrega directamente y devuelve el valor de la cantidad agregada. Esta cantidad es posteriormente utilizada dentro del ItemDetail para mediante renderizado condicional mostrar un mensaje consecuente.
 
@@ -301,7 +301,7 @@ En caso de que el producto ya exista, hace una validación de si la cantidad exi
 
 Este valor negativo es tomado por el ItemDetail y mediante una lógica de efecto y “conditional render”, se muestra un mensaje emergente durante unos segundos alertando la situación.
 
-Finalmente posee una función que se ejecuta por única vez en el `useState` para determinar su valor inicial. Si se encuentra en el `localStorage` una variable "myCart" con un arreglo de productos y cantidades, setea el valor inicial con el de esta variable. Caso contrario, se seta en un arreglo vacío `[]`.
+Finalmente posee una función que se ejecuta por única vez en el `useState` para determinar su valor inicial. Si se encuentra en el `sessionStorage` una variable "myMammothCart" con un arreglo de productos y cantidades, setea el valor inicial con el de esta variable. Caso contrario, se seta en un arreglo vacío `[]`.
 
 ### Hooks personalizados
 

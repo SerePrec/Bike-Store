@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 import { CartContext } from "../../context/CartContext";
@@ -31,18 +31,6 @@ const ItemDetail = ({ product }) => {
     const addedQty = addToCart(selection);
     setAddedItemQuantity(addedQty);
   };
-
-  useEffect(() => {
-    let temp;
-    if (addedItemQuantity < 0) {
-      temp = setTimeout(() => {
-        setAddedItemQuantity(null);
-      }, 4000);
-    }
-    return () => {
-      clearInterval(temp);
-    };
-  }, [addedItemQuantity]);
 
   const inCart = isInCart(id);
   let qtyInCart = 0;
@@ -92,14 +80,6 @@ const ItemDetail = ({ product }) => {
             <p className="productDetail_inCart">
               Ya en tu <img src={cartIcon} alt="" /> : {qtyInCart}u
             </p>
-          )}
-          {addedItemQuantity < 0 && (
-            <InfoMessage
-              className="mt-2"
-              msg={`No puedes sumar esta cantidad al carrito. El total agregado excede por ${-addedItemQuantity}u el stock disponible`}
-              type="danger"
-              animation="animate__fadeIn"
-            />
           )}
           {addedItemQuantity > 0 ? (
             <>
