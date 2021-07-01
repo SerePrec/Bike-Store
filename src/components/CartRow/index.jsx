@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import ItemCount from "../ItemCount";
 import { priceFormat } from "../../utils/priceFormat";
 import times from "../../assets/img/times-circle.svg";
@@ -12,11 +13,13 @@ const CartRow = ({ product, qty, removeFromCart, updateFromCart }) => {
         <img src={times} alt="Eliminar" onClick={() => removeFromCart(id)} />
       </td>
       <td>
-        <img
-          src={process.env.PUBLIC_URL + `/img/${pictureURL}`}
-          className="card-img-top"
-          alt={title}
-        />
+        <Link to={`/item/${id}`}>
+          <img
+            src={process.env.PUBLIC_URL + `/img/${pictureURL}`}
+            className="card-img-top"
+            alt={title}
+          />
+        </Link>
       </td>
       <td>
         <p>{title}</p>

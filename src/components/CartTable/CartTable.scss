@@ -36,6 +36,13 @@
 
     td:nth-child(2) {
       width: 15%;
+      img {
+        transition: all 0.25s ease-in-out;
+        &:hover {
+          filter: drop-shadow(2px 2px 5px $tonoOscuro);
+          border-radius: 0.5rem;
+        }
+      }
     }
 
     td:nth-child(3) {
