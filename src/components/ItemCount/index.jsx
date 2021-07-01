@@ -4,7 +4,7 @@ import InfoMessage from "../InfoMessage";
 import TypicButton from "../TypicButton";
 import "./ItemCount.scss";
 
-const ItemCount = ({ stock, initial, onAdd, cart }) => {
+const ItemCount = ({ stock, initial, onAdd, inCart }) => {
   const [quantity, setQuantity] = useState(initial);
   const [alertStockLimit, setAlertStockLimit] = useState(false);
 
@@ -54,7 +54,7 @@ const ItemCount = ({ stock, initial, onAdd, cart }) => {
   return (
     <div className="itemCount">
       {stock > 0 && (
-        <InputGroup className="mb-3" size={cart && "sm"}>
+        <InputGroup className="mb-3" size={inCart && "sm"}>
           <InputGroup.Prepend>
             <Button variant="outline-secondary" onClick={handleClickResta}>
               -
@@ -97,15 +97,17 @@ const ItemCount = ({ stock, initial, onAdd, cart }) => {
       )}
       {stock > 0 && (
         <TypicButton
-          className="font-weight-bold"
-          size={cart && "sm"}
+          className={`font-weight-bold ${
+            inCart && quantity === initial ? "hidden" : ""
+          }`}
+          size={inCart && "sm"}
           block
           onClick={
             quantity > 0 && quantity <= stock ? () => onAdd(quantity) : null
           }
           disabled={!(quantity > 0 && quantity <= stock)}
         >
-          {!cart ? "Añadir al Carrito" : "Actualizar"}
+          {!inCart ? "Añadir al Carrito" : "Actualizar"}
         </TypicButton>
       )}
     </div>

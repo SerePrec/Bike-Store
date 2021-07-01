@@ -4,16 +4,6 @@
 .itemCount {
   margin-top: 1rem;
 
-  .btn-danger {
-    background-color: $rojoMarca;
-    border: $rojoMarca;
-
-    &:hover {
-      background-color: #c82333;
-      border-color: #bd2130;
-    }
-  }
-
   .input-group {
     .btn,
     .btn:active {
