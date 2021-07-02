@@ -10,7 +10,7 @@
   flex-wrap: wrap;
   justify-content: center;
   align-content: center;
-  min-height: 30rem;
+  min-height: 33rem;
 
   img {
     display: block;
@@ -28,7 +28,23 @@
     margin-top: 1.5rem;
   }
 
-  div {
+  div:first-child {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 1rem;
+    p {
+      width: auto;
+      margin-right: 1rem;
+      display: flex;
+      align-items: center;
+    }
+    .typicBtn {
+      margin: 0;
+    }
+  }
+
+  div:last-child {
     width: 50%;
     height: 8rem;
     display: flex;

@@ -8,14 +8,18 @@ import "./Cart.scss";
 
 const Cart = () => {
   const cartContext = useContext(CartContext);
-  const { cart } = cartContext;
+  const { cart, setCart } = cartContext;
   return (
     <main>
       <InfoBar title="MI CARRITO DE COMPRA">
         <img src={iconCart} alt="Mi Carrito" />
       </InfoBar>
       <div className="container-xl cartDetailContainer">
-        {cart.length > 0 ? <CartDetail {...cartContext} /> : <EmptyCart />}
+        {cart.length > 0 ? (
+          <CartDetail {...cartContext} />
+        ) : (
+          <EmptyCart setCart={setCart} />
+        )}
       </div>
     </main>
   );

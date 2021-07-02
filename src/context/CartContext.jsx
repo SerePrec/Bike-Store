@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
-
 export const CartContext = React.createContext([]);
 
 const CartContextProvider = ({ children, defaultValue = [] }) => {
   const [cart, setCart] = useState(() => {
-    const savedCart =
+    const sessionCart =
       sessionStorage.getItem("myMammothCart") &&
       JSON.parse(sessionStorage.getItem("myMammothCart"));
     //verifico que exista y sea de un formato válido
     if (
-      savedCart &&
-      savedCart.length > 0 &&
-      savedCart[0].product &&
-      savedCart[0].qty
+      sessionCart &&
+      sessionCart.length > 0 &&
+      sessionCart[0].product &&
+      sessionCart[0].qty
     ) {
-      return savedCart;
+      return sessionCart;
     } else {
       return defaultValue;
     }
@@ -76,13 +75,18 @@ const CartContextProvider = ({ children, defaultValue = [] }) => {
     setCart([]);
   };
 
-  const saveCartInStorage = cart => {
+  const saveCartInSessionStorage = cart => {
     const JSONCart = JSON.stringify(cart);
     sessionStorage.setItem("myMammothCart", JSONCart);
   };
 
+  const saveCartInLocalStorage = () => {
+    const JSONCart = JSON.stringify(cart);
+    localStorage.setItem("myMammothSavedCart", JSONCart);
+  };
+
   useEffect(() => {
-    saveCartInStorage(cart);
+    saveCartInSessionStorage(cart);
     //console.log("Mi Carrito", cart);
   }, [cart]);
 
@@ -90,6 +94,7 @@ const CartContextProvider = ({ children, defaultValue = [] }) => {
     <CartContext.Provider
       value={{
         cart,
+        setCart,
         totQtyInCart,
         totPriceInCart,
         isInCart,
@@ -97,7 +102,8 @@ const CartContextProvider = ({ children, defaultValue = [] }) => {
         addToCart,
         updateFromCart,
         removeFromCart,
-        clearCart
+        clearCart,
+        saveCartInLocalStorage
       }}
     >
       {children}

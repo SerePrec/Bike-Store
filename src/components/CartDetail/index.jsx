@@ -4,10 +4,11 @@ import CartTable from "../CartTable";
 import TypicButton from "../TypicButton";
 import trash from "../../assets/img/trash.svg";
 import check from "../../assets/img/check.svg";
+import cartIcon from "../../assets/img/icon_cart2.png";
 import "./CartDetail.scss";
 
 const CartDetail = props => {
-  const { clearCart, totQtyInCart } = props;
+  const { clearCart, totQtyInCart, saveCartInLocalStorage } = props;
 
   return (
     <div className="cartDetail animate__zoomIn">
@@ -25,10 +26,19 @@ const CartDetail = props => {
       <Row noGutters>
         <CartTable {...props} />
       </Row>
-      <TypicButton className="my-3 mx-auto font-weight-bold">
-        CONFIRMAR MI PEDIDO
-        <img src={check} alt="" />
-      </TypicButton>
+      <Row noGutters>
+        <TypicButton
+          className="my-3 font-weight-bold black"
+          onClick={saveCartInLocalStorage}
+        >
+          GUARDAR
+          <img src={cartIcon} alt="" />
+        </TypicButton>
+        <TypicButton className="my-3 font-weight-bold">
+          CONFIRMAR MI PEDIDO
+          <img src={check} alt="" />
+        </TypicButton>
+      </Row>
     </div>
   );
 };

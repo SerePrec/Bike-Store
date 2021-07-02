@@ -14,6 +14,19 @@
     font-size: 1.2rem;
   }
 
+  .row:last-child {
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    .typicBtn {
+      margin: 0;
+      &:first-child {
+        img {
+          width: 1.5rem;
+        }
+      }
+    }
+  }
+
   @include responsive(sm) {
     padding: 0;
     .row:nth-child(1) p {
