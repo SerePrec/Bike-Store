@@ -50,6 +50,20 @@
     background-image: url("../../assets/img/plp-banner_busq.jpg");
   }
 
+  &::before {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    z-index: -10;
+    content: url("../../assets/img/plp-banner_bici.jpg")
+      url("../../assets/img/plp-banner_comp.jpg")
+      url("../../assets/img/plp-banner_acc.jpg")
+      url("../../assets/img/plp-banner_equip.jpg")
+      url("../../assets/img/plp-banner_Indu.jpg")
+      url("../../assets/img/plp-banner_busq.jpg");
+  }
+
   .gradient {
     position: absolute;
     top: 0;

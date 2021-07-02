@@ -8,7 +8,7 @@ import cartIcon from "../../assets/img/icon_cart2.png";
 import "./CartDetail.scss";
 
 const CartDetail = props => {
-  const { clearCart, totQtyInCart, saveCartInLocalStorage } = props;
+  const { clearCart, totQtyInCart, handleSaveCart, ...restProps } = props;
 
   return (
     <div className="cartDetail animate__zoomIn">
@@ -24,12 +24,12 @@ const CartDetail = props => {
         VACIAR CARRITO <img src={trash} alt="" />
       </TypicButton>
       <Row noGutters>
-        <CartTable {...props} />
+        <CartTable {...restProps} />
       </Row>
       <Row noGutters>
         <TypicButton
           className="my-3 font-weight-bold black"
-          onClick={saveCartInLocalStorage}
+          onClick={handleSaveCart}
         >
           GUARDAR
           <img src={cartIcon} alt="" />

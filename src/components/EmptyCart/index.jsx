@@ -3,10 +3,11 @@ import { Link } from "react-router-dom";
 import Loader from "../Loader";
 import TypicButton from "../TypicButton";
 import { getProducts } from "../../utils/getProducts";
+import { modalMessages } from "../../utils/cartModalMessages";
 import iconCart from "../../assets/img/icon_cart2_red.png";
 import "./EmptyCart.scss";
 
-const EmptyCart = ({ setCart }) => {
+const EmptyCart = ({ setCart, handleShowModal, setContentModal }) => {
   const [savedCart, setSavedCart] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   //const [isError, setIsError] = useState(false);
@@ -32,6 +33,7 @@ const EmptyCart = ({ setCart }) => {
 
   const loadSavedCart = () => {
     setIsLoading(true);
+    let modalMsg;
     const dataSavedCart = savedCart.map(elem => {
       return { id: elem.product.id, qty: elem.qty };
     });
@@ -48,20 +50,30 @@ const EmptyCart = ({ setCart }) => {
         });
         setCart(checkedCart);
         localStorage.removeItem("myMammothSavedCart");
-        return Promise.resolve({
-          savedCartLength: savedCart.length,
-          checkedCartLength: checkedCart.length
-        });
+        if (savedCart.length === checkedCart.length) {
+          modalMsg = modalMessages[1];
+        } else if (checkedCart.length === 0) {
+          modalMsg = modalMessages[3];
+          setSavedCart(null);
+          setIsLoading(false);
+        } else {
+          modalMsg = modalMessages[2];
+        }
+        setContentModal(modalMsg);
       })
       .catch(err => {
         setCart(null);
+        setContentModal(modalMessages[4]);
         //setIsError(err);
         //setIsLoading(false);
+      })
+      .finally(() => {
+        handleShowModal();
       });
   };
 
   const handleLoad = () => {
-    loadSavedCart().then(res => console.log(res));
+    loadSavedCart();
   };
 
   useEffect(() => {
