@@ -14,18 +14,18 @@ export const modalMessages = [
   {
     title: "Carrito recuperado",
     msg1: "Alguno de tus productos seleccionados fueron removidos del carrito.",
-    msg2: "Seguamente no disponemos de la cantidad que tenías elegida o el producto fue discontinuado.",
+    msg2: "Seguramente no disponemos de la cantidad que tenías elegida o el producto fue discontinuado.",
     msg3: "Puedes continuar con tu compra, disculpa las molestias."
   },
   {
     title: "Carrito recuperado",
     msg1: "No pudimos recuperar ninguno de tus productos",
-    msg2: "Segurmante no disponemos de ninguna de las cantidades que tenías elegidas o todos ellos fueron discontinuados.",
+    msg2: "Seguramente no disponemos de ninguna de las cantidades que tenías elegidas o todos ellos fueron discontinuados.",
     msg3: "Puedes continuar con tu compra, disculpa las molestias."
   },
   {
     title: "No pudimos recuperar tu carrito",
-    msg1: "Ha ocurrido un error, intentalo nuevamente o más tarde.",
+    msg1: "Ha ocurrido un error, inténtalo nuevamente o más tarde.",
     msg2: "Si de todas maneras no logras recuperarlo, deberás volver a generar uno nuevo ya que posiblemente se encuentre dañado.",
     msg3: "Disculpa las molestias."
   },

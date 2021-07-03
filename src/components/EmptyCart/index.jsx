@@ -80,35 +80,34 @@ const EmptyCart = ({ setCart, handleShowModal, setContentModal }) => {
     getSavedCart();
   }, []);
 
+  if (isLoading)
+    return (
+      <Loader
+        message={{
+          title: "Recuperando tu carrito...",
+          msg1: "y validando tu selección"
+        }}
+      />
+    );
+
   return (
-    <>
-      {isLoading ? (
-        <Loader
-          message={{
-            title: "Recuperando tu carrito...",
-            msg1: "y validando tu selección"
-          }}
-        />
-      ) : (
-        <div className="emptyCart animate__fadeIn">
-          {savedCart && (
-            <div>
-              <p>Encontramos un carrito guardado...</p>
-              <TypicButton className="font-weight-bold" onClick={handleLoad}>
-                Cargar Carrito
-              </TypicButton>
-            </div>
-          )}
-          <img src={iconCart} alt="Carrito vacío" />
-          <h2>¡TU CARRITO ESTÁ VACÍO!</h2>
-          <p>Aún no has añadido productos para tu compra</p>
-          <h4>Continuá eligiendo productos desde aquí:</h4>
-          <div>
-            <Link to="/">Seguir Navegando</Link>
-          </div>
+    <div className="emptyCart animate__fadeIn">
+      {savedCart && (
+        <div>
+          <p>Encontramos un carrito guardado...</p>
+          <TypicButton className="font-weight-bold" onClick={handleLoad}>
+            Cargar Carrito
+          </TypicButton>
         </div>
       )}
-    </>
+      <img src={iconCart} alt="Carrito vacío" />
+      <h2>¡TU CARRITO ESTÁ VACÍO!</h2>
+      <p>Aún no has añadido productos para tu compra</p>
+      <h4>Continuá eligiendo productos desde aquí:</h4>
+      <div>
+        <Link to="/">Seguir Navegando</Link>
+      </div>
+    </div>
   );
 };
 

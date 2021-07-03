@@ -14,13 +14,9 @@ const PropertyListFilter = ({
 }) => {
   return (
     <div className="propFilter">
-      <TypicButton className={`mb-3 ${buttonClass ? buttonClass : ""}`}>
+      <TypicButton className={`mb-3 ${buttonClass || ""}`}>
         {title}
-        {filterProp.length === 0 ? (
-          <img src={toogleOff} alt="" />
-        ) : (
-          <img src={toogleOn} alt="" />
-        )}
+        <img src={filterProp.length === 0 ? toogleOff : toogleOn} alt="" />
       </TypicButton>
       {valuesToList && valuesToList.length > 0 && (
         <div className="propList">

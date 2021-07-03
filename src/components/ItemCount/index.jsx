@@ -24,7 +24,7 @@ const ItemCount = ({ stock, initial, onAdd, inCart }) => {
   const handleChange = e => {
     const valor = e.target.value;
     if (/^\d*$/.test(valor)) {
-      setAlertStockLimit && setAlertStockLimit(false);
+      alertStockLimit && setAlertStockLimit(false);
       setQuantity(parseInt(valor) || valor);
     }
   };
@@ -41,7 +41,7 @@ const ItemCount = ({ stock, initial, onAdd, inCart }) => {
   };
 
   const handleClickResta = () => {
-    setAlertStockLimit && setAlertStockLimit(false);
+    alertStockLimit && setAlertStockLimit(false);
     if (quantity > 1 && quantity <= stock) {
       setQuantity(quantity => quantity - 1);
     } else if (quantity > stock) {

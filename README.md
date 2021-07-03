@@ -44,6 +44,8 @@ A continuación, hago un punteo de algunos temas referidos a la lógica funciona
 - Componente ScrollToTop
 - Componente ButtonScroll
 - CartContext
+- Componente CartWidget
+- Componente Cart (CartDetail y EmptyCart)
 - Hooks personalizados
 
 ### Estructura de archivos
@@ -109,7 +111,7 @@ Para el caso de la promesa principal de los productos, generé un posible manejo
 #### Agregando al carrito
 
 - Al presionar el botón **“Agregar al carrito”**, aparece un mensaje de verificación indicando la cantidad que se seleccionó para añadirse al mismo
-- Desaparece el componente ItemCount y en su lugar aparece un botón de **“Finalizar compra”** que linkea a la page del carrito de compras (/cart)
+- Desaparece el componente ItemCount y en su lugar aparece un botón de **“Finalizar compra”** que linkea a la page del carrito de compras (/cart) junto con otro botón **“Agregar más”** que vuelve al estado inicial de selección.
 
 Por último, también puse una validación que no muestre los controles si el stock es cero. Sólo alerta que no hay disponible y deshabilita el botón
 
@@ -158,6 +160,12 @@ Toma por props los datos del producto a representar.
 Mediante "conditional render" se muestra y dan estilos a diferentes elementos, según los valores de las propiedades del objeto producto.
 
 Pasa las props al componente ItemCount en base a los datos del producto.
+
+Este componente consume el CartContext y determina si el producto que representa se encuentra ya en el carrito. De ser así, muestra la información de la cantidad del producto que ya se encuentra seleccionada en el carrito.
+
+Aparte de lo anterior, setea el valor disponible teniendo en cuanta el stock del producto y restando lo que ya esta en el carrito. De esta manera, pasando por props al ItemCount, se setea la lógica de éste ultimo con este nuevo valor límite. Evitando dar la opción al usuario de “pasarse” de la cantidad disponible (que igualmente valida la función addTocart).
+
+Primeramente, esta función a través de su valor de retorno negativo, se encargaba de disparar un mensaje en el ItemDetail avisando del rechazo ante la situación de pretender pasarse del valor de stock. Pero luego consideré que no era optimo permitir valores mayores al rango determinado por el stock menos lo que ya fue elegido, por lo que use el consumo del contexto del carrito como mencioné anteriormente y retiré esa lógica inicial del componente, ya que no era necesaria con esta implementación.
 
 ### Page Home y Category
 
@@ -293,15 +301,55 @@ Es un botón con posición `fixed` que aparece en la parte inferior derecha de l
 
 Sirve para mantener el estado de la compra del usuario. Generé un componente **CartContextProvider** que hace el papel de un provider personalizado para el contexto `CartContext`.
 
-Incorpora distintas funciones que permiten consultar un ítem del carrito, verificar si determinado producto está en el carrito, agregar, remover y actualizar productos (su cantidad), vaciar el carrito y guardar/obtener el mismo desde el **sessionStorage**.
+Incorpora distintas funciones que permiten consultar un ítem del carrito, verificar si determinado producto está en el carrito, agregar, remover y actualizar productos (su cantidad), vaciar el carrito y guardar/obtener el mismo desde el **storage**.
 
 Dentro de la función addToCart, verifica si el producto se encuentra ya en el carrito. En caso de no encontrarse, lo agrega directamente y devuelve el valor de la cantidad agregada. Esta cantidad es posteriormente utilizada dentro del ItemDetail para mediante renderizado condicional mostrar un mensaje consecuente.
 
 En caso de que el producto ya exista, hace una validación de si la cantidad existente más la que se pretende agregar es menor o igual al stock del producto. En caso de serlo, agrega esa cantidad enviada por el usuario a la ya existente (evitándose duplicar el producto) y retorna la cantidad agregada, que el ItemDetail maneja idénticamente al caso anterior. De lo contrario, no agrega nada y devuelve el valor negativo por el que se superaría el stock en caso de agregarse la cantidad pretendida.
 
-Este valor negativo es tomado por el ItemDetail y mediante una lógica de efecto y “conditional render”, se muestra un mensaje emergente durante unos segundos alertando la situación.
-
 Finalmente posee una función que se ejecuta por única vez en el `useState` para determinar su valor inicial. Si se encuentra en el `sessionStorage` una variable "myMammothCart" con un arreglo de productos y cantidades, setea el valor inicial con el de esta variable. Caso contrario, se seta en un arreglo vacío `[]`.
+
+### Componente CartWidget
+
+Se subscribe al contexto del carrito (CartContext) para poder leer la cantidad total de ítems que se encuentran a cada momento con cada operación del usuario.
+
+Hace uso de un **hook personalizado** `usePrevious` junto a `useState` y `useEffect` para desarrollar la lógica vinculada a la animación del mismo. Con el hook usePrevious (que contiene el uso del hook `useRef`), se mantiene almacenado el valor anterior del contador, sin que ese seteo conlleve a una nueva renderización como lo haría el uso de un estado para almacenarlo.
+
+Ese valor previo del contador se compara con el actual en un efecto, y dependiendo del resultado, se setea por un determinado tiempo una animación de entrada (si el contador aumenta) o una de salida (si el contador disminuye). También el valor a mostrase es almacenado en un estado separado, ya que para que la animación sea correcta, es necesario actualizarlo al momento en la animación de entrada, o luego de finalizada la animación en el caso de tratarse de la de salida. Los temporizadores son limpiados en el retorno del useEffect.
+
+### Componente Cart
+
+Se subscribe al contexto del carrito (CartContext) y extrae del mismo numerosos datos (valores y métodos) a fin de representar el contenido del carrito con toda la selección del usuario. En caso de no haber ningún ítem aún, se muestra el componente **EmptyCart**. Éste informa de la situación y se va a encargar de chequear si se encuentra algún carrito guardado por el usuario.
+
+#### Componente CartDetail
+
+Contiene otros componentes anidados para dividir mejor la UI y la información se muestra por el paso de las props a sus componentes hijos. Props que recibe del componente contenedor Cart.
+
+En la parte superior contiene un botón para vaciar el carrito. Luego se muestra una tabla con el detalle de toda la selección del usuario. En esta tabla aparece:
+
+- Botón para eliminar por completo el producto del carrito
+- La imagen del producto que al clickear en ella lleva al detalle del mismo por si se quiere consultar información extra al respecto.
+- El título del producto
+- El componente **ItemCount**, que permite cambiar hacia arriba o abajo la cantidad ya seleccionada. Este componente cuenta con toda la lógica de validaciones que ya se mencionó y ahora añade una nueva. Si al pretender cambiar la cantidad desde el carrito, dicha cantidad no coincide con la que originalmente fue establecida, se habilita un botón de actualizar. Al clickear sobre este botón, se actualiza dicho producto del carrito y se recalculan los valores de subtotales y total del importe. Lo hago así para evitar que mientras se “va” hacia la nueva cantidad pretendida, no existan renderizados y cálculos innecesarios hasta llegar al momento en que el usuario acepta ese cambio.
+- Precio subtotal por producto
+- Precio total de la selección
+- Botón guardar carrito (se hablará más adelante)
+- Botón confirmar mi orden
+
+#### Componente EmptyCart
+
+Como se menciono antes, este componente informa de que el carrito se encuentra vacío y permite la navegación a la “Home Page” a través de un botón en su parte inferior.
+También se encarga de chequear en su montaje, si hay algún carrito guardado por el usuario manualmente, y de ser así, muestra un mensaje junto a un botón que permite proceder a la carga del mismo
+
+#### Guardado del carrito
+
+A lo largo de la operación normal de compra el carrito se guarda automáticamente en el `sessionStorage`, ya que resulta más conveniente para este modo automático.
+
+Aparte de este guardado por defecto, se da la posibilidad al usuario de guardar permanentemente su carrito para ser cargado más tarde cuando lo considere oportuno. Para esto se hace uso del `localStorage`
+
+Esta tarea se lleva a cabo entre los componentes Cart, CartDetail y EmpyCart junto al CartContext. Cuando se clickea en guardar carrito, se llama a la función del context para almacenar el mismo en el localStorage. Luego al entrar en el Emptycart, se chequea si hay uno guardado y se notifica de ser cierto, presentando un botón para tal fin.
+
+Cuando se acepta recuperar un carrito, se procede a una validación del mismo con la base de datos recorriendo cada producto del carrito guardado. Se traen los productos a fin de verificar si aún siguen siendo válidos. De ser así, se toman los precios vigentes y luego se analiza su stock vs la cantidad que se había seleccionado al momento de guardarlo. En caso de tener suficiente stock, se procede a cargarlo, de lo contrario se rechaza la carga de ese ítem. Finalmente se muestra un mensaje a través de un **Modal** de **React Bootstrap** informando si se pudieron cargar todos los productos con éxito, sólo alguno de ellos, o ninguno.
 
 ### Hooks personalizados
 
