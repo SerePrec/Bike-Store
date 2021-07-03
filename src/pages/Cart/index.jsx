@@ -1,7 +1,7 @@
 import React, { useState, useContext, useCallback } from "react";
-import { Modal, Button } from "react-bootstrap";
 import { CartContext } from "../../context/CartContext";
 import CartDetail from "../../components/CartDetail";
+import CartModal from "../../components/CartModal";
 import EmptyCart from "../../components/EmptyCart";
 import InfoBar from "../../components/InfoBar";
 import { getProducts } from "../../utils/getProducts";
@@ -93,8 +93,9 @@ const Cart = () => {
       });
   };
 
-  const emptyCartProps = { getSavedCart, savedCart, loadSavedCart, isLoading };
   const cartDetailProps = { ...cartContext, handleSaveCart };
+  const emptyCartProps = { getSavedCart, savedCart, loadSavedCart, isLoading };
+  const cartModalProps = { showModal, handleCloseModal, contentModal };
 
   return (
     <main>
@@ -108,25 +109,7 @@ const Cart = () => {
           <EmptyCart {...emptyCartProps} />
         )}
       </div>
-      <Modal
-        show={showModal}
-        onHide={handleCloseModal}
-        dialogClassName="cartModal"
-      >
-        <Modal.Header className="justify-content-center">
-          <Modal.Title>{contentModal.title}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="text-center">
-          <p>{contentModal.msg1}</p>
-          <p>{contentModal.msg2}</p>
-          <p>{contentModal.msg3}</p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="dark" onClick={handleCloseModal}>
-            Seguir
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <CartModal {...cartModalProps} />
     </main>
   );
 };
