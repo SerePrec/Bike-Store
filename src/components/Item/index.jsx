@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useHistory } from "react-router";
 import { Card } from "react-bootstrap";
 import { priceFormat } from "../../utils/priceFormat";
@@ -8,30 +8,25 @@ import imgBlank from "../../assets/img/blank.gif";
 
 const Item = ({ product }) => {
   const { id, title, brand, price, discount, pictureURL, stock } = product;
-
-  const [fakeLoad, setFakeLoad] = useState(false);
-
+  const [imgLoad, setImgLoad] = useState(false);
+  const imageRef = useRef(null);
   let history = useHistory();
-
-  useEffect(() => {
-    let temp;
-    const getImage = new Promise(resolve => {
-      temp = setTimeout(() => {
-        resolve(true);
-      }, Math.random() * 2000);
-    });
-    getImage.then(res => {
-      setFakeLoad(res);
-    });
-
-    return () => {
-      clearInterval(temp);
-    };
-  }, []);
 
   const goDetail = id => {
     history.push(`/item/${id}`);
   };
+
+  useEffect(() => {
+    const imageEl = imageRef.current;
+    const handleLoad = () => {
+      setImgLoad(true);
+    };
+    imageEl.addEventListener("load", handleLoad);
+
+    return () => {
+      imageEl.removeEventListener("load", handleLoad);
+    };
+  }, []);
 
   return (
     <Card
@@ -40,10 +35,9 @@ const Item = ({ product }) => {
     >
       {discount !== 0 && <div className="discount">{discount}%</div>}
       <Card.Img
+        ref={imageRef}
         variant="top"
-        src={
-          fakeLoad ? process.env.PUBLIC_URL + `/img/${pictureURL}` : imgBlank
-        }
+        src={imgLoad ? process.env.PUBLIC_URL + `/img/${pictureURL}` : imgBlank}
         alt={title}
       />
       <Card.Body>

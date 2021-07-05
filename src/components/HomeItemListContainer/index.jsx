@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ItemList from "../ItemList";
+import { getFirestore } from "../../firebase";
 import "./HomeItemListContainer.scss";
 
 //TODO:
@@ -11,37 +12,31 @@ const HomeItemListContainer = ({ greeting, legend }) => {
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    let temp;
     setIsLoading(true);
-    const getProducts = () =>
-      new Promise((resolve, reject) => {
-        temp = setTimeout(() => {
-          resolve(productsServer);
-          // reject({
-          //   title: "Error de Carga",
-          //   msg1: "Intenta recargar la página o regresa más tarde.",
-          //   msg2: "Disculpe las molestias."
-          // });
-        }, 2000);
-      });
-    getProducts()
-      .then(res => {
-        let productsFiltered;
-        productsFiltered = res.filter(elem => elem.home === true);
-        setProducts(productsFiltered);
+    const db = getFirestore();
+    const itemsCollection = db.collection("items");
+    const query = itemsCollection.where("home", "==", true);
+    query
+      .get()
+      .then(querySnapshot => {
+        const homeProducts = querySnapshot.docs.map(doc => {
+          return { id: doc.id, ...doc.data() };
+        });
+        setProducts(homeProducts);
         setIsError(false);
       })
-      .catch(err => {
+      .catch(error => {
         setProducts(null);
-        setIsError(err);
+        setIsError({
+          title: "Error de Carga",
+          msg1: "Intenta recargar la página o regresa más tarde.",
+          msg2: "Disculpe las molestias."
+        });
+        console.log("Error obteniendo productos: ", error);
       })
       .finally(() => {
         setIsLoading(false);
       });
-
-    return () => {
-      clearInterval(temp);
-    };
   }, []);
 
   return (
