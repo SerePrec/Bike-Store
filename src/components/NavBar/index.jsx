@@ -31,7 +31,10 @@ const NavBar = ({ categories }) => {
           </Nav.Link>
         </Navbar.Collapse>
         <CartWidget />
-        <Navbar.Collapse id="navbar-categories">
+        <Navbar.Collapse
+          id="navbar-categories"
+          className={categories ? "" : "animate__catLoad"}
+        >
           {categories && (
             <Nav className="m-auto animate__navbar-nav--loaded">
               {categories.map(cat => (

@@ -97,6 +97,23 @@
         }
       }
     }
+
+    &.animate__catLoad {
+      background: linear-gradient(
+          90deg,
+          #b3040400,
+          #b304048e 12.5%,
+          #b30404 25%,
+          #b304048e 37.5%,
+          #b3040400 50%
+        ),
+        $tonoMuyOscuro;
+      background-repeat: no-repeat;
+      background-position: -25% 0;
+      background-size: 50% auto;
+      animation: catLoad 2s infinite;
+      animation-timing-function: linear;
+    }
   }
 
   @include responsive(md) {
@@ -152,5 +169,11 @@
         }
       }
     }
+  }
+}
+
+@keyframes catLoad {
+  to {
+    background-position: 175% 0;
   }
 }
