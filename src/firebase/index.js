@@ -15,3 +15,5 @@ const app = firebase.initializeApp(firebaseConfig);
 export const getFirebase = () => app;
 
 export const getFirestore = () => firebase.firestore(app);
+
+export const fieldPathId = () => firebase.firestore.FieldPath.documentId();

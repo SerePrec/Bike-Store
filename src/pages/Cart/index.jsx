@@ -4,8 +4,8 @@ import CartDetail from "../../components/CartDetail";
 import CartModal from "../../components/CartModal";
 import EmptyCart from "../../components/EmptyCart";
 import InfoBar from "../../components/InfoBar";
-import { getProducts } from "../../utils/getProducts";
 import { modalMessages } from "../../utils/cartModalMessages";
+import { getFirestore, fieldPathId } from "../../firebase";
 import iconCart from "../../assets/img/icon_cart2.png";
 import "./Cart.scss";
 
@@ -14,7 +14,6 @@ const Cart = () => {
 
   const [savedCart, setSavedCart] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  //const [isError, setIsError] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [contentModal, setContentModal] = useState(modalMessages[0]);
 
@@ -58,15 +57,22 @@ const Cart = () => {
     const dataSavedCart = savedCart.map(elem => {
       return { id: elem.product.id, qty: elem.qty };
     });
-    return getProducts()
-      .then(res => {
+    const savedCartIds = dataSavedCart.map(elem => elem.id);
+    const db = getFirestore();
+    const itemsCollection = db.collection("items");
+
+    //FIXME: Si va a quedar este tipo de consulta en lugar de traer todo,
+    // fijar la longitud máxima de productos diferentes del carrito a 10
+    const query = itemsCollection.where(fieldPathId(), "in", savedCartIds);
+    query
+      .get()
+      .then(querySnapshot => {
         const checkedCart = [];
-        res.forEach(product => {
-          for (const data of dataSavedCart) {
-            if (product.id === data.id && product.stock >= data.qty) {
-              const qty = data.qty;
-              checkedCart.push({ product, qty });
-            }
+        querySnapshot.docs.forEach(doc => {
+          const match = dataSavedCart.find(elem => elem.id === doc.id);
+          if (doc.data().stock >= match.qty) {
+            const qty = match.qty;
+            checkedCart.push({ product: { id: doc.id, ...doc.data() }, qty });
           }
         });
         setCart(checkedCart);
@@ -80,11 +86,8 @@ const Cart = () => {
         }
         setContentModal(modalMsg);
       })
-      .catch(err => {
-        setCart(null);
+      .catch(error => {
         setContentModal(modalMessages[4]);
-        //setIsError(err);
-        //setIsLoading(false);
       })
       .finally(() => {
         handleShowModal();

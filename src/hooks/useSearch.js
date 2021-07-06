@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router";
 import { searchQuery } from "../utils/productsFilter";
-import { getProducts, temp } from "../utils/getProducts";
+import { getFirestore } from "../firebase";
 
 export const useSearch = () => {
   const [products, setProducts] = useState(null);
@@ -13,25 +13,42 @@ export const useSearch = () => {
   useEffect(() => {
     if (pathname === "/search") {
       setIsLoading(true);
-      getProducts()
-        .then(res => {
-          let productsFiltered;
+      let mounted = true;
+      const db = getFirestore();
+      const itemsCollection = db.collection("items");
+      itemsCollection
+        .get()
+        .then(querySnapshot => {
+          const allProducts = querySnapshot.docs.map(doc => {
+            return { id: doc.id, ...doc.data() };
+          });
           let query = new URLSearchParams(search);
           let searchText = query.get("q").toLowerCase();
-          productsFiltered = searchQuery(res, searchText);
-          setProducts(productsFiltered);
-          setIsError(false);
+          const productsFiltered = searchQuery(allProducts, searchText);
+          if (mounted) {
+            setProducts(productsFiltered);
+            setIsError(false);
+          }
         })
-        .catch(err => {
-          setProducts(null);
-          setIsError(err);
+        .catch(error => {
+          if (mounted) {
+            setProducts(null);
+            setIsError({
+              title: "Error de Carga",
+              msg1: "Intenta recargar la página o regresa más tarde.",
+              msg2: "Disculpe las molestias."
+            });
+          }
+          console.log("Error obteniendo productos: ", error);
         })
         .finally(() => {
-          setIsLoading(false);
+          if (mounted) {
+            setIsLoading(false);
+          }
         });
 
       return () => {
-        clearInterval(temp);
+        mounted = false;
       };
     }
   }, [search, pathname]);
@@ -39,30 +56,53 @@ export const useSearch = () => {
   useEffect(() => {
     if (pathname !== "/search") {
       setIsLoading(true);
-      getProducts()
-        .then(res => {
-          let productsFiltered;
-          productsFiltered = res.filter(elem => elem.category === catId);
+      let mounted = true;
+      const db = getFirestore();
+      const itemsCollection = db.collection("items");
+      const query = itemsCollection.where("category", "==", catId);
+      query
+        .get()
+        .then(querySnapshot => {
+          const productsFiltered = querySnapshot.docs.map(doc => {
+            return { id: doc.id, ...doc.data() };
+          });
           if (productsFiltered.length === 0) {
-            return Promise.reject({
-              title: "Categoría Inexistente o Sin Productos",
-              msg1: "Por favor verifique la dirección de su enlace.",
-              msg2: "Disculpe las molestias."
-            });
+            return Promise.reject("noProducts");
           }
-          setProducts(productsFiltered);
-          setIsError(false);
+          if (mounted) {
+            setProducts(productsFiltered);
+            setIsError(false);
+          }
         })
-        .catch(err => {
-          setProducts(null);
-          setIsError(err);
+        .catch(error => {
+          if (mounted) {
+            let errorMsg;
+            if (error === "noProducts") {
+              errorMsg = {
+                title: "Categoría Inexistente o Sin Productos",
+                msg1: "Por favor verifique la dirección de su enlace.",
+                msg2: "Disculpe las molestias."
+              };
+            } else {
+              errorMsg = {
+                title: "Error de Carga",
+                msg1: "Intenta recargar la página o regresa más tarde.",
+                msg2: "Disculpe las molestias."
+              };
+            }
+            setProducts(null);
+            setIsError(errorMsg);
+          }
+          console.log("Error obteniendo productos: ", error);
         })
         .finally(() => {
-          setIsLoading(false);
+          if (mounted) {
+            setIsLoading(false);
+          }
         });
 
       return () => {
-        clearInterval(temp);
+        mounted = false;
       };
     }
   }, [catId, pathname]);
