@@ -7,6 +7,10 @@
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
+  img {
+    width: 1rem;
+    margin-left: 1rem;
+  }
   &.black {
     background-color: $tonoMuyOscuro;
     border-color: $tonoMuyOscuro;

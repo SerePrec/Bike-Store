@@ -11,6 +11,7 @@
   &.indumentaria,
   &.search {
     height: 26vw;
+    background-color: $tonoOscuro;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center 5rem;
@@ -18,6 +19,9 @@
     display: flex;
     justify-content: initial;
     align-items: center;
+    animation-name: fadeIn;
+    animation-duration: 0.75s;
+    transition: background-image 1s ease, background-position 0.5s ease-in-out;
 
     h1 {
       padding-left: 3rem;
@@ -28,22 +32,22 @@
   }
 
   &.bicicletas {
-    background-image: url("../../assets/img/plp-banner_bici.jfif");
+    background-image: url("../../assets/img/plp-banner_bici.jpg");
   }
   &.componentes {
-    background-image: url("../../assets/img/plp-banner_comp.jfif");
+    background-image: url("../../assets/img/plp-banner_comp.jpg");
   }
   &.accesorios {
-    background-image: url("../../assets/img/plp-banner_acc.jfif");
+    background-image: url("../../assets/img/plp-banner_acc.jpg");
   }
   &.equipamiento {
-    background-image: url("../../assets/img/plp-banner_equip.jfif");
+    background-image: url("../../assets/img/plp-banner_equip.jpg");
   }
   &.indumentaria {
-    background-image: url("../../assets/img/plp-banner_Indu.jfif");
+    background-image: url("../../assets/img/plp-banner_Indu.jpg");
   }
   &.search {
-    background-image: url("../../assets/img/plp-banner_busq.jfif");
+    background-image: url("../../assets/img/plp-banner_busq.jpg");
   }
 
   .gradient {
@@ -95,6 +99,7 @@
       background-attachment: initial;
       background-position: 70% center;
       background-size: 180%;
+      transition: none;
       h1 {
         font-size: 2rem;
         padding-left: 1rem;
