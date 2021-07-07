@@ -81,7 +81,7 @@ const ItemDetail = ({ product, handleShowModal, setContentModal }) => {
               animation="animate__fadeIn"
             />
           ) : (
-            <p className="productDetail_stock">Disponible: {stock}u</p>
+            <p className="productDetail_stock">Stock: {stock}u</p>
           )}
           {inCart && !(addedItemQuantity > 0) && (
             <p className="productDetail_inCart">
