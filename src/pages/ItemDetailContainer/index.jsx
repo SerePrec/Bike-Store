@@ -1,15 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
+import { useModal } from "../../hooks/useModal";
+import CartModal from "../../components/CartModal";
 import InfoBar from "../../components/InfoBar";
 import ItemDetail from "../../components/ItemDetail";
 import Loader from "../../components/Loader";
 import { getFirestore } from "../../firebase";
+import { modalMessages } from "../../utils/cartModalMessages";
 import "./ItemDetailcontainer.scss";
 
 const ItemDetailContainer = () => {
   const [product, setProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const {
+    showModal,
+    contentModal,
+    setContentModal,
+    handleShowModal,
+    handleCloseModal
+  } = useModal(modalMessages[0]);
+
   let { itemId } = useParams();
 
   useEffect(() => {
@@ -61,6 +72,8 @@ const ItemDetailContainer = () => {
     };
   }, [itemId]);
 
+  const cartModalProps = { showModal, handleCloseModal, contentModal };
+
   return (
     <main>
       <InfoBar title="DETALLE DEL PRODUCTO"></InfoBar>
@@ -73,8 +86,15 @@ const ItemDetailContainer = () => {
           <Loader message={{ title: "Cargando Detalle Del Producto..." }} />
         )}
         {isError && <Loader message={isError} />}
-        {product && <ItemDetail product={product}></ItemDetail>}
+        {product && (
+          <ItemDetail
+            product={product}
+            handleShowModal={handleShowModal}
+            setContentModal={setContentModal}
+          ></ItemDetail>
+        )}
       </div>
+      <CartModal {...cartModalProps} />
     </main>
   );
 };
