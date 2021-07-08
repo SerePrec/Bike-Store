@@ -1,17 +1,21 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
-import { getAuth, authGoogleProvider } from "../../firebase";
+import { UserContext } from "../../context/UserContext";
+import { getAuth } from "../../firebase";
 import InfoBar from "../../components/InfoBar";
+import InfoMessage from "../../components/InfoMessage";
 import TypicButton from "../../components/TypicButton";
+import signInIcon from "../../assets/img/sign-in-alt.svg";
+import signOutIcon from "../../assets/img/sign-out-alt.svg";
 import "./MyAccount.scss";
 
 const MyAccount = () => {
   const [form, setForm] = useState({ email: "", password: "" });
-  const [isLogged, setIsLogged] = useState(false);
   const [validated, setValidated] = useState(false);
   const [isSigning, setIsSigning] = useState(false);
-  const [sigResults, setSigResults] = useState(null);
+  const [isError, setIsError] = useState(null);
+  const { authUser } = useContext(UserContext);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -21,21 +25,20 @@ const MyAccount = () => {
       return;
     }
     setIsSigning(true);
-    setSigResults(null);
+    setIsError(null);
     getAuth()
-      .signInWithEmailAndPassword(form.email, form.password)
+      .signInWithEmailAndPassword(form.email.trim(), form.password.trim())
       .then(userCredential => {
-        // Signed in
-        let user = userCredential.user;
-        console.log(user);
-        // ...
-        setIsLogged(true);
+        console.log("Inicio de sesión exitoso");
       })
       .catch(error => {
         let errorCode = error.code;
         let errorMessage = error.message;
-        // ..
+        setIsError({ errorCode, errorMessage });
         console.log(errorCode, errorMessage);
+      })
+      .finally(() => {
+        setIsSigning(false);
       });
   };
 
@@ -50,94 +53,93 @@ const MyAccount = () => {
     getAuth()
       .signOut()
       .then(() => {
-        // Sign-out successful.
-        setIsLogged(false);
+        console.log("Abandono la sesión correctamente");
       })
       .catch(error => {
-        // An error happened.
-      });
-  };
-
-  const handleLoginGoogle = () => {
-    let provider = authGoogleProvider();
-    provider.addScope("https://www.googleapis.com/auth/contacts.readonly");
-    getAuth().useDeviceLanguage();
-    getAuth()
-      .signInWithPopup(provider)
-      .then(result => {
-        /** @type {firebase.auth.OAuthCredential} */
-        let credential = result.credential;
-
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        let token = credential.accessToken;
-        // The signed-in user info.
-        let user = result.user;
-        // ...
-        console.log((token, user));
-      })
-      .catch(error => {
-        // Handle Errors here.
-        let errorCode = error.code;
-        let errorMessage = error.message;
-        // The email of the user's account used.
-        let email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        let credential = error.credential;
-        // ...
-        console.log(errorCode, errorMessage, email, credential);
+        console.log(error);
       });
   };
 
   return (
-    <main className="myAccount">
-      <InfoBar title="MI CUENTA">
-        <TypicButton size="sm" onClick={handleLogout}>
-          Cerrar Sesión
-        </TypicButton>
+    <main className={`myAccount ${authUser ? "auth" : ""}`}>
+      <InfoBar
+        title={`MI CUENTA - ${
+          authUser ? authUser.displayName.toUpperCase() : "INICIA SESIÓN"
+        }`}
+      >
+        {authUser && (
+          <TypicButton
+            //size="sm"
+            className="animate__fadeIn"
+            onClick={handleLogout}
+          >
+            CERRAR SESION
+            <img src={signOutIcon} alt="Salir" />
+          </TypicButton>
+        )}
       </InfoBar>
-      <div className="logInForm">
-        <Form noValidate validated={validated} onSubmit={handleSubmit}>
-          <Form.Group controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control
-              type="email"
-              name="email"
-              value={form.email}
-              placeholder="Enter email"
-              onChange={handleChange}
-              required
-            />
-            <Form.Text className="text-muted">
-              We'll never share your email with anyone else.
-            </Form.Text>
-          </Form.Group>
-
-          <Form.Group controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              name="password"
-              value={form.password}
-              placeholder="Password"
-              pattern="\S{6,}"
-              onChange={handleChange}
-              required
-            />
-            <Form.Text className="text-muted">
-              Debe tener al menos xx caracters.
-            </Form.Text>
-          </Form.Group>
-          <Button variant="primary" type="submit">
-            Entrar
-          </Button>
-        </Form>
-        <Button variant="danger" onClick={handleLoginGoogle}>
-          Entrar con GOOGLE
-        </Button>
-        <div>
-          No tienes cuenta? <Link to="/register">Registrate!</Link>
+      {authUser ? (
+        <div className="container-xl userDataContainer">
+          <div className="userData animate__zoomIn"></div>
         </div>
-      </div>
+      ) : (
+        <div className="logInForm">
+          <Form noValidate validated={validated} onSubmit={handleSubmit}>
+            <Form.Group controlId="formBasicEmail">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                name="email"
+                value={form.email}
+                placeholder="Ingresa tu email"
+                onChange={handleChange}
+                required
+              />{" "}
+              <Form.Control.Feedback type="invalid">
+                Introduce una dirección de email válida.
+              </Form.Control.Feedback>
+              <Form.Text>Será tu usuario para ingresar.</Form.Text>
+            </Form.Group>
+
+            <Form.Group controlId="formBasicPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                name="password"
+                value={form.password}
+                placeholder="Ingresa tu constraseña"
+                pattern="\S{6,}"
+                onChange={handleChange}
+                required
+              />
+              <Form.Control.Feedback type="invalid">
+                No cumple requisitos, revísala.
+              </Form.Control.Feedback>
+              <Form.Text>Debe tener al menos 6 caracteres.</Form.Text>
+            </Form.Group>
+            <Button
+              variant="danger w-50 mt-4"
+              type="submit"
+              disabled={isSigning}
+            >
+              {isSigning ? "Iniciando..." : "Inicia Sesión"}
+              <img src={signInIcon} alt="Ingresar" />
+            </Button>
+          </Form>
+          {isError && (
+            <InfoMessage
+              msg={`Error: ${isError.errorCode}. Mensaje: ${isError.errorMessage}.`}
+              type="danger"
+              className="mt-3"
+              animation="animate__slideInUp"
+            />
+          )}
+
+          <div className="mt-4 text-center">
+            ¿No tienes cuenta? <Link to="/register">¡Registrate aquí!</Link>
+          </div>
+        </div>
+      )}
     </main>
   );
 };

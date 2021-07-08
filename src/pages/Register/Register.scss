@@ -33,8 +33,13 @@
       margin: auto;
       background-color: $rojoMarca;
       border-color: $rojoMarca;
+      font-weight: 500;
     }
   }
+  .typicBtn {
+    font-weight: 500;
+  }
+
   @include responsive(xs) {
     .registerForm {
       width: 100%;

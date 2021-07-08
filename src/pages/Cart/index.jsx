@@ -1,6 +1,7 @@
 import React, { useState, useContext, useCallback } from "react";
 import { useModal } from "../../hooks/useModal";
 import { CartContext } from "../../context/CartContext";
+import { UserContext } from "../../context/UserContext";
 import CartDetail from "../../components/CartDetail";
 import CartModal from "../../components/CartModal";
 import EmptyCart from "../../components/EmptyCart";
@@ -12,6 +13,7 @@ import "./Cart.scss";
 
 const Cart = () => {
   const cartContext = useContext(CartContext);
+  const { authUser } = useContext(UserContext);
 
   const [savedCart, setSavedCart] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -102,8 +104,12 @@ const Cart = () => {
         setSavedCart(null);
       });
   };
-
-  const cartDetailProps = { ...cartContext, handleSaveCart };
+  console.log(authUser);
+  const cartDetailProps = {
+    ...cartContext,
+    handleSaveCart,
+    userId: authUser && authUser.uid
+  };
   const emptyCartProps = { getSavedCart, savedCart, loadSavedCart, isLoading };
   const cartModalProps = { showModal, handleCloseModal, contentModal };
 

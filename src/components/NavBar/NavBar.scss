@@ -43,10 +43,20 @@
     }
     .nav-link {
       color: white;
-    }
-    img {
-      width: 1.5rem;
-      margin-right: 0.5rem;
+      img {
+        width: 1.5rem;
+        margin-right: 0.5rem;
+      }
+      div {
+        background-color: #ff5722;
+        width: 1.5rem;
+        margin-right: 0.5rem;
+        border-radius: 50%;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        font-family: $fuente-principal;
+      }
     }
   }
 

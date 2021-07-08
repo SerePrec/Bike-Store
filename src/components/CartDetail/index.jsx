@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Row } from "react-bootstrap";
 import CartTable from "../CartTable";
 import InfoMessage from "../InfoMessage";
@@ -6,6 +7,7 @@ import TypicButton from "../TypicButton";
 import trash from "../../assets/img/trash.svg";
 import check from "../../assets/img/check.svg";
 import cartIcon from "../../assets/img/icon_cart2.png";
+import signInIcon from "../../assets/img/sign-in-alt.svg";
 import "./CartDetail.scss";
 
 const CartDetail = props => {
@@ -14,8 +16,11 @@ const CartDetail = props => {
     totQtyInCart,
     checkInRange,
     handleSaveCart,
+    userId,
     ...restProps
   } = props;
+
+  console.log(userId);
 
   return (
     <div className="cartDetail animate__zoomIn">
@@ -52,9 +57,17 @@ const CartDetail = props => {
           <img src={cartIcon} alt="" />
         </TypicButton>
         {checkInRange && (
-          <TypicButton className="my-3 font-weight-bold">
-            CONFIRMAR MI PEDIDO
-            <img src={check} alt="" />
+          <TypicButton
+            as={Link}
+            to={userId ? "/checkout" : "/myaccount"}
+            className="my-3 font-weight-bold"
+          >
+            {userId ? "CONFIRMAR MI PEDIDO" : "LOGUEATE para continuar"}
+            {userId ? (
+              <img src={check} alt="" />
+            ) : (
+              <img src={signInIcon} alt="" />
+            )}
           </TypicButton>
         )}
       </Row>

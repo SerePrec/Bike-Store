@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { Link, NavLink } from "react-router-dom";
+import { UserContext } from "../../context/UserContext";
 import CartWidget from "../CartWidget";
 import SearchForm from "../SearchForm";
 import iconMenu from "../../assets/img/iconred.png";
@@ -9,6 +10,7 @@ import logoCuenta from "../../assets/img/cuenta.svg";
 import "./NavBar.scss";
 
 const NavBar = ({ categories }) => {
+  const { authUser } = useContext(UserContext);
   return (
     <>
       <Navbar collapseOnSelect expand="md" variant="dark">
@@ -26,7 +28,13 @@ const NavBar = ({ categories }) => {
         <SearchForm placeholder={`Descripción, marca, tipo, ...`} />
         <Navbar.Collapse id="navbar-myAccount">
           <Nav.Link as={Link} to={`/myaccount`}>
-            <img src={logoCuenta} alt="Mi cuenta" />
+            {authUser && authUser.displayName ? (
+              <div className="animate__fadeIn">
+                {authUser.displayName.charAt(0).toUpperCase()}
+              </div>
+            ) : (
+              <img src={logoCuenta} alt="Mi cuenta" />
+            )}
             MI CUENTA
           </Nav.Link>
         </Navbar.Collapse>

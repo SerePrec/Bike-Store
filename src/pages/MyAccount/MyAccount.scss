@@ -5,14 +5,26 @@
   color: $rojoMarca;
   background-color: $tonoOscuro;
   min-height: 40rem;
+  justify-content: center;
+  transition: background-color 1s ease-in-out;
+  &.auth {
+    background-color: #dedede;
+    .breadcrumb {
+      justify-content: space-between;
+    }
+  }
 
   .breadcrumb {
+    justify-content: center;
     h4 {
       display: flex;
       align-items: center;
     }
     .typicBtn {
       margin: 0;
+      img {
+        margin-right: 0;
+      }
     }
   }
   .logInForm {
@@ -36,12 +48,36 @@
       margin: auto;
       background-color: $rojoMarca;
       border-color: $rojoMarca;
+      font-weight: 500;
+      img {
+        width: 1.5rem;
+        margin-left: 1rem;
+      }
+    }
+  }
+
+  .userDataContainer {
+    background-color: $tonoMedio;
+    border: 0.5rem solid $rojoMarca;
+    border-radius: 1rem;
+    color: black;
+    padding: 1rem;
+    margin: 1rem auto 2rem auto;
+    .userData {
+      background-color: #fff;
+      border-radius: 0.25rem;
+      padding: 1rem;
+      min-height: 30rem;
+      overflow: hidden;
     }
   }
   @include responsive(xs) {
     .registerForm {
       width: 100%;
       padding: 0 1rem;
+    }
+    .userData {
+      padding: 0;
     }
   }
 }

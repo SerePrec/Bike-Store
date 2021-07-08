@@ -28,7 +28,7 @@ const Register = () => {
     setIsRegistering(true);
     setRegResults(null);
     getAuth()
-      .createUserWithEmailAndPassword(form.email, form.password)
+      .createUserWithEmailAndPassword(form.email.trim(), form.password.trim())
       .then(userCredential => {
         let user = userCredential.user;
         console.log("Usuario Registrado con éxito");
@@ -36,11 +36,11 @@ const Register = () => {
           displayName: form.name
         });
       })
-      .then(() => {
+      .then(res => {
         console.log("Perfil añadido con éxito");
         return getAuth().signOut();
       })
-      .then(() => {
+      .then(res => {
         setRegResults("ok");
       })
       .catch(error => {
@@ -141,11 +141,11 @@ const Register = () => {
           </Form.Group>
           {regResults !== "ok" && (
             <Button
-              variant="danger w-50"
+              variant="danger w-50 mt-4"
               type="submit"
               disabled={isRegistering}
             >
-              {isRegistering ? "Registrando..." : "Registrar"}
+              {isRegistering ? "Registrando..." : "Registrate"}
             </Button>
           )}
         </Form>
@@ -154,7 +154,7 @@ const Register = () => {
             msg={
               regResults === "ok"
                 ? `Usuario registrado con éxito. Continúa iniciando sesión`
-                : `Error: ${regResults.errorCode}. Mensaje: ${regResults.errorCode}.`
+                : `Error: ${regResults.errorCode}. Mensaje: ${regResults.errorMessage}.`
             }
             type={regResults === "ok" ? "info" : "danger"}
             className="mt-3"
