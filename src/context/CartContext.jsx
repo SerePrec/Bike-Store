@@ -1,24 +1,31 @@
 import React, { useState, useEffect } from "react";
-
 export const CartContext = React.createContext([]);
 
 const CartContextProvider = ({ children, defaultValue = [] }) => {
   const [cart, setCart] = useState(() => {
-    const savedCart =
-      localStorage.getItem("myCart") &&
-      JSON.parse(localStorage.getItem("myCart"));
+    const sessionCart =
+      sessionStorage.getItem("myMammothCart") &&
+      JSON.parse(sessionStorage.getItem("myMammothCart"));
     //verifico que exista y sea de un formato válido
     if (
-      savedCart &&
-      savedCart.length > 0 &&
-      savedCart[0].product &&
-      savedCart[0].qty
+      sessionCart &&
+      sessionCart.length > 0 &&
+      sessionCart[0].product &&
+      sessionCart[0].qty
     ) {
-      return savedCart;
+      return sessionCart;
     } else {
       return defaultValue;
     }
   });
+
+  const totQtyInCart = cart.reduce((total, elem) => total + elem.qty, 0);
+
+  const totPriceInCart = cart.reduce(
+    (total, elem) =>
+      total + elem.product.price * (1 - elem.product.discount / 100) * elem.qty,
+    0
+  );
 
   const getFromCart = id => {
     return cart.find(elem => elem.product.id === id);
@@ -68,26 +75,35 @@ const CartContextProvider = ({ children, defaultValue = [] }) => {
     setCart([]);
   };
 
-  const saveCartInStorage = cart => {
+  const saveCartInSessionStorage = cart => {
     const JSONCart = JSON.stringify(cart);
-    localStorage.setItem("myCart", JSONCart);
+    sessionStorage.setItem("myMammothCart", JSONCart);
+  };
+
+  const saveCartInLocalStorage = () => {
+    const JSONCart = JSON.stringify(cart);
+    localStorage.setItem("myMammothSavedCart", JSONCart);
   };
 
   useEffect(() => {
-    saveCartInStorage(cart);
-    console.log("Mi Carrito", cart);
+    saveCartInSessionStorage(cart);
+    //console.log("Mi Carrito", cart);
   }, [cart]);
 
   return (
     <CartContext.Provider
       value={{
         cart,
+        setCart,
+        totQtyInCart,
+        totPriceInCart,
         isInCart,
         getFromCart,
         addToCart,
         updateFromCart,
         removeFromCart,
-        clearCart
+        clearCart,
+        saveCartInLocalStorage
       }}
     >
       {children}

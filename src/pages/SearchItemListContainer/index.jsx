@@ -40,33 +40,26 @@ const SearchItemListContainer = () => {
   return (
     <main>
       <PictureHeader
-        title={catId ? catId : "resultados"}
-        imgClass={catId ? catId : "search"}
+        title={catId || "resultados"}
+        imgClass={catId || "search"}
       />
       <div
         className={`container-xl searchShowRoom ${isLoading ? "loading" : ""}`}
       >
-        {pathname === "/search" ? (
-          <div>
-            <h3>Tu Búsqueda "{new URLSearchParams(search).get("q")}"</h3>
-            {!isLoading && products && (
-              <PillBadge variant="secondary">
-                {products.length}{" "}
-                {products.length === 1 ? "producto" : "productos"}
-              </PillBadge>
-            )}
-          </div>
-        ) : (
-          <div>
-            <h3>En esta categoría encontramos...</h3>
-            {!isLoading && products && (
-              <PillBadge variant="secondary">
-                {products.length}{" "}
-                {products.length === 1 ? "producto" : "productos"}
-              </PillBadge>
-            )}
-          </div>
-        )}
+        <div>
+          <h3>
+            {" "}
+            {pathname === "/search"
+              ? `Tu Búsqueda "${new URLSearchParams(search).get("q")}"`
+              : `En esta categoría encontramos...`}
+          </h3>
+          {!isLoading && products && (
+            <PillBadge variant="secondary">
+              {products.length}{" "}
+              {products.length === 1 ? "producto" : "productos"}
+            </PillBadge>
+          )}
+        </div>
         <div className="row mx-0 mr-sm-n3">
           <div className="col-sm-3 col-xl-2 filtersCol">
             <h3

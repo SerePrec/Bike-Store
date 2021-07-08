@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 import { CartContext } from "../../context/CartContext";
+import InfoMessage from "../InfoMessage";
 import ItemCount from "../ItemCount";
 import ShipmentInfo from "../ShipmentInfo";
-import { priceFormat } from "../../utils/priceFormat";
-import "./ItemDetail.scss";
-
-import InfoMessage from "../InfoMessage";
 import TypicButton from "../TypicButton";
-import { Link } from "react-router-dom";
+import { priceFormat } from "../../utils/priceFormat";
+import cartIcon from "../../assets/img/icon_cart2.png";
+import "./ItemDetail.scss";
 
 const ItemDetail = ({ product }) => {
   const [addedItemQuantity, setAddedItemQuantity] = useState(null);
-  const { addToCart } = useContext(CartContext);
+  const { addToCart, isInCart, getFromCart } = useContext(CartContext);
 
   let {
     id,
@@ -32,17 +32,11 @@ const ItemDetail = ({ product }) => {
     setAddedItemQuantity(addedQty);
   };
 
-  useEffect(() => {
-    let temp;
-    if (addedItemQuantity < 0) {
-      temp = setTimeout(() => {
-        setAddedItemQuantity(null);
-      }, 4000);
-    }
-    return () => {
-      clearInterval(temp);
-    };
-  }, [addedItemQuantity]);
+  const inCart = isInCart(id);
+  let qtyInCart = 0;
+  if (inCart) {
+    qtyInCart = getFromCart(id).qty;
+  }
 
   return (
     <div
@@ -82,24 +76,29 @@ const ItemDetail = ({ product }) => {
           ) : (
             <p className="productDetail_stock">Disponible: {stock}u</p>
           )}
-          {addedItemQuantity < 0 && (
-            <InfoMessage
-              className="mt-2"
-              msg={`No puedes sumar esta cantidad al carrito. El total agregado excede por ${-addedItemQuantity}u el stock disponible`}
-              type="danger"
-              animation="animate__fadeIn"
-            />
+          {inCart && !(addedItemQuantity > 0) && (
+            <p className="productDetail_inCart">
+              Ya en tu <img src={cartIcon} alt="" /> : {qtyInCart}u
+            </p>
           )}
           {addedItemQuantity > 0 ? (
-            <TypicButton
-              as={Link}
-              to={"/cart"}
-              className="w-100 font-weight-bold animate__slideInUp"
-            >
-              TERMINAR MI COMPRA
-            </TypicButton>
+            <>
+              <TypicButton
+                as={Link}
+                to={"/cart"}
+                className="w-100 font-weight-bold animate__slideInUp"
+              >
+                TERMINAR MI COMPRA
+              </TypicButton>
+              <TypicButton
+                onClick={() => setAddedItemQuantity(null)}
+                className="w-50 font-weight-bold mt-3 animate__slideInUp black"
+              >
+                AGREGAR MÁS
+              </TypicButton>
+            </>
           ) : (
-            <ItemCount stock={stock} initial={1} onAdd={onAdd} />
+            <ItemCount stock={stock - qtyInCart} initial={1} onAdd={onAdd} />
           )}
           <ShipmentInfo />
         </Col>

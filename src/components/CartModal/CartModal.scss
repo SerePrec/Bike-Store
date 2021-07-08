@@ -1,0 +1,25 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.cartModal {
+  .modal-content {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.75),
+      #fff 30%,
+      #fff 70%,
+      rgba(255, 255, 255, 0.75)
+    );
+    font-family: $fuente-principal;
+    .modal-title {
+      color: $rojoMarca;
+    }
+    p {
+      font-size: 1.15rem;
+      margin-bottom: 1rem;
+      &:last-child {
+        font-weight: bold;
+      }
+    }
+  }
+}
