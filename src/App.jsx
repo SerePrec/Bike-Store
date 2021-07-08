@@ -12,6 +12,10 @@ import { useDollar } from "./hooks/useDollar";
 import ItemDetailContainer from "./pages/ItemDetailContainer";
 import "./App.scss";
 
+//********* */
+import Register from "./pages/Register";
+import MyAccount from "./pages/MyAccount";
+
 function App() {
   const { dollar } = useDollar();
 
@@ -35,6 +39,12 @@ function App() {
           </Route>
           <Route exact path="/cart">
             <Cart />
+          </Route>
+          <Route exact path="/myaccount">
+            <MyAccount />
+          </Route>
+          <Route exact path="/register">
+            <Register />
           </Route>
           <Route path="*">
             <Error404 />
