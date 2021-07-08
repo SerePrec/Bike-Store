@@ -15,6 +15,7 @@ import "./App.scss";
 //********* */
 import Register from "./pages/Register";
 import MyAccount from "./pages/MyAccount";
+import UserContextProvider from "./context/UserContext";
 
 function App() {
   const { dollar } = useDollar();
@@ -22,35 +23,37 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
-      <CartContextProvider>
-        <Header />
-        <Switch>
-          <Route exact path="/">
-            <Home dollar={dollar} />
-          </Route>
-          <Route exact path="/category/:catId">
-            <SearchItemListContainer />
-          </Route>
-          <Route exact path="/search">
-            <SearchItemListContainer />
-          </Route>
-          <Route exact path="/item/:itemId">
-            <ItemDetailContainer />
-          </Route>
-          <Route exact path="/cart">
-            <Cart />
-          </Route>
-          <Route exact path="/myaccount">
-            <MyAccount />
-          </Route>
-          <Route exact path="/register">
-            <Register />
-          </Route>
-          <Route path="*">
-            <Error404 />
-          </Route>
-        </Switch>
-      </CartContextProvider>
+      <UserContextProvider>
+        <CartContextProvider>
+          <Header />
+          <Switch>
+            <Route exact path="/">
+              <Home dollar={dollar} />
+            </Route>
+            <Route exact path="/category/:catId">
+              <SearchItemListContainer />
+            </Route>
+            <Route exact path="/search">
+              <SearchItemListContainer />
+            </Route>
+            <Route exact path="/item/:itemId">
+              <ItemDetailContainer />
+            </Route>
+            <Route exact path="/cart">
+              <Cart />
+            </Route>
+            <Route exact path="/myaccount">
+              <MyAccount />
+            </Route>
+            <Route exact path="/register">
+              <Register />
+            </Route>
+            <Route path="*">
+              <Error404 />
+            </Route>
+          </Switch>
+        </CartContextProvider>
+      </UserContextProvider>
       <Footer />
       <ButtonScroll />
     </Router>
