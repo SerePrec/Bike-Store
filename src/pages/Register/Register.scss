@@ -12,28 +12,11 @@
       padding: 0;
     }
   }
-  .registerForm {
+  .registerFormContainer {
     width: 30rem;
     margin: 3rem auto;
     form.regOk {
       opacity: 0.5;
-    }
-    .form-text,
-    .form-check-label {
-      color: rgba(255, 255, 255, 0.6);
-    }
-    .form-check-label {
-      padding-left: 0.5rem;
-      vertical-align: middle;
-    }
-
-    .btn[type="submit"] {
-      display: block;
-      width: 50%;
-      margin: auto;
-      background-color: $rojoMarca;
-      border-color: $rojoMarca;
-      font-weight: 500;
     }
   }
   .typicBtn {
@@ -41,7 +24,7 @@
   }
 
   @include responsive(xs) {
-    .registerForm {
+    .registerFormContainer {
       width: 100%;
       padding: 0 1rem;
     }

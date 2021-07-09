@@ -36,7 +36,7 @@ const CartDetail = props => {
         VACIAR CARRITO <img src={trash} alt="" />
       </TypicButton>
       <Row noGutters>
-        <CartTable {...restProps} />
+        <CartTable {...restProps} checkInRange={checkInRange} />
       </Row>
       {!checkInRange && (
         <Row noGutters>

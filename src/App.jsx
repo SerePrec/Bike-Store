@@ -1,21 +1,21 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import ButtonScroll from "./components/ButtonScroll";
-import Cart from "./pages/Cart";
-import CartContextProvider from "./context/CartContext";
-import Error404 from "./pages/Error404";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
-import Home from "./pages/Home";
+import PrivateRoute from "./components/PrivateRoute";
 import ScrollToTop from "./components/ScrollToTop";
-import SearchItemListContainer from "./pages/SearchItemListContainer";
-import { useDollar } from "./hooks/useDollar";
+import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
+import Error404 from "./pages/Error404";
+import Home from "./pages/Home";
 import ItemDetailContainer from "./pages/ItemDetailContainer";
-import "./App.scss";
-
-//********* */
-import Register from "./pages/Register";
 import MyAccount from "./pages/MyAccount";
+import Register from "./pages/Register";
+import SearchItemListContainer from "./pages/SearchItemListContainer";
+import CartContextProvider from "./context/CartContext";
 import UserContextProvider from "./context/UserContext";
+import { useDollar } from "./hooks/useDollar";
+import "./App.scss";
 
 function App() {
   const { dollar } = useDollar();
@@ -42,6 +42,9 @@ function App() {
             <Route exact path="/cart">
               <Cart />
             </Route>
+            <PrivateRoute exact path="/checkout">
+              <Checkout />
+            </PrivateRoute>
             <Route exact path="/myaccount">
               <MyAccount />
             </Route>

@@ -1,23 +1,21 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { Form, Button } from "react-bootstrap";
 import { UserContext } from "../../context/UserContext";
 import { getAuth } from "../../firebase";
 import InfoBar from "../../components/InfoBar";
 import InfoMessage from "../../components/InfoMessage";
+import LogInForm from "../../components/LogInForm";
 import TypicButton from "../../components/TypicButton";
-import signInIcon from "../../assets/img/sign-in-alt.svg";
 import signOutIcon from "../../assets/img/sign-out-alt.svg";
 import "./MyAccount.scss";
 
 const MyAccount = () => {
-  const [form, setForm] = useState({ email: "", password: "" });
   const [validated, setValidated] = useState(false);
   const [isSigning, setIsSigning] = useState(false);
   const [isError, setIsError] = useState(null);
   const { authUser } = useContext(UserContext);
 
-  const handleSubmit = e => {
+  const handleSubmit = (e, form) => {
     e.preventDefault();
     const sigForm = e.currentTarget;
     if (sigForm.checkValidity() === false) {
@@ -39,14 +37,8 @@ const MyAccount = () => {
       })
       .finally(() => {
         setIsSigning(false);
+        setValidated(false);
       });
-  };
-
-  const handleChange = e => {
-    const target = e.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
-    setForm({ ...form, [name]: value });
   };
 
   const handleLogout = () => {
@@ -58,6 +50,12 @@ const MyAccount = () => {
       .catch(error => {
         console.log(error);
       });
+  };
+
+  const formProps = {
+    validated,
+    isSigning,
+    handleSubmit
   };
 
   return (
@@ -83,49 +81,8 @@ const MyAccount = () => {
           <div className="userData animate__zoomIn"></div>
         </div>
       ) : (
-        <div className="logInForm">
-          <Form noValidate validated={validated} onSubmit={handleSubmit}>
-            <Form.Group controlId="formBasicEmail">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                name="email"
-                value={form.email}
-                placeholder="Ingresa tu email"
-                onChange={handleChange}
-                required
-              />{" "}
-              <Form.Control.Feedback type="invalid">
-                Introduce una dirección de email válida.
-              </Form.Control.Feedback>
-              <Form.Text>Será tu usuario para ingresar.</Form.Text>
-            </Form.Group>
-
-            <Form.Group controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                name="password"
-                value={form.password}
-                placeholder="Ingresa tu constraseña"
-                pattern="\S{6,}"
-                onChange={handleChange}
-                required
-              />
-              <Form.Control.Feedback type="invalid">
-                No cumple requisitos, revísala.
-              </Form.Control.Feedback>
-              <Form.Text>Debe tener al menos 6 caracteres.</Form.Text>
-            </Form.Group>
-            <Button
-              variant="danger w-50 mt-4"
-              type="submit"
-              disabled={isSigning}
-            >
-              {isSigning ? "Iniciando..." : "Inicia Sesión"}
-              <img src={signInIcon} alt="Ingresar" />
-            </Button>
-          </Form>
+        <div className="logInFormContainer">
+          <LogInForm {...formProps}></LogInForm>
           {isError && (
             <InfoMessage
               msg={`Error: ${isError.errorCode}. Mensaje: ${isError.errorMessage}.`}

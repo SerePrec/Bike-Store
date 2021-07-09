@@ -1,0 +1,27 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.logInForm {
+  .form-text,
+  .form-check-label {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .form-check-label {
+    padding-left: 0.5rem;
+    vertical-align: middle;
+  }
+
+  .btn[type="submit"] {
+    display: block;
+    width: 50%;
+    margin: auto;
+    background-color: $rojoMarca;
+    border-color: $rojoMarca;
+    font-weight: 500;
+    img {
+      width: 1.5rem;
+      margin-left: 1rem;
+    }
+  }
+}

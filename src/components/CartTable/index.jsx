@@ -8,7 +8,8 @@ const CartTable = ({
   cart,
   removeFromCart,
   updateFromCart,
-  totPriceInCart
+  totPriceInCart,
+  checkInRange
 }) => {
   return (
     <Table className="cartTable">
@@ -47,10 +48,10 @@ const CartTable = ({
           </td>
           <td className="text-center font-weight-bold">
             <p>TOTAL</p>
-            <p>${priceFormat(totPriceInCart)}</p>
+            <p>${checkInRange ? priceFormat(totPriceInCart) : " - - -,- -"}</p>
           </td>
           <td className="text-right font-weight-bold">
-            ${priceFormat(totPriceInCart)}
+            ${checkInRange ? priceFormat(totPriceInCart) : " - - -,- -"}
           </td>
         </tr>
       </tfoot>

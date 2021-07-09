@@ -29,8 +29,10 @@ const CartRow = ({ product, qty, removeFromCart, updateFromCart }) => {
         </p>
         <p>
           <b>
-            SUBTOTAL: $$
-            {priceFormat(price * (1 - discount / 100) * qty)}
+            SUBTOTAL: $
+            {qty > stock
+              ? " - - -,- -"
+              : priceFormat(price * (1 - discount / 100) * qty)}
           </b>
         </p>
       </td>
@@ -43,7 +45,10 @@ const CartRow = ({ product, qty, removeFromCart, updateFromCart }) => {
         />
       </td>
       <td className="text-right font-weight-bold">
-        ${priceFormat(price * (1 - discount / 100) * qty)}
+        $
+        {qty > stock
+          ? " - - -,- -"
+          : priceFormat(price * (1 - discount / 100) * qty)}
       </td>
     </tr>
   );
