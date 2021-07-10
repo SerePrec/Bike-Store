@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Spinner } from "react-bootstrap";
 import { useSetForm } from "../../hooks/useSetForm";
 import "./RegisterForm.scss";
 
@@ -100,6 +100,16 @@ const RegisterForm = ({
           disabled={isRegistering}
         >
           {isRegistering ? "Registrando..." : "Registrate"}
+          {isRegistering && (
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+              className="ml-2"
+            />
+          )}
         </Button>
       )}
     </Form>

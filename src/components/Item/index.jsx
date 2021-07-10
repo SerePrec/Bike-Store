@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import { Card } from "react-bootstrap";
 import { priceFormat } from "../../utils/priceFormat";
 import "./Item.scss";

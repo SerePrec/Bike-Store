@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useLocation } from "react-router";
+import { useParams, useLocation } from "react-router-dom";
 import { searchQuery } from "../utils/productsFilter";
 import { getFirestore } from "../firebase";
 

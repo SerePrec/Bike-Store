@@ -8,7 +8,7 @@ const CartRow = ({ product, qty, removeFromCart, updateFromCart }) => {
   const { id, title, price, discount, pictureURL, stock } = product;
 
   return (
-    <tr key={id}>
+    <tr>
       <td>
         <img src={times} alt="Eliminar" onClick={() => removeFromCart(id)} />
       </td>

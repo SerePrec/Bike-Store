@@ -6,6 +6,7 @@ export const useSetForm = initalForm => {
     const target = e.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
+    console.log(name, value);
     setForm({ ...form, [name]: value });
   };
 

@@ -6,6 +6,7 @@ import InfoBar from "../../components/InfoBar";
 import InfoMessage from "../../components/InfoMessage";
 import LogInForm from "../../components/LogInForm";
 import TypicButton from "../../components/TypicButton";
+import UserStuffContainer from "../../components/UserStuffContainer";
 import signOutIcon from "../../assets/img/sign-out-alt.svg";
 import "./MyAccount.scss";
 
@@ -61,9 +62,7 @@ const MyAccount = () => {
   return (
     <main className={`myAccount ${authUser ? "auth" : ""}`}>
       <InfoBar
-        title={`MI CUENTA - ${
-          authUser ? authUser.displayName.toUpperCase() : "INICIA SESIÓN"
-        }`}
+        title={`MI CUENTA - ${authUser ? authUser.email : "INICIA SESIÓN"}`}
       >
         {authUser && (
           <TypicButton
@@ -77,9 +76,9 @@ const MyAccount = () => {
         )}
       </InfoBar>
       {authUser ? (
-        <div className="container-xl userDataContainer">
-          <div className="userData animate__zoomIn"></div>
-        </div>
+        <UserStuffContainer
+          userName={authUser.displayName}
+        ></UserStuffContainer>
       ) : (
         <div className="logInFormContainer">
           <LogInForm {...formProps}></LogInForm>

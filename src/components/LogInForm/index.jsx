@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Spinner } from "react-bootstrap";
 import { useSetForm } from "../../hooks/useSetForm";
 import signInIcon from "../../assets/img/sign-in-alt.svg";
 import "./LogInForm.scss";
@@ -53,7 +53,18 @@ const LogInForm = ({ validated, isSigning, handleSubmit }) => {
       </Form.Group>
       <Button variant="danger w-50 mt-4" type="submit" disabled={isSigning}>
         {isSigning ? "Iniciando..." : "Inicia Sesión"}
-        <img src={signInIcon} alt="Ingresar" />
+        {isSigning ? (
+          <Spinner
+            as="span"
+            animation="border"
+            size="sm"
+            role="status"
+            aria-hidden="true"
+            className="ml-2"
+          />
+        ) : (
+          <img src={signInIcon} alt="Ingresar" />
+        )}
       </Button>
     </Form>
   );

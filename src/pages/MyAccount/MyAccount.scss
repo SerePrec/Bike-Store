@@ -32,28 +32,10 @@
     margin: 3rem auto;
   }
 
-  .userDataContainer {
-    background-color: $tonoMedio;
-    border: 0.5rem solid $rojoMarca;
-    border-radius: 1rem;
-    color: black;
-    padding: 1rem;
-    margin: 1rem auto 2rem auto;
-    .userData {
-      background-color: #fff;
-      border-radius: 0.25rem;
-      padding: 1rem;
-      min-height: 30rem;
-      overflow: hidden;
-    }
-  }
   @include responsive(xs) {
     .logInFormContainer {
       width: 100%;
       padding: 0 1rem;
-    }
-    .userData {
-      padding: 0;
     }
   }
 }

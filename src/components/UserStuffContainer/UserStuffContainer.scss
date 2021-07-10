@@ -1,0 +1,36 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.userStuffContainer {
+  background-color: $tonoMedio;
+  border: 0.5rem solid $rojoMarca;
+  border-radius: 1rem;
+  color: black;
+  padding: 1rem;
+  margin: 1rem auto 2rem auto;
+  .userStuff {
+    background-color: #fff;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    min-height: 30rem;
+    overflow: hidden;
+    .alert-info {
+      .alert-heading span {
+        font-size: 1.3rem;
+      }
+      p .typicBtn {
+        display: inline-flex;
+        border-radius: 1rem;
+        margin-left: 0.25rem;
+        img {
+          margin-left: 0.5rem;
+        }
+      }
+    }
+  }
+  @include responsive(xs) {
+    .userStuff {
+      padding: 0;
+    }
+  }
+}

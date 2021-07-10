@@ -30,7 +30,7 @@ const CartDetail = props => {
         </p>
       </Row>
       <TypicButton
-        className="mb-3 mx-auto soft font-weight-bold"
+        className="mb-3 mx-auto grey font-weight-bold"
         onClick={clearCart}
       >
         VACIAR CARRITO <img src={trash} alt="" />
