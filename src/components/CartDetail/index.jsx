@@ -20,8 +20,6 @@ const CartDetail = props => {
     ...restProps
   } = props;
 
-  console.log(userId);
-
   return (
     <div className="cartDetail animate__zoomIn">
       <Row noGutters className="mb-2">

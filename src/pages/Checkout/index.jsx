@@ -53,11 +53,11 @@ const Checkout = () => {
     <main>
       <InfoBar title="CHECKOUT"></InfoBar>
 
-      <div className="container-xl px-0">
+      <div className="container-xl px-0 animate__zoomIn">
         <Row className="checkout mx-0 mr-md-n3">
           <Col md={5} className="resume">
             <h3>Resumen de compra</h3>
-            <Table>
+            <Table className="animate__slideInUp">
               <tbody>
                 {cart.map(elem => {
                   const { product, qty } = elem;

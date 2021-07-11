@@ -104,7 +104,6 @@ const Cart = () => {
         setSavedCart(null);
       });
   };
-  console.log(authUser);
   const cartDetailProps = {
     ...cartContext,
     handleSaveCart,

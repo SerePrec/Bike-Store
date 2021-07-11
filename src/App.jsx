@@ -13,6 +13,7 @@ import MyAccount from "./pages/MyAccount";
 import Register from "./pages/Register";
 import SearchItemListContainer from "./pages/SearchItemListContainer";
 import CartContextProvider from "./context/CartContext";
+import SearchesContextProvider from "./context/SearchesContext";
 import UserContextProvider from "./context/UserContext";
 import { useDollar } from "./hooks/useDollar";
 import "./App.scss";
@@ -26,35 +27,37 @@ function App() {
       <UserContextProvider>
         <CartContextProvider>
           <Header />
-          <Switch>
-            <Route exact path="/">
-              <Home dollar={dollar} />
-            </Route>
-            <Route exact path="/category/:catId">
-              <SearchItemListContainer />
-            </Route>
-            <Route exact path="/search">
-              <SearchItemListContainer />
-            </Route>
-            <Route exact path="/item/:itemId">
-              <ItemDetailContainer />
-            </Route>
-            <Route exact path="/cart">
-              <Cart />
-            </Route>
-            <PrivateRoute exact path="/checkout">
-              <Checkout />
-            </PrivateRoute>
-            <Route exact path="/myaccount">
-              <MyAccount />
-            </Route>
-            <Route exact path="/register">
-              <Register />
-            </Route>
-            <Route path="*">
-              <Error404 />
-            </Route>
-          </Switch>
+          <SearchesContextProvider>
+            <Switch>
+              <Route exact path="/">
+                <Home dollar={dollar} />
+              </Route>
+              <Route exact path="/category/:catId">
+                <SearchItemListContainer />
+              </Route>
+              <Route exact path="/search">
+                <SearchItemListContainer />
+              </Route>
+              <Route exact path="/item/:itemId">
+                <ItemDetailContainer />
+              </Route>
+              <Route exact path="/cart">
+                <Cart />
+              </Route>
+              <PrivateRoute exact path="/checkout">
+                <Checkout />
+              </PrivateRoute>
+              <Route exact path="/myaccount">
+                <MyAccount />
+              </Route>
+              <Route exact path="/register">
+                <Register />
+              </Route>
+              <Route path="*">
+                <Error404 />
+              </Route>
+            </Switch>
+          </SearchesContextProvider>
         </CartContextProvider>
       </UserContextProvider>
       <Footer />

@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams, useLocation } from "react-router-dom";
+import { SearchesContext } from "../context/SearchesContext";
 import { searchQuery } from "../utils/productsFilter";
 import { getFirestore } from "../firebase";
 
@@ -7,12 +8,25 @@ export const useSearch = () => {
   const [products, setProducts] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const { getSearch, addSearch } = useContext(SearchesContext);
   let { catId } = useParams();
   let { search, pathname } = useLocation();
 
   useEffect(() => {
     if (pathname === "/search") {
+      const getProdFiltered = allProducts => {
+        let query = new URLSearchParams(search);
+        let searchText = query.get("q").toLowerCase();
+        return searchQuery(allProducts, searchText);
+      };
       setIsLoading(true);
+      const allProducts = getSearch("all");
+      if (allProducts) {
+        const productsFiltered = getProdFiltered(allProducts);
+        setProducts(productsFiltered);
+        setIsLoading(false);
+        return;
+      }
       let mounted = true;
       const db = getFirestore();
       const itemsCollection = db.collection("items");
@@ -22,12 +36,11 @@ export const useSearch = () => {
           const allProducts = querySnapshot.docs.map(doc => {
             return { id: doc.id, ...doc.data() };
           });
-          let query = new URLSearchParams(search);
-          let searchText = query.get("q").toLowerCase();
-          const productsFiltered = searchQuery(allProducts, searchText);
+          const productsFiltered = getProdFiltered(allProducts);
           if (mounted) {
             setProducts(productsFiltered);
             setIsError(false);
+            addSearch("all", allProducts);
           }
         })
         .catch(error => {
@@ -51,11 +64,18 @@ export const useSearch = () => {
         mounted = false;
       };
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, pathname]);
 
   useEffect(() => {
     if (pathname !== "/search") {
       setIsLoading(true);
+      const searchesCache = getSearch(catId);
+      if (searchesCache) {
+        setProducts(searchesCache);
+        setIsLoading(false);
+        return;
+      }
       let mounted = true;
       const db = getFirestore();
       const itemsCollection = db.collection("items");
@@ -72,6 +92,7 @@ export const useSearch = () => {
           if (mounted) {
             setProducts(productsFiltered);
             setIsError(false);
+            addSearch(catId, productsFiltered);
           }
         })
         .catch(error => {
@@ -105,6 +126,7 @@ export const useSearch = () => {
         mounted = false;
       };
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [catId, pathname]);
 
   return {
