@@ -7,12 +7,14 @@ import ItemCount from "../ItemCount";
 import ShipmentInfo from "../ShipmentInfo";
 import TypicButton from "../TypicButton";
 import { priceFormat } from "../../utils/priceFormat";
+import { modalMessages } from "../../utils/cartModalMessages";
 import cartIcon from "../../assets/img/icon_cart2.png";
 import "./ItemDetail.scss";
 
-const ItemDetail = ({ product }) => {
+const ItemDetail = ({ product, handleShowModal, setContentModal }) => {
   const [addedItemQuantity, setAddedItemQuantity] = useState(null);
-  const { addToCart, isInCart, getFromCart } = useContext(CartContext);
+  const { addToCart, isInCart, getFromCart, checkCartLength } =
+    useContext(CartContext);
 
   let {
     id,
@@ -28,8 +30,13 @@ const ItemDetail = ({ product }) => {
 
   const onAdd = qty => {
     const selection = { product, qty };
-    const addedQty = addToCart(selection);
-    setAddedItemQuantity(addedQty);
+    if (isInCart(id) || checkCartLength()) {
+      const addedQty = addToCart(selection);
+      setAddedItemQuantity(addedQty);
+    } else {
+      setContentModal(modalMessages[8]);
+      handleShowModal();
+    }
   };
 
   const inCart = isInCart(id);
@@ -74,7 +81,7 @@ const ItemDetail = ({ product }) => {
               animation="animate__fadeIn"
             />
           ) : (
-            <p className="productDetail_stock">Disponible: {stock}u</p>
+            <p className="productDetail_stock">Stock: {stock}u</p>
           )}
           {inCart && !(addedItemQuantity > 0) && (
             <p className="productDetail_inCart">

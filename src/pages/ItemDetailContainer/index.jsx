@@ -1,59 +1,78 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
+import { useModal } from "../../hooks/useModal";
+import CartModal from "../../components/CartModal";
 import InfoBar from "../../components/InfoBar";
 import ItemDetail from "../../components/ItemDetail";
 import Loader from "../../components/Loader";
+import { getFirestore } from "../../firebase";
+import { modalMessages } from "../../utils/cartModalMessages";
 import "./ItemDetailcontainer.scss";
-
-//TODO:
-import productsServer from "../../utils/productos.json";
 
 const ItemDetailContainer = () => {
   const [product, setProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const {
+    showModal,
+    contentModal,
+    setContentModal,
+    handleShowModal,
+    handleCloseModal
+  } = useModal(modalMessages[0]);
+
   let { itemId } = useParams();
 
   useEffect(() => {
-    let temp;
     setIsLoading(true);
-    const getProduct = () =>
-      new Promise((resolve, reject) => {
-        temp = setTimeout(() => {
-          const product = productsServer.find(elem => elem.id === itemId);
-          resolve(product);
-          // reject({
-          //   title: "Error de Carga",
-          //   msg1: "Intenta recargar la página o regresa más tarde.",
-          //   msg2: "Disculpe las molestias."
-          // });
-        }, 2000);
-      });
-
-    getProduct()
-      .then(res => {
-        if (!res) {
-          return Promise.reject({
-            title: "Producto Inexistente",
-            msg1: "Es posible que el producto se haya discontinuado o no exista.",
-            msg2: "Disculpe las molestias."
-          });
+    let mounted = true;
+    const db = getFirestore();
+    const itemsCollection = db.collection("items");
+    const docRef = itemsCollection.doc(itemId);
+    docRef
+      .get()
+      .then(doc => {
+        if (doc.exists && mounted) {
+          const product = { id: doc.id, ...doc.data() };
+          setProduct(product);
+          setIsError(false);
+        } else {
+          return Promise.reject("noProduct");
         }
-        setProduct(res);
-        setIsError(false);
       })
-      .catch(err => {
-        setProduct(null);
-        setIsError(err);
+      .catch(error => {
+        if (mounted) {
+          let errorMsg;
+          if (error === "noProduct") {
+            errorMsg = {
+              title: "Producto Inexistente",
+              msg1: "Es posible que el producto se haya discontinuado o no exista.",
+              msg2: "Disculpe las molestias."
+            };
+          } else {
+            errorMsg = {
+              title: "Error de Carga",
+              msg1: "Intenta recargar la página o regresa más tarde.",
+              msg2: "Disculpe las molestias."
+            };
+          }
+          setProduct(null);
+          setIsError(errorMsg);
+        }
+        console.log("Error obteniendo productos: ", error);
       })
       .finally(() => {
-        setIsLoading(false);
+        if (mounted) {
+          setIsLoading(false);
+        }
       });
 
     return () => {
-      clearInterval(temp);
+      mounted = false;
     };
   }, [itemId]);
+
+  const cartModalProps = { showModal, handleCloseModal, contentModal };
 
   return (
     <main>
@@ -67,8 +86,15 @@ const ItemDetailContainer = () => {
           <Loader message={{ title: "Cargando Detalle Del Producto..." }} />
         )}
         {isError && <Loader message={isError} />}
-        {product && <ItemDetail product={product}></ItemDetail>}
+        {product && (
+          <ItemDetail
+            product={product}
+            handleShowModal={handleShowModal}
+            setContentModal={setContentModal}
+          ></ItemDetail>
+        )}
       </div>
+      <CartModal {...cartModalProps} />
     </main>
   );
 };

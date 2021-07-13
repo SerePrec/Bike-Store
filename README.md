@@ -161,7 +161,7 @@ Mediante "conditional render" se muestra y dan estilos a diferentes elementos, s
 
 Pasa las props al componente ItemCount en base a los datos del producto.
 
-Este componente consume el CartContext y determina si el producto que representa se encuentra ya en el carrito. De ser así, muestra la información de la cantidad del producto que ya se encuentra seleccionada en el carrito.
+Este componente consume el CartContext y determina si el producto que representa se encuentra ya en el carrito. De ser así, muestra la información de la cantidad del producto que ya se encuentra seleccionada en el carrito. También determina del context si la cantidad de productos **distintos** es superior a 10 y alerta con un modal de la situación, evitando incorporar nuevos productos diferentes a los que ya se encuentran. Este límite se debe a una restricción en un tipo de consulta que se lleva a cabo a la base de datos cuando el usuario recupera un carrito previamente guardado por él. Para evitar exceder este límite impuesto por **Firestore** en ese tipo de consultas por array de valores, es que se impone este límite, que es mucho más que lógico para una bicicletería y de compras minoristas online. Igualmente, si se quiere comparar más allá de este límite de 10 productos **diferentes**, es posible separar la compra en diferentes órdenes.
 
 Aparte de lo anterior, setea el valor disponible teniendo en cuanta el stock del producto y restando lo que ya esta en el carrito. De esta manera, pasando por props al ItemCount, se setea la lógica de éste ultimo con este nuevo valor límite. Evitando dar la opción al usuario de “pasarse” de la cantidad disponible (que igualmente valida la función addTocart).
 
@@ -307,6 +307,8 @@ Dentro de la función addToCart, verifica si el producto se encuentra ya en el c
 
 En caso de que el producto ya exista, hace una validación de si la cantidad existente más la que se pretende agregar es menor o igual al stock del producto. En caso de serlo, agrega esa cantidad enviada por el usuario a la ya existente (evitándose duplicar el producto) y retorna la cantidad agregada, que el ItemDetail maneja idénticamente al caso anterior. De lo contrario, no agrega nada y devuelve el valor negativo por el que se superaría el stock en caso de agregarse la cantidad pretendida.
 
+Las funcionalidades `checkInRange` y `checkCartLength` están vinculadas al guardado del carrito por parte del usuario de manera permanente. Son útiles para limitar el tamaño del carrito a 10 productos **diferentes** (no limita la cantidad de unidades por producto) y para verificar que una vez recuperado un carrito con cantidades por encima de los valores actuales de stock, se ajusten sus valores dentro de la disponibilidad actual para permitir continuar con el checkout. . El límite de 10 productos **diferentes**, se debe a la máxima capacidad de consulta simultanea por ids a la base de datos utilizada en el proyecto, **Firestore**. Esta posee un método de consulta para traer todos los documentos cuyos campos coincidan con los valores de un array, pero este array no puede superar la longitud de 10.
+
 Finalmente posee una función que se ejecuta por única vez en el `useState` para determinar su valor inicial. Si se encuentra en el `sessionStorage` una variable "myMammothCart" con un arreglo de productos y cantidades, setea el valor inicial con el de esta variable. Caso contrario, se seta en un arreglo vacío `[]`.
 
 ### Componente CartWidget
@@ -349,7 +351,15 @@ Aparte de este guardado por defecto, se da la posibilidad al usuario de guardar 
 
 Esta tarea se lleva a cabo entre los componentes Cart, CartDetail y EmpyCart junto al CartContext. Cuando se clickea en guardar carrito, se llama a la función del context para almacenar el mismo en el localStorage. Luego al entrar en el Emptycart, se chequea si hay uno guardado y se notifica de ser cierto, presentando un botón para tal fin.
 
-Cuando se acepta recuperar un carrito, se procede a una validación del mismo con la base de datos recorriendo cada producto del carrito guardado. Se traen los productos a fin de verificar si aún siguen siendo válidos. De ser así, se toman los precios vigentes y luego se analiza su stock vs la cantidad que se había seleccionado al momento de guardarlo. En caso de tener suficiente stock, se procede a cargarlo, de lo contrario se rechaza la carga de ese ítem. Finalmente se muestra un mensaje a través de un **Modal** de **React Bootstrap** informando si se pudieron cargar todos los productos con éxito, sólo alguno de ellos, o ninguno.
+Cuando se acepta recuperar un carrito, se procede a una validación del mismo con la base de datos recorriendo cada producto del carrito guardado. Se traen los productos a fin de verificar si aún siguen siendo válidos. De ser así, se toman los precios vigentes y luego se analiza su stock vs la cantidad que se había seleccionado al momento de guardarlo.
+
+Se generan distintas situaciones posibles que son informadas a través de un **Modal** de **React Bootstrap**:
+
+- En caso de que todos posean stock mayor ha seleccionado, se cargan directamente
+- En caso de que alguno de ellos posea un stock por debajo de la selección, se notifica y se pide que se actualice ese valor a uno coherente con la disponibilidad. Este producto se muestra con una alerta del ItemCount, que hasta que no se solucione no permite avanzar con el checkout, desapareciendo el botón del mismo y dando lugar a un warning.
+- En caso en que alguno ya no posea stock, se elimina directamente del carrito y se notifica de esto
+- Casos donde suceden las dos situaciones más arriba mencionadas, son informados con un mensaje diferente a fin que el usuario sepa de los dos eventos
+- Casos en que ningún ítem quede disponible de los que tenía seleccionados al guardar, también es notificado con un mensaje personalizado
 
 ### Hooks personalizados
 
@@ -362,6 +372,10 @@ Listado a modo de resumen ya que se mencionan en cada sección específica
 - `useFilters`: Hace uso del hook `useState` y diversas funciones contenidas en el archivo `productsFilter.js` de la carpeta `utils`. Contiene las funcionalidades para el manejo de los filtros dentro del SearchItemListContainer
 
 - `useSearch`: Hace uso de los hooks `useState`, `useEffect`, `useParams`, `useLocation` y de algunas funciones contenidas en la carpeta `utils`. Contiene la lógica completa relacionada a la petición a la base de datos de los productos que son consultados. Maneja el estado de loading y de error.
+
+- `usePrevious`: Hace uso de los hooks `useRef`y `useEffect`. Sirve para guardar en una referencia, una "instantánea" de un estado previo, sin la necesidad de re-renders al cambiar este valor de referencia.
+
+- `useModal`: Hace uso del hook `useState` junto a unas funciones callback. Sirve para manejar la lógica en común a las ventanas modales.
 
 ---
 

@@ -1,11 +1,12 @@
 import React, { useState, useContext, useCallback } from "react";
+import { useModal } from "../../hooks/useModal";
 import { CartContext } from "../../context/CartContext";
 import CartDetail from "../../components/CartDetail";
 import CartModal from "../../components/CartModal";
 import EmptyCart from "../../components/EmptyCart";
 import InfoBar from "../../components/InfoBar";
-import { getProducts } from "../../utils/getProducts";
 import { modalMessages } from "../../utils/cartModalMessages";
+import { getFirestore, fieldPathId } from "../../firebase";
 import iconCart from "../../assets/img/icon_cart2.png";
 import "./Cart.scss";
 
@@ -14,23 +15,20 @@ const Cart = () => {
 
   const [savedCart, setSavedCart] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  //const [isError, setIsError] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [contentModal, setContentModal] = useState(modalMessages[0]);
+  const {
+    showModal,
+    contentModal,
+    setContentModal,
+    handleShowModal,
+    handleCloseModal
+  } = useModal(modalMessages[0]);
 
   const { cart, setCart, saveCartInLocalStorage } = cartContext;
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setContentModal(modalMessages[0]);
-  };
-
-  const handleShowModal = () => setShowModal(true);
 
   const handleSaveCart = () => {
     saveCartInLocalStorage();
     handleShowModal();
-    setContentModal(modalMessages[5]);
+    setContentModal(modalMessages[7]);
   };
 
   const getSavedCart = useCallback(() => {
@@ -55,36 +53,48 @@ const Cart = () => {
   const loadSavedCart = () => {
     setIsLoading(true);
     let modalMsg;
+    let outOfRange = false;
     const dataSavedCart = savedCart.map(elem => {
       return { id: elem.product.id, qty: elem.qty };
     });
-    return getProducts()
-      .then(res => {
+    const savedCartIds = dataSavedCart.map(elem => elem.id);
+    const db = getFirestore();
+    const itemsCollection = db.collection("items");
+    // Se fijo por validaciones previas la longitud máxima de productos diferentes del carrito a 10.
+    const query = itemsCollection.where(fieldPathId(), "in", savedCartIds);
+    query
+      .get()
+      .then(querySnapshot => {
         const checkedCart = [];
-        res.forEach(product => {
-          for (const data of dataSavedCart) {
-            if (product.id === data.id && product.stock >= data.qty) {
-              const qty = data.qty;
-              checkedCart.push({ product, qty });
-            }
+        querySnapshot.docs.forEach(doc => {
+          const match = dataSavedCart.find(elem => elem.id === doc.id);
+          if (doc.data().stock > 0) {
+            const qty = match.qty;
+            checkedCart.push({ product: { id: doc.id, ...doc.data() }, qty });
+            if (doc.data().stock < match.qty) outOfRange = true;
           }
         });
         setCart(checkedCart);
         localStorage.removeItem("myMammothSavedCart");
         if (savedCart.length === checkedCart.length) {
-          modalMsg = modalMessages[1];
+          if (outOfRange) {
+            modalMsg = modalMessages[2];
+          } else {
+            modalMsg = modalMessages[1];
+          }
         } else if (checkedCart.length === 0) {
-          modalMsg = modalMessages[3];
+          modalMsg = modalMessages[5];
         } else {
-          modalMsg = modalMessages[2];
+          if (outOfRange) {
+            modalMsg = modalMessages[3];
+          } else {
+            modalMsg = modalMessages[4];
+          }
         }
         setContentModal(modalMsg);
       })
-      .catch(err => {
-        setCart(null);
-        setContentModal(modalMessages[4]);
-        //setIsError(err);
-        //setIsLoading(false);
+      .catch(error => {
+        setContentModal(modalMessages[6]);
       })
       .finally(() => {
         handleShowModal();

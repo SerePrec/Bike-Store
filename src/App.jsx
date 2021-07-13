@@ -8,21 +8,18 @@ import Header from "./components/Header";
 import Home from "./pages/Home";
 import ScrollToTop from "./components/ScrollToTop";
 import SearchItemListContainer from "./pages/SearchItemListContainer";
-import { useCategories } from "./hooks/useCategories";
 import { useDollar } from "./hooks/useDollar";
 import ItemDetailContainer from "./pages/ItemDetailContainer";
 import "./App.scss";
 
 function App() {
-  const { categories } = useCategories();
-
   const { dollar } = useDollar();
 
   return (
     <Router>
       <ScrollToTop />
       <CartContextProvider>
-        <Header categories={categories} />
+        <Header />
         <Switch>
           <Route exact path="/">
             <Home dollar={dollar} />

@@ -27,6 +27,13 @@ const CartContextProvider = ({ children, defaultValue = [] }) => {
     0
   );
 
+  const checkInRange = !cart.some(elem => elem.qty > elem.product.stock);
+
+  const checkCartLength = () => {
+    if (cart.length < 10) return true;
+    return false;
+  };
+
   const getFromCart = id => {
     return cart.find(elem => elem.product.id === id);
   };
@@ -97,6 +104,8 @@ const CartContextProvider = ({ children, defaultValue = [] }) => {
         setCart,
         totQtyInCart,
         totPriceInCart,
+        checkInRange,
+        checkCartLength,
         isInCart,
         getFromCart,
         addToCart,

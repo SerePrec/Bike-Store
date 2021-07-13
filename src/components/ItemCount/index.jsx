@@ -83,7 +83,9 @@ const ItemCount = ({ stock, initial, onAdd, inCart }) => {
       )}
       {quantity > stock && (
         <InfoMessage
-          msg={`Stock insuficiente. Disponible ${stock}u`}
+          msg={`Stock insuficiente.${
+            stock >= 0 ? ` Disponible ${stock}u` : " Revisa disponibilidad"
+          }`}
           type="danger"
           animation="animate__slideInUp"
         />
