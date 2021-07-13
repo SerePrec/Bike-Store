@@ -6,6 +6,11 @@ const interesCuota = [
   { cuotas: 18, interes: 30 }
 ];
 
+export const getInt = partials => {
+  let aux = interesCuota.find(elem => elem.cuotas === partials) || {};
+  return aux.interes;
+};
+
 export const pricePartialPay = (price, partials) => {
   const aux = interesCuota.find(elem => elem.cuotas === partials);
   if (!aux) return { totPrice: null, partPrice: null };

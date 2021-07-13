@@ -11,8 +11,12 @@ import cartIcon from "../../assets/img/icon_cart2.png";
 import "./Checkout.scss";
 
 import { priceFormat } from "../../utils/priceFormat";
-import { pricePartialPay } from "../../utils/taxes";
+import { pricePartialPay, getInt } from "../../utils/taxes";
 import TypicButton from "../../components/TypicButton";
+
+import houseIcon from "../../assets/img/casa.svg";
+import truckIcon from "../../assets/img/camion.svg";
+import { fakeShipment } from "../../utils/fakeShipment";
 
 const Checkout = () => {
   const { cart, totQtyInCart, totPriceInCart, checkInRange } =
@@ -26,6 +30,7 @@ const Checkout = () => {
     phone: "",
     email: authUser.email,
     adress: "",
+    cp: "",
     partialsQty: "1",
     cardNum1: "",
     cardNum2: "",
@@ -37,6 +42,10 @@ const Checkout = () => {
     cardCVV: ""
   });
 
+  const { form: form2, handleChange: handleChange2 } = useSetForm({
+    shipment: "1"
+  });
+
   const handleSubmit = (e, form) => {
     e.preventDefault();
     const regForm = e.currentTarget;
@@ -46,6 +55,10 @@ const Checkout = () => {
     }
     alert("A PAGAR....");
   };
+
+  const shipmentCost = fakeShipment(cart);
+  let totalPrice =
+    form2.shipment === "1" ? totPriceInCart + shipmentCost : totPriceInCart;
 
   if (!(totQtyInCart > 0 && checkInRange))
     return <Redirect to="/cart"></Redirect>;
@@ -67,8 +80,63 @@ const Checkout = () => {
                 })}
               </tbody>
             </Table>
+            <div className="subTot">
+              <p>Total en productos ${priceFormat(totPriceInCart)}</p>
+            </div>
+            <h4>Envío</h4>
+
+            <Form.Group as={Row} className="shipment">
+              <Col sm={12}>
+                <Form.Check
+                  type="radio"
+                  name="shipment"
+                  value="1"
+                  label={
+                    <>
+                      <div>
+                        <img src={truckIcon} alt="" />
+                        Envío a domicilio
+                      </div>
+                      <span>
+                        {shipmentCost > 0
+                          ? `$${priceFormat(shipmentCost)}`
+                          : "GRATIS"}
+                      </span>
+                    </>
+                  }
+                  checked={form2.shipment === "1"}
+                  onChange={handleChange2}
+                  id="inputRadioA"
+                />
+                <Form.Check
+                  type="radio"
+                  name="shipment"
+                  value="0"
+                  label={
+                    <>
+                      <div>
+                        <img src={houseIcon} alt="" />
+                        Retiro por sucursal
+                      </div>
+                      <span>GRATIS</span>
+                    </>
+                  }
+                  checked={form2.shipment === "0"}
+                  onChange={handleChange2}
+                  id="inputRadioB"
+                />
+              </Col>
+            </Form.Group>
+            <div className="subTot">
+              <p>
+                Costo de envío $
+                {form2.shipment === "1" ? priceFormat(shipmentCost) : "0,00"}
+              </p>
+            </div>
             <div className="totalPrice">
-              <p>Total de compra ${priceFormat(totPriceInCart)}</p>
+              <p>
+                TOTAL DE COMPRA <span>${priceFormat(totalPrice)}</span>
+              </p>
             </div>
           </Col>
 
@@ -140,27 +208,54 @@ const Checkout = () => {
                   </Form.Control.Feedback>
                 </Col>
               </Form.Group>
-              <Form.Group as={Row} controlId="inputAdress">
-                <Form.Label column sm="2">
-                  Dirección
-                </Form.Label>
-                <Col sm="10">
-                  <Form.Control
-                    type="text"
-                    name="adress"
-                    value={form.adress}
-                    placeholder="Ingresa tu dirección COMPLETA"
-                    onChange={handleChange}
-                    required={true}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Completa este campo.
-                  </Form.Control.Feedback>
-                  <Form.Text>
-                    Es la dirección a la que enviaremos tu pedido
-                  </Form.Text>
-                </Col>
-              </Form.Group>
+              <div
+                className={`optional ${
+                  form2.shipment !== "1" ? "disabled" : ""
+                }`}
+              >
+                <Form.Group as={Row} controlId="inputAdress">
+                  <Form.Label column sm="2">
+                    Dirección
+                  </Form.Label>
+                  <Col sm="10">
+                    <Form.Control
+                      type="text"
+                      name="adress"
+                      value={form.adress}
+                      placeholder="Ingresa tu dirección COMPLETA"
+                      onChange={handleChange}
+                      required={form2.shipment === "1"}
+                      disabled={form2.shipment !== "1"}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Completa este campo.
+                    </Form.Control.Feedback>
+                    <Form.Text>
+                      Es la dirección a la que enviaremos tu pedido
+                    </Form.Text>
+                  </Col>
+                </Form.Group>
+                <Form.Group as={Row} controlId="inputCP">
+                  <Form.Label column xs="2">
+                    Código Postal
+                  </Form.Label>
+                  <Col xs="5">
+                    <Form.Control
+                      type="text"
+                      name="cp"
+                      value={form.cp}
+                      placeholder="Ingresa el CP"
+                      onChange={handleChange}
+                      required={form2.shipment === "1"}
+                      disabled={form2.shipment !== "1"}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Completa este campo.
+                    </Form.Control.Feedback>
+                    <Form.Text>CP de la dirección de envío</Form.Text>
+                  </Col>
+                </Form.Group>
+              </div>
               <fieldset className="py-3 partialPayments">
                 <Form.Group as={Row}>
                   <Form.Label as="legend" column sm={2} className="pt-0 pr-0">
@@ -169,9 +264,7 @@ const Checkout = () => {
                   <Col sm={10}>
                     <Form.Check
                       type="radio"
-                      label={
-                        <span>1 Cuota de ${priceFormat(totPriceInCart)}</span>
-                      }
+                      label={<span>1 Cuota de ${priceFormat(totalPrice)}</span>}
                       name="partialsQty"
                       value="1"
                       checked={form.partialsQty === "1"}
@@ -184,16 +277,12 @@ const Checkout = () => {
                         <>
                           <span>
                             3 Cuotas de $
-                            {priceFormat(
-                              pricePartialPay(totPriceInCart, 3).part
-                            )}
+                            {priceFormat(pricePartialPay(totalPrice, 3).part)}
                           </span>
                           <i>
                             {" "}
-                            (Int.: 8%) Total: $
-                            {priceFormat(
-                              pricePartialPay(totPriceInCart, 3).tot
-                            )}
+                            (Int.: {getInt(3)}%) Total: $
+                            {priceFormat(pricePartialPay(totalPrice, 3).tot)}
                           </i>
                         </>
                       }
@@ -209,16 +298,12 @@ const Checkout = () => {
                         <>
                           <span>
                             6 Cuotas de $
-                            {priceFormat(
-                              pricePartialPay(totPriceInCart, 6).part
-                            )}
+                            {priceFormat(pricePartialPay(totalPrice, 6).part)}
                           </span>
                           <i>
                             {" "}
-                            (Int.: 12%) Total: $
-                            {priceFormat(
-                              pricePartialPay(totPriceInCart, 6).tot
-                            )}
+                            (Int.:{getInt(6)}%) Total: $
+                            {priceFormat(pricePartialPay(totalPrice, 6).tot)}
                           </i>
                         </>
                       }
@@ -234,16 +319,12 @@ const Checkout = () => {
                         <>
                           <span>
                             12 Cuotas de $
-                            {priceFormat(
-                              pricePartialPay(totPriceInCart, 12).part
-                            )}
+                            {priceFormat(pricePartialPay(totalPrice, 12).part)}
                           </span>
                           <i>
                             {" "}
-                            (Int.: 20%) Total: $
-                            {priceFormat(
-                              pricePartialPay(totPriceInCart, 12).tot
-                            )}
+                            (Int.: {getInt(12)}%) Total: $
+                            {priceFormat(pricePartialPay(totalPrice, 12).tot)}
                           </i>
                         </>
                       }
@@ -259,16 +340,12 @@ const Checkout = () => {
                         <>
                           <span>
                             18 Cuotas de $
-                            {priceFormat(
-                              pricePartialPay(totPriceInCart, 18).part
-                            )}
+                            {priceFormat(pricePartialPay(totalPrice, 18).part)}
                           </span>
                           <i>
                             {" "}
-                            (Int.: 30%) Total: $
-                            {priceFormat(
-                              pricePartialPay(totPriceInCart, 18).tot
-                            )}
+                            (Int.: {getInt(18)}%) Total: $
+                            {priceFormat(pricePartialPay(totalPrice, 18).tot)}
                           </i>
                         </>
                       }
@@ -299,7 +376,7 @@ const Checkout = () => {
                       maxLength="4"
                       pattern="[0-9]{4}"
                       title="4 números"
-                      required={true}
+                      required
                     />
                     <Form.Control.Feedback type="invalid">
                       Completar
@@ -316,7 +393,7 @@ const Checkout = () => {
                       maxLength="4"
                       pattern="[0-9]{4}"
                       title="4 números"
-                      required={true}
+                      required
                     />
                     <Form.Control.Feedback type="invalid">
                       Completar
@@ -333,7 +410,7 @@ const Checkout = () => {
                       maxLength="4"
                       pattern="[0-9]{4}"
                       title="4 números"
-                      required={true}
+                      required
                     />
                     <Form.Control.Feedback type="invalid">
                       Completar
@@ -350,7 +427,7 @@ const Checkout = () => {
                       maxLength="4"
                       pattern="[0-9]{4}"
                       title="4 números"
-                      required={true}
+                      required
                     />
                     <Form.Control.Feedback type="invalid">
                       Completar
@@ -388,7 +465,7 @@ const Checkout = () => {
                       maxLength="2"
                       pattern="(0[0-9]|1[0-2])"
                       title="Mes Formato MM"
-                      required={true}
+                      required
                     />
                     <Form.Control.Feedback type="invalid">
                       Completar
@@ -405,7 +482,7 @@ const Checkout = () => {
                       maxLength="2"
                       pattern="(2[1-9]|[3-9][0-9])"
                       title="Mes Formato YY"
-                      required={true}
+                      required
                     />
                     <Form.Control.Feedback type="invalid">
                       Completar
@@ -422,7 +499,7 @@ const Checkout = () => {
                       maxLength="3"
                       pattern="[0-9]{3}"
                       title="3 números"
-                      required={true}
+                      required
                     />
                     <Form.Control.Feedback type="invalid">
                       Completar
