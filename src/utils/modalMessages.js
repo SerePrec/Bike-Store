@@ -52,5 +52,35 @@ export const modalMessages = [
     msg1: "Alcanzaste el límite de 10 productos diferentes en tu carrito",
     msg2: "Si quieres agregar nuevos productos, deberás confirmar esta orden y generar una nueva agregando los restantes. El límite de productos diferentes por orden es de 10",
     msg3: "Disculpa las molestias."
+  },
+  {
+    title: "Carrito NO VALIDADO",
+    msg1: "Alguno de tus productos seleccionados ya no tienen disponibilidad suficiente",
+    msg2: "Es necesario que actualices esas cantidades al stock disponible o elimines el producto de tu carrito",
+    msg3: "Cuando completes la actualización podrás reiniciar el checkout. Disculpa las molestias."
+  },
+  {
+    title: "Carrito NO VALIDADO",
+    msg1: "Alguno de tus productos seleccionados ya no tienen disponibilidad suficiente y otros fueron removidos por agotarse el stock del mismo",
+    msg2: "Es necesario que actualices esas cantidades al stock disponible o elimines el producto de tu carrito",
+    msg3: "Cuando completes la actualización podrás reiniciar el checkout. Disculpa las molestias"
+  },
+  {
+    title: "Carrito NO VALIDADO",
+    msg1: "Alguno de tus productos seleccionados fueron removidos del carrito.",
+    msg2: "Ya se agotó el stock de esos productos",
+    msg3: "Si aún estas de acuerdo con la compra, puedes reiniciar el checkout. Disculpa las molestias."
+  },
+  {
+    title: "Carrito NO VALIDADO",
+    msg1: "No pudimos validar ninguno de tus productos",
+    msg2: "Ya no disponemos de stock para ninguno de ellos.",
+    msg3: "Disculpa las molestias."
+  },
+  {
+    title: "No pudimos validar tu carrito",
+    msg1: "Ha ocurrido un error, inténtalo nuevamente o más tarde.",
+    msg2: "Puede que exista un problema momentaneo con la conexión a nuestra base de datos",
+    msg3: "Disculpa las molestias."
   }
 ];

@@ -1,10 +1,20 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
-import "./CartModal.scss";
+import "./OrderModal.scss";
 
-const CartModal = ({ showModal, handleCloseModal, contentModal, backdrop }) => {
+const OrderModal = ({
+  showModal,
+  handleCloseModal,
+  contentModal,
+  error,
+  backdrop
+}) => {
   return (
-    <Modal show={showModal} backdrop={backdrop} dialogClassName="cartModal">
+    <Modal
+      show={showModal}
+      backdrop={backdrop}
+      dialogClassName={`orderModal ${error ? "error" : ""}`}
+    >
       <Modal.Header className="justify-content-center">
         <Modal.Title>{contentModal.title}</Modal.Title>
       </Modal.Header>
@@ -12,6 +22,7 @@ const CartModal = ({ showModal, handleCloseModal, contentModal, backdrop }) => {
         <p>{contentModal.msg1}</p>
         <p>{contentModal.msg2}</p>
         <p>{contentModal.msg3}</p>
+        {!error && <p>Muchas Gracias por tu compra!</p>}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="dark" onClick={handleCloseModal}>
@@ -22,4 +33,4 @@ const CartModal = ({ showModal, handleCloseModal, contentModal, backdrop }) => {
   );
 };
 
-export default CartModal;
+export default OrderModal;

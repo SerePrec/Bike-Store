@@ -6,7 +6,7 @@ import InfoBar from "../../components/InfoBar";
 import ItemDetail from "../../components/ItemDetail";
 import Loader from "../../components/Loader";
 import { getFirestore } from "../../firebase";
-import { modalMessages } from "../../utils/cartModalMessages";
+import { modalMessages } from "../../utils/modalMessages";
 import "./ItemDetailcontainer.scss";
 
 const ItemDetailContainer = () => {

@@ -6,7 +6,7 @@ import CartDetail from "../../components/CartDetail";
 import CartModal from "../../components/CartModal";
 import EmptyCart from "../../components/EmptyCart";
 import InfoBar from "../../components/InfoBar";
-import { modalMessages } from "../../utils/cartModalMessages";
+import { modalMessages } from "../../utils/modalMessages";
 import { getFirestore, fieldPathId } from "../../firebase";
 import iconCart from "../../assets/img/icon_cart2.png";
 import "./Cart.scss";
@@ -104,6 +104,7 @@ const Cart = () => {
         setSavedCart(null);
       });
   };
+
   const cartDetailProps = {
     ...cartContext,
     handleSaveCart,

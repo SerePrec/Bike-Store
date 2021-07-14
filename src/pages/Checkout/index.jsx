@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Row, Col, Table, Form } from "react-bootstrap";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
 import InfoBar from "../../components/InfoBar";
 import ResumeRow from "../../components/ResumeRow";
 import { CartContext } from "../../context/CartContext";
@@ -17,13 +17,23 @@ import TypicButton from "../../components/TypicButton";
 import houseIcon from "../../assets/img/casa.svg";
 import truckIcon from "../../assets/img/camion.svg";
 import { fakeShipment } from "../../utils/fakeShipment";
+import CartModal from "../../components/CartModal";
+import { useModal } from "../../hooks/useModal";
+import { modalMessages } from "../../utils/modalMessages";
+import LoaderModal from "../../components/LoaderModal";
+import { fieldPathId, getFirestore, firestoreTimeStamp } from "../../firebase";
+import { useRef } from "react";
+import OrderModal from "../../components/OrderModal";
 
 const Checkout = () => {
-  const { cart, totQtyInCart, totPriceInCart, checkInRange } =
+  const { cart, setCart, totQtyInCart, totPriceInCart, checkInRange } =
     useContext(CartContext);
   const { authUser } = useContext(UserContext);
 
   const [validated, setValidated] = useState(false);
+  const [orderId, setOrderId] = useState(null);
+  const [isError, setIsError] = useState(null);
+  let history = useHistory();
 
   const { form, handleChange } = useSetForm({
     name: "",
@@ -46,21 +56,251 @@ const Checkout = () => {
     shipment: "1"
   });
 
-  const handleSubmit = (e, form) => {
-    e.preventDefault();
-    const regForm = e.currentTarget;
-    if (regForm.checkValidity() === false) {
-      setValidated(true);
-      return;
-    }
-    alert("A PAGAR....");
-  };
+  const active = useRef(false);
+
+  const {
+    showModal,
+    contentModal,
+    setContentModal,
+    handleShowModal,
+    handleCloseModal
+  } = useModal(modalMessages[0]);
+
+  const {
+    showModal: showModalLoad,
+    contentModal: contentModalLoad,
+    setContentModal: setContentModalLoad,
+    handleShowModal: handleShowModalLoad,
+    handleCloseModal: handleCloseModalLoad
+  } = useModal({ title: "" });
+
+  const {
+    showModal: showModalOrder,
+    contentModal: contentModalOrder,
+    setContentModal: setContentModalOrder,
+    handleShowModal: handleShowModalOrder,
+    handleCloseModal: handleCloseModalOrder
+  } = useModal(modalMessages[0]);
 
   const shipmentCost = fakeShipment(cart);
   let totalPrice =
     form2.shipment === "1" ? totPriceInCart + shipmentCost : totPriceInCart;
 
-  if (!(totQtyInCart > 0 && checkInRange))
+  const goCart = () => {
+    active.current = false;
+    handleCloseModal();
+  };
+
+  const goHome = () => {
+    handleCloseModal();
+    history.push("/");
+  };
+
+  const validateCart = () => {
+    setContentModalLoad({ title: "Validando productos" });
+    handleShowModalLoad();
+    let modalMsg;
+    let outOfRange = false;
+    const dataCart = cart.map(elem => {
+      return { id: elem.product.id, qty: elem.qty };
+    });
+    const cartIds = dataCart.map(elem => elem.id);
+    const db = getFirestore();
+    const itemsCollection = db.collection("items");
+    // Se fijo por validaciones previas la longitud máxima de productos diferentes del carrito a 10.
+    const query = itemsCollection.where(fieldPathId(), "in", cartIds);
+    return query
+      .get()
+      .then(querySnapshot => {
+        const checkedCart = [];
+        querySnapshot.docs.forEach(doc => {
+          const match = dataCart.find(elem => elem.id === doc.id);
+          if (doc.data().stock > 0) {
+            const qty = match.qty;
+            checkedCart.push({ product: { id: doc.id, ...doc.data() }, qty });
+            if (doc.data().stock < match.qty) outOfRange = true;
+          }
+        });
+        if (!outOfRange && cart.length === checkedCart.length) {
+          return Promise.resolve(true);
+        }
+        if (cart.length === checkedCart.length) {
+          modalMsg = modalMessages[9];
+        } else if (checkedCart.length === 0) {
+          modalMsg = modalMessages[12];
+        } else {
+          if (outOfRange) {
+            modalMsg = modalMessages[10];
+          } else {
+            modalMsg = modalMessages[11];
+          }
+        }
+        setContentModal(modalMsg);
+        handleCloseModalLoad();
+        setContentModalLoad({ title: "" });
+        handleShowModal();
+        setCart(checkedCart);
+      })
+      .catch(error => {
+        setContentModal(modalMessages[13]);
+        handleCloseModalLoad();
+        setContentModalLoad({ title: "" });
+        handleShowModal();
+        console.error("Error Validando Carrito: ", error);
+        return Promise.reject();
+      });
+  };
+
+  const fakePayment = () => {
+    setContentModalLoad({ title: "Procesando pago " });
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve("ok");
+        //reject("error de pago");
+      }, 2000);
+    }).catch(error => {
+      setContentModalOrder({
+        title: "No pudimos validar tu pago",
+        msg1: "Algo salió mal durante el proceso",
+        msg2: "Verifica los datos y saldo de tu tarjeta e intentalo nuevamente o en unos minutos",
+        msg3: "Disculpa las molestias."
+      });
+      setIsError(error);
+      handleCloseModalLoad();
+      setContentModalLoad({ title: "" });
+      handleShowModalOrder();
+      console.error("Hubo un error en el proceso de pago:", error);
+    });
+  };
+
+  const createOrder = () => {
+    const userInfo = {
+      name: form.name,
+      phone: form.phone,
+      email: authUser.email
+    };
+    const simplifyCart = cart.map(elem => {
+      const { product, qty } = elem;
+      const { id, title, pictureURL, price } = product;
+      const simplifyProduct = { id, title, pictureURL, price };
+      return { product: simplifyProduct, qty };
+    });
+    const shipmentInfo =
+      form2.shipment === "1"
+        ? { type: "Envío a domicilio", adress: form.adress, cp: form.cp }
+        : { type: "Retiro por sucursal" };
+
+    const subtotals = {
+      productsSub: totPriceInCart,
+      shipmentSub: shipmentCost,
+      financialSub: (getInt(parseInt(form.partialsQty)) / 100) * totalPrice
+    };
+
+    const newOrder = {
+      buyer: userInfo,
+      items: simplifyCart,
+      shipment: shipmentInfo,
+      total: pricePartialPay(totalPrice, parseInt(form.partialsQty)).tot,
+      subtotals,
+      date: firestoreTimeStamp(new Date())
+    };
+
+    const db = getFirestore();
+    const orders = db.collection("orders");
+    const userOrders = db
+      .collection("users")
+      .doc(authUser.uid)
+      .collection("orders");
+    return orders
+      .add(newOrder)
+      .then(({ id }) => {
+        setOrderId(id);
+        setCart([]);
+        return userOrders
+          .doc(id)
+          .set({ orderId: id, total: newOrder.total, date: newOrder.date })
+          .then(() => {
+            setContentModalOrder({
+              title: "Compra Registrada!",
+              msg1: "Tu compra finalizó con éxito y fue registrada con el identificador",
+              msg2: `${id}`,
+              msg3: "Más adelante podrás consultar tus órdenes en la sección MI CUENTA"
+            });
+          })
+          .catch(error => {
+            setContentModalOrder({
+              title: "Compra Registrada!",
+              msg1: "Tu compra fue registrada con el identificador",
+              msg2: `${id}`,
+              msg3: "Pero ocurrió un error que impidió registrarla en tu historial. Cualquier consulta al respecto, puedes comunicarte con nosotros a través de los canales oficiales."
+            });
+            console.error("Error guardando en usuario: ", error);
+          })
+          .finally(() => {
+            handleCloseModalLoad();
+            setContentModalLoad({ title: "" });
+            handleShowModalOrder();
+          });
+      })
+      .catch(error => {
+        console.error("Error creando orden: ", error);
+        return Promise.reject(error);
+      });
+  };
+
+  const handleSubmit = (e, form) => {
+    e.preventDefault();
+    active.current = true;
+    const regForm = e.currentTarget;
+    if (regForm.checkValidity() === false) {
+      setValidated(true);
+      return;
+    }
+    // Validando disponibilidad
+    validateCart()
+      .then(res => {
+        //simulando pago
+        if (res === true) {
+          return fakePayment();
+        }
+      })
+      .then(res => {
+        // generando orden
+        if (res === "ok") {
+          return createOrder();
+        }
+      })
+      .catch(error => {
+        setContentModalOrder({
+          title: "No pudimos confirmar tu pedido",
+          msg1: "Algo salió mal durante el proceso",
+          msg2: "Intentalo nuevamente o en unos minutos",
+          msg3: "Disculpa las molestias."
+        });
+        setIsError(error);
+        handleCloseModalLoad();
+        setContentModalLoad({ title: "" });
+        handleShowModalOrder();
+        console.error("Hubo un error en el procesamiento del pedido :", error);
+      });
+  };
+
+  const cartModalProps = {
+    showModal,
+    handleCloseModal: goCart,
+    contentModal,
+    backdrop: "static"
+  };
+
+  const orderModalProps = {
+    showModal: showModalOrder,
+    handleCloseModal: orderId ? goHome : handleCloseModalOrder,
+    contentModal: contentModalOrder,
+    error: !!isError,
+    backdrop: "static"
+  };
+
+  if (!((totQtyInCart > 0 && checkInRange) || active.current))
     return <Redirect to="/cart"></Redirect>;
   return (
     <main>
@@ -525,6 +765,12 @@ const Checkout = () => {
           </Col>
         </Row>
       </div>
+      <LoaderModal
+        showModal={showModalLoad}
+        contentModal={contentModalLoad}
+      ></LoaderModal>
+      <CartModal {...cartModalProps} />
+      <OrderModal {...orderModalProps} />
     </main>
   );
 };

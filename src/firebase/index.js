@@ -19,6 +19,11 @@ export const getFirestore = () => firebase.firestore(app);
 
 export const fieldPathId = () => firebase.firestore.FieldPath.documentId();
 
+export const fieldValue = () => firebase.firestore.FieldValue;
+
+export const firestoreTimeStamp = date =>
+  firebase.firestore.Timestamp.fromDate(date);
+
 export const getAuth = () => firebase.auth(app);
 
 export const authGoogleProvider = () => new firebase.auth.GoogleAuthProvider();
