@@ -57,6 +57,7 @@ const Checkout = () => {
   });
 
   const active = useRef(false);
+  const revertStockData = useRef([]);
 
   const {
     showModal,
@@ -97,7 +98,7 @@ const Checkout = () => {
   };
 
   const validateCart = () => {
-    setContentModalLoad({ title: "Validando productos" });
+    setContentModalLoad({ title: "Validando Productos" });
     handleShowModalLoad();
     let modalMsg;
     let outOfRange = false;
@@ -112,17 +113,27 @@ const Checkout = () => {
     return query
       .get()
       .then(querySnapshot => {
+        const batch = db.batch();
         const checkedCart = [];
+        const previousStockData = [];
         querySnapshot.docs.forEach(doc => {
           const match = dataCart.find(elem => elem.id === doc.id);
           if (doc.data().stock > 0) {
             const qty = match.qty;
             checkedCart.push({ product: { id: doc.id, ...doc.data() }, qty });
-            if (doc.data().stock < match.qty) outOfRange = true;
+            if (doc.data().stock >= match.qty) {
+              batch.update(doc.ref, { stock: doc.data().stock - match.qty });
+              previousStockData.push({ ref: doc.ref, stock: doc.data().stock });
+            } else {
+              outOfRange = true;
+            }
           }
         });
         if (!outOfRange && cart.length === checkedCart.length) {
-          return Promise.resolve(true);
+          return batch.commit().then(() => {
+            revertStockData.current = previousStockData;
+            return Promise.resolve(true);
+          });
         }
         if (cart.length === checkedCart.length) {
           modalMsg = modalMessages[9];
@@ -151,26 +162,45 @@ const Checkout = () => {
       });
   };
 
+  const setRevertStock = () => {
+    const db = getFirestore();
+    const batch = db.batch();
+    revertStockData.current.forEach(elem => {
+      batch.update(elem.ref, { stock: elem.stock });
+    });
+    batch.commit();
+  };
+
   const fakePayment = () => {
-    setContentModalLoad({ title: "Procesando pago " });
+    setContentModalLoad({ title: "Procesando Pago" });
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve("ok");
         //reject("error de pago");
       }, 2000);
-    }).catch(error => {
-      setContentModalOrder({
-        title: "No pudimos validar tu pago",
-        msg1: "Algo salió mal durante el proceso",
-        msg2: "Verifica los datos y saldo de tu tarjeta e intentalo nuevamente o en unos minutos",
-        msg3: "Disculpa las molestias."
+    })
+      .then(() => {
+        setContentModalLoad({ title: "Pago Aprobado" });
+        return new Promise(resolve => {
+          setTimeout(() => {
+            resolve("ok");
+          }, 1000);
+        });
+      })
+      .catch(error => {
+        setContentModalOrder({
+          title: "No pudimos validar tu pago",
+          msg1: "Algo salió mal durante el proceso",
+          msg2: "Verifica los datos y saldo de tu tarjeta e intentalo nuevamente o en unos minutos",
+          msg3: "Disculpa las molestias."
+        });
+        setRevertStock();
+        setIsError(true);
+        handleCloseModalLoad();
+        setContentModalLoad({ title: "" });
+        handleShowModalOrder();
+        console.error("Hubo un error en el proceso de pago:", error);
       });
-      setIsError(error);
-      handleCloseModalLoad();
-      setContentModalLoad({ title: "" });
-      handleShowModalOrder();
-      console.error("Hubo un error en el proceso de pago:", error);
-    });
   };
 
   const createOrder = () => {
@@ -192,7 +222,7 @@ const Checkout = () => {
 
     const subtotals = {
       productsSub: totPriceInCart,
-      shipmentSub: shipmentCost,
+      shipmentSub: form2.shipment === "1" ? shipmentCost : 0,
       financialSub: (getInt(parseInt(form.partialsQty)) / 100) * totalPrice
     };
 
@@ -272,12 +302,12 @@ const Checkout = () => {
       })
       .catch(error => {
         setContentModalOrder({
-          title: "No pudimos confirmar tu pedido",
+          title: "No pudimos registrar tu pedido",
           msg1: "Algo salió mal durante el proceso",
-          msg2: "Intentalo nuevamente o en unos minutos",
+          msg2: "No te preocupes si tu pago fue aprobado, ya reservamos tus productos. Comunicate con nosotros para solucionarlo a la brevedad",
           msg3: "Disculpa las molestias."
         });
-        setIsError(error);
+        setIsError(true);
         handleCloseModalLoad();
         setContentModalLoad({ title: "" });
         handleShowModalOrder();
