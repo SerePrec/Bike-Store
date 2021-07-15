@@ -1,0 +1,32 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.register {
+  color: $rojoMarca;
+  background-color: $tonoOscuro;
+  min-height: 40rem;
+
+  .breadcrumb {
+    justify-content: center;
+    h4 {
+      padding: 0;
+    }
+  }
+  .registerFormContainer {
+    width: 30rem;
+    margin: 3rem auto;
+    form.regOk {
+      opacity: 0.5;
+    }
+  }
+  .typicBtn {
+    font-weight: 500;
+  }
+
+  @include responsive(xs) {
+    .registerFormContainer {
+      width: 100%;
+      padding: 0 1rem;
+    }
+  }
+}

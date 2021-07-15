@@ -27,7 +27,7 @@ A continuación, hago un punteo de algunos temas referidos a la lógica funciona
 - Estructura de archivos
 - Componente NavBar
 - Componente BrandBanner
-- Promises y asincronía
+- Asincronía y peticiones Firebase
 - Componente ItemCount
 - Componente InfoMessage
 - Componente Item
@@ -46,6 +46,8 @@ A continuación, hago un punteo de algunos temas referidos a la lógica funciona
 - CartContext
 - Componente CartWidget
 - Componente Cart (CartDetail y EmptyCart)
+- Page MyAccount y Register
+- Page Checkout
 - Hooks personalizados
 
 ### Estructura de archivos
@@ -81,13 +83,29 @@ Esta maquetado con **React-Bootstrap** y presenta la siguiente funcionalidad:
 
 Sirve para representar el banner de marcas de la home page. Toma por props un array de objetos con los datos de cada ítem de marca (dirección web del sitio de la marca, imagen y nombre) y luego los mapea generando el banner mencionado.
 
-### Promises y asincronía
+### Asincronía y peticiones Firebase
 
-Utilicé 2 promesas. Una es la que pide el desafió que resuelva en 2seg los productos desde un archivo estático. La otra es para simular (dentro de cada ítem) la carga en tiempo aleatorio de las imágenes. En este caso hice un random entre 0 y 2seg.
+Finalmente, las promesas de los async mock iniciales fueron remplazadas por peticiones reales.
 
-En ambos casos utilicé loaders, que se encuentran activos mientras se realiza la petición y desaparecen luego de la respuesta.
+- Para obtener y mostrar en “home” el valor del dólar oficial, se hace un fetch a la API de **dolarsi.com**
 
-Para el caso de la promesa principal de los productos, generé un posible manejo del error, y lo dejé preparado como para probarlo (debajo del resolve hay un reject comentado para alternar y probar). En este componente del ItemListContainer hay 3 “estados”. Los productos, el loading y el error. Entonces en base a si la respuesta es correcta o errónea, muestro el listado de productos o un mensaje de error.
+- Respecto a las peticiones de los productos, me encontraba en la disyuntiva entre traer todos los productos al acceder a la App o ir trayendo los mismos de acuerdo a lo que el usuario vaya necesitando. Finalmente, y luego de ver como **Firestore** maneja los límites de pago y conteo de peticiones, adopte una opción mixta, que me pareció una buena solución, frente a las ventajas que tiene cada planteo.
+
+  No me terminaba de convencer la idea de traer SIEMPRE todo al entrar en el sitio, ya que si por ejemplo un usuario guardó en favoritos el link a un determinado producto, debería traer todo mi catálogo en lugar de 1 solo producto. Así mismo con las categorías, en donde si un usuario va por un determinado rubro, sería más optimo traer solo los productos contenidos en el mismo.
+
+  Pero lo anterior tiene la contra que si el usuario se pone a navegar de un lado para el otro repitiendo “búsquedas” (es decir, pasando varias veces por una categoría a otra), se realizan llamados innecesarios a la base de datos.
+
+  En base a todo lo anterior opte por mantener el llamado parcial a la BD (no traer todo al inicio), e ir guardando en una especie de cache manejado por el contexto `SearchesContext` los **grupos de productos** que ya fueron consultados. Así si accedo a la categoría “bicicletas” y luego navego a otra parte para luego volver a pasar por bicicletas, no se realizan 2 peticiones. Sólo se hace la primera vez y luego se maneja con el listado correspondiente guardado en un estado del contexto. \_**Nota:**\_Como **Firestore** no dispone actualmente de búsqueda por texto y además por no generar un plan de pago que sería necesario para utilizar una herramienta de terceros, generó una simulación de esta búsqueda, trayendo todos los productos y luego buscando el texto de manera local. Debido a lo anterior, como ya tengo todos los productos, también considero esta opción a la hora de saber si generar o no una petición a nuestra BD. En caso de haber realizado antes una búsqueda, ya no hago peticiones al acceder a nuevas búsquedas, categorías o home.
+
+  Para finalizar el tema referente a las peticiones de productos, lo que si me parece mejor dejar, son las peticiones que se generan al consultar individualmente un producto, ya que por un lado representa solo el pedido de 1 elemento y por otro me parece muy útil que la información se encuentre totalmente actualizada en ese momento, ya que es la que dará origen a componer nuestro carrito. Igualmente, antes de generarse la orden y efectivizar el pago, se rechequea el stock de cada producto.
+
+- A la hora de recuperar un carrito guardado en el localStorage por el usuario, se hace una petición a nuestra base de datos con los id de los productos presentes en el carrito (con un máximo de 10 diferentes que es lo que permite Firestore en una consulta)
+
+- En las Pages **MyAccount** y **Register** se hace una comunicación con Firestore para registrar un nuevo usuario o iniciar sesión o salir de la misma con uno previamente creado.
+
+//TODO:TODO: Continuar con las demás que se generen: validar stock, gernerar ordenes, ajustes de stock en funcion de ventas, pedir ordenes guardadas, favoritos, etc
+
+En todos los casos, se realiza un manejo de los errores dando lugar a diferentes mensajes al usuario.
 
 ### Componente Itemcount
 
@@ -356,10 +374,37 @@ Cuando se acepta recuperar un carrito, se procede a una validación del mismo co
 Se generan distintas situaciones posibles que son informadas a través de un **Modal** de **React Bootstrap**:
 
 - En caso de que todos posean stock mayor ha seleccionado, se cargan directamente
-- En caso de que alguno de ellos posea un stock por debajo de la selección, se notifica y se pide que se actualice ese valor a uno coherente con la disponibilidad. Este producto se muestra con una alerta del ItemCount, que hasta que no se solucione no permite avanzar con el checkout, desapareciendo el botón del mismo y dando lugar a un warning.
+- En caso de que alguno de ellos posea un stock por debajo de la selección, se notifica y se pide que se actualice ese valor a uno coherente con la disponibilidad. Este producto se muestra con una alerta del ItemCount, que hasta que no se solucione no permite avanzar con el checkout, desapareciendo el botón del mismo y dando lugar a un warning. Tampoco se muestra el precio total, ni el del item fuera de rango, ya que no sería correcto.
 - En caso en que alguno ya no posea stock, se elimina directamente del carrito y se notifica de esto
 - Casos donde suceden las dos situaciones más arriba mencionadas, son informados con un mensaje diferente a fin que el usuario sepa de los dos eventos
 - Casos en que ningún ítem quede disponible de los que tenía seleccionados al guardar, también es notificado con un mensaje personalizado
+
+#### Page MyAccount y Register
+
+Mediante el uso de formularios de componentes controlados, y conectando la información de los mismos con **Firebase Auth**, se procede a registrar a un usuario o iniciar/salir sesión del mismo. En caso de algún tipo de error, se muestra el mismo que retorna firebase al usuario. Estos formularios poseen las validaciones respectivas, y sus correspondientes mensajes en caso de no cumplir con alguna de ellas.
+
+Los datos del usuario logueado son guardados en el contexto UserContext para poder acceder a él desde distintos lugares y generar diversas funcionalidades.
+
+Por ejemplo, en el botón “mi cuenta”, se produce el cambio del ícono, por un avatar con la primera inicial de nombre del usuario logueado. También se producen efectos de cambio de color de background en el componente Myacccount, y se muestran mensajes e información personalizada para ese usuario.
+
+También, se evita pasar al checkout si el usuario no está registrado y ha iniciado sesión. Para validar mejor esta situación ante el posible ingreso directo a dicha página (por ejemplo, guardada en favoritos), generé el componente `PrivateRoute` asociado al `Route` de **React-router-dom**. En él verifico si el usuario se encuentra logueado y lo redirijo a la page MyAccount, en donde de ser el caso válido, va a poder ir directo al checkout mediante el link de un mensaje personalizado. También en la page Checkout, realizo una validación extra en donde se redirige al componente Cart en caso de que no hayan productos para proceder a un checkout o los mismos estén pendientes de actualizarse (por la carga de un carrito que se encuentra fuera de rango con la disponibilidad actual).
+
+#### Page Checkout
+
+Se muestra la información previa a generar la orden de compra y efectivizarse el pago.
+
+A la izquierda, aparece un resumen de los productos a comprar, con sus cantidades, precios e importe total.
+
+A la derecha, se encuentra un formulario que se puede dividir en 3 secciones:
+
+- Datos personales: Donde el usuario completará con sus datos, salvo la casilla de email en donde se completa con el del usuario logueado y se deshabilita su edición.
+- Selector de cuotas: Se da la opción al usuario de realizar el pago en diferente cantidad de cuotas con sus respectivos intereses y montos finales
+- Datos de la tarjeta de crédito
+- Opciónes y cargos de envió
+
+Este formulario posee las validaciones respectivas, y sus correspondientes mensajes en caso de no cumplir con alguna de ellas.
+
+Se muestra la información previa a generar la orden
 
 ### Hooks personalizados
 
@@ -371,11 +416,15 @@ Listado a modo de resumen ya que se mencionan en cada sección específica
 
 - `useFilters`: Hace uso del hook `useState` y diversas funciones contenidas en el archivo `productsFilter.js` de la carpeta `utils`. Contiene las funcionalidades para el manejo de los filtros dentro del SearchItemListContainer
 
-- `useSearch`: Hace uso de los hooks `useState`, `useEffect`, `useParams`, `useLocation` y de algunas funciones contenidas en la carpeta `utils`. Contiene la lógica completa relacionada a la petición a la base de datos de los productos que son consultados. Maneja el estado de loading y de error.
+- `useFirebaseAuth`: Hace uso de los hooks `useState` y `useEffect`. Se encarga de establecer una escucha para el cambio de estado del logueo del usuario mediante una funcionalidad de firebase. La situación de logueo es guardada en un estado.
+
+- `useModal`: Hace uso del hook `useState` junto a unas funciones callback. Sirve para manejar la lógica en común a las ventanas modales.
 
 - `usePrevious`: Hace uso de los hooks `useRef`y `useEffect`. Sirve para guardar en una referencia, una "instantánea" de un estado previo, sin la necesidad de re-renders al cambiar este valor de referencia.
 
-- `useModal`: Hace uso del hook `useState` junto a unas funciones callback. Sirve para manejar la lógica en común a las ventanas modales.
+- `useSearch`: Hace uso de los hooks `useState`, `useEffect`, `useParams`, `useLocation`, `useContext` y de algunas funciones contenidas en la carpeta `utils`. Contiene la lógica completa relacionada a la petición a la base de datos de los productos que son consultados. Maneja el estado de loading y de error.
+
+- `useSearch`: Hace uso del hook `useState`. Contiene la lógica común al manejo de formularios de componentes controlados.
 
 ---
 

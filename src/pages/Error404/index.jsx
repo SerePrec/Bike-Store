@@ -1,5 +1,5 @@
 import React from "react";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import error404Img from "../../assets/img/error404.png";
 import TypicButton from "../../components/TypicButton";
 import "./Error404.scss";

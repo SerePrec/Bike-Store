@@ -1,0 +1,19 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.loaderModal {
+  .modal-content {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.75),
+      #fff 30%,
+      #fff 70%,
+      rgba(255, 255, 255, 0.75)
+    );
+    font-family: $fuente-principal;
+    .loader {
+      height: auto;
+      min-height: 10rem;
+    }
+  }
+}

@@ -1,0 +1,72 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.orderModal {
+  color: #fff;
+  .modal-content {
+    background: linear-gradient(
+      90deg,
+      rgba(48, 138, 123, 0.75),
+      #308a7b 30%,
+      #308a7b 70%,
+      rgba(48, 138, 123, 0.75)
+    );
+    font-family: $fuente-principal;
+    .modal-title {
+      font-size: 1.6rem;
+      color: #fff;
+    }
+    p {
+      &:first-child {
+        margin: 2rem 0;
+        font-size: 1.5rem;
+      }
+      &:nth-child(2) {
+        display: inline-block;
+        background-color: $tonoMedio;
+        border-radius: 0.5rem;
+        padding: 0.25rem 0.75rem;
+        font-size: 1.5rem;
+      }
+      &:nth-child(3) {
+        margin: 2rem 0 1rem 0;
+        font-size: 1.2rem;
+      }
+      &:last-child {
+        margin: 1rem 0;
+        font-size: 1.6rem;
+      }
+    }
+  }
+  &.error {
+    .modal-content {
+      background: linear-gradient(
+        90deg,
+        rgba(226, 75, 27, 0.75),
+        rgb(226, 75, 27) 30%,
+        rgb(226, 75, 27) 70%,
+        rgba(226, 75, 27, 0.75)
+      );
+      font-family: $fuente-principal;
+      .modal-title {
+        font-size: 1.5rem;
+        color: #fff;
+      }
+      p {
+        &:first-child {
+          margin: 2rem 0;
+          font-size: 1.5rem;
+        }
+        &:nth-child(2) {
+          background-color: initial;
+          padding: 0.25rem 0.75rem;
+          font-size: 1.4rem;
+        }
+        &:last-child {
+          margin: 1rem 0;
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+}

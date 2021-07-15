@@ -1,0 +1,41 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.myAccount {
+  color: $rojoMarca;
+  background-color: $tonoOscuro;
+  min-height: 40rem;
+  justify-content: center;
+  transition: background-color 1s ease-in-out;
+  &.auth {
+    background-color: #dedede;
+    .breadcrumb {
+      justify-content: space-between;
+    }
+  }
+
+  .breadcrumb {
+    justify-content: center;
+    h4 {
+      display: flex;
+      align-items: center;
+    }
+    .typicBtn {
+      margin: 0;
+      img {
+        margin-right: 0;
+      }
+    }
+  }
+  .logInFormContainer {
+    width: 30rem;
+    margin: 3rem auto;
+  }
+
+  @include responsive(xs) {
+    .logInFormContainer {
+      width: 100%;
+      padding: 0 1rem;
+    }
+  }
+}
