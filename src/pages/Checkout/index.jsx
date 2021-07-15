@@ -21,7 +21,12 @@ import CartModal from "../../components/CartModal";
 import { useModal } from "../../hooks/useModal";
 import { modalMessages } from "../../utils/modalMessages";
 import LoaderModal from "../../components/LoaderModal";
-import { fieldPathId, getFirestore, firestoreTimeStamp } from "../../firebase";
+import {
+  fieldPathId,
+  getFirestore,
+  firestoreTimeStamp,
+  fieldValue
+} from "../../firebase";
 import { useRef } from "react";
 import OrderModal from "../../components/OrderModal";
 
@@ -122,8 +127,11 @@ const Checkout = () => {
             const qty = match.qty;
             checkedCart.push({ product: { id: doc.id, ...doc.data() }, qty });
             if (doc.data().stock >= match.qty) {
-              batch.update(doc.ref, { stock: doc.data().stock - match.qty });
-              previousStockData.push({ ref: doc.ref, stock: doc.data().stock });
+              batch.update(doc.ref, {
+                stock: doc.data().stock - match.qty,
+                sales: doc.data().sales + match.qty
+              });
+              previousStockData.push({ ref: doc.ref, qty: match.qty });
             } else {
               outOfRange = true;
             }
@@ -166,7 +174,10 @@ const Checkout = () => {
     const db = getFirestore();
     const batch = db.batch();
     revertStockData.current.forEach(elem => {
-      batch.update(elem.ref, { stock: elem.stock });
+      batch.update(elem.ref, {
+        stock: fieldValue().increment(elem.qty),
+        sales: fieldValue().increment(-elem.qty)
+      });
     });
     batch.commit();
   };
@@ -286,6 +297,7 @@ const Checkout = () => {
       setValidated(true);
       return;
     }
+    setIsError(false);
     // Validando disponibilidad
     validateCart()
       .then(res => {
@@ -444,7 +456,7 @@ const Checkout = () => {
                 </Form.Label>
                 <Col sm="10">
                   <Form.Control
-                    type="text"
+                    type="tel"
                     name="phone"
                     value={form.phone}
                     placeholder="Ingresa un teléfono de contacto"
