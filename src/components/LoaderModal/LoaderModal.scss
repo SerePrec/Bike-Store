@@ -13,6 +13,7 @@
     font-family: $fuente-principal;
     .loader {
       height: auto;
+      min-height: 10rem;
     }
   }
 }

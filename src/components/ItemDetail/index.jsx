@@ -7,7 +7,7 @@ import ItemCount from "../ItemCount";
 import ShipmentInfo from "../ShipmentInfo";
 import TypicButton from "../TypicButton";
 import { priceFormat } from "../../utils/priceFormat";
-import { modalMessages } from "../../utils/modalMessages";
+import { cartModalMessages } from "../../utils/modalMessages";
 import cartIcon from "../../assets/img/icon_cart2.png";
 import "./ItemDetail.scss";
 
@@ -34,7 +34,7 @@ const ItemDetail = ({ product, handleShowModal, setContentModal }) => {
       const addedQty = addToCart(selection);
       setAddedItemQuantity(addedQty);
     } else {
-      setContentModal(modalMessages[8]);
+      setContentModal(cartModalMessages[8]);
       handleShowModal();
     }
   };

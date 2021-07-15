@@ -1,4 +1,4 @@
-export const modalMessages = [
+export const cartModalMessages = [
   {
     title: "",
     msg1: "",
@@ -81,6 +81,39 @@ export const modalMessages = [
     title: "No pudimos validar tu carrito",
     msg1: "Ha ocurrido un error, inténtalo nuevamente o más tarde.",
     msg2: "Puede que exista un problema momentaneo con la conexión a nuestra base de datos",
+    msg3: "Disculpa las molestias."
+  }
+];
+
+export const orderModalMessages = [
+  {
+    title: "",
+    msg1: "",
+    msg2: "",
+    msg3: ""
+  },
+  {
+    title: "Compra Registrada!",
+    msg1: "Tu compra finalizó con éxito y fue registrada con el identificador",
+    msg2: "...",
+    msg3: "Más adelante podrás consultar tus órdenes en la sección MI CUENTA"
+  },
+  {
+    title: "Compra Registrada!",
+    msg1: "Tu compra fue registrada con el identificador",
+    msg2: "...",
+    msg3: "Pero ocurrió un error que impidió registrarla en tu historial. Cualquier consulta al respecto, puedes comunicarte con nosotros a través de los canales oficiales."
+  },
+  {
+    title: "No pudimos validar tu pago",
+    msg1: "Algo salió mal durante el proceso",
+    msg2: "Verifica los datos y saldo de tu tarjeta e intentalo nuevamente o en unos minutos",
+    msg3: "Disculpa las molestias."
+  },
+  {
+    title: "No pudimos registrar tu pedido",
+    msg1: "Algo salió mal durante el proceso",
+    msg2: "No te preocupes si tu pago fue aprobado, ya reservamos tus productos. Comunicate con nosotros para solucionarlo a la brevedad",
     msg3: "Disculpa las molestias."
   }
 ];

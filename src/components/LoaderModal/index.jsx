@@ -8,7 +8,6 @@ const LoaderModal = ({ showModal, contentModal }) => {
     <Modal
       show={showModal}
       backdrop="static"
-      size="sm"
       centered
       dialogClassName="loaderModal"
     >

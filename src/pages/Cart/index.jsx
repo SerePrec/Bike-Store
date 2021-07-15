@@ -6,7 +6,7 @@ import CartDetail from "../../components/CartDetail";
 import CartModal from "../../components/CartModal";
 import EmptyCart from "../../components/EmptyCart";
 import InfoBar from "../../components/InfoBar";
-import { modalMessages } from "../../utils/modalMessages";
+import { cartModalMessages } from "../../utils/modalMessages";
 import { getFirestore, fieldPathId } from "../../firebase";
 import iconCart from "../../assets/img/icon_cart2.png";
 import "./Cart.scss";
@@ -23,14 +23,14 @@ const Cart = () => {
     setContentModal,
     handleShowModal,
     handleCloseModal
-  } = useModal(modalMessages[0]);
+  } = useModal(cartModalMessages[0]);
 
   const { cart, setCart, saveCartInLocalStorage } = cartContext;
 
   const handleSaveCart = () => {
     saveCartInLocalStorage();
     handleShowModal();
-    setContentModal(modalMessages[7]);
+    setContentModal(cartModalMessages[7]);
   };
 
   const getSavedCart = useCallback(() => {
@@ -80,23 +80,23 @@ const Cart = () => {
         localStorage.removeItem("myMammothSavedCart");
         if (savedCart.length === checkedCart.length) {
           if (outOfRange) {
-            modalMsg = modalMessages[2];
+            modalMsg = cartModalMessages[2];
           } else {
-            modalMsg = modalMessages[1];
+            modalMsg = cartModalMessages[1];
           }
         } else if (checkedCart.length === 0) {
-          modalMsg = modalMessages[5];
+          modalMsg = cartModalMessages[5];
         } else {
           if (outOfRange) {
-            modalMsg = modalMessages[3];
+            modalMsg = cartModalMessages[3];
           } else {
-            modalMsg = modalMessages[4];
+            modalMsg = cartModalMessages[4];
           }
         }
         setContentModal(modalMsg);
       })
       .catch(error => {
-        setContentModal(modalMessages[6]);
+        setContentModal(cartModalMessages[6]);
       })
       .finally(() => {
         handleShowModal();

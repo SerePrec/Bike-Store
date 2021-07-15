@@ -6,7 +6,7 @@ import InfoBar from "../../components/InfoBar";
 import ItemDetail from "../../components/ItemDetail";
 import Loader from "../../components/Loader";
 import { getFirestore } from "../../firebase";
-import { modalMessages } from "../../utils/modalMessages";
+import { cartModalMessages } from "../../utils/modalMessages";
 import "./ItemDetailcontainer.scss";
 
 const ItemDetailContainer = () => {
@@ -19,7 +19,7 @@ const ItemDetailContainer = () => {
     setContentModal,
     handleShowModal,
     handleCloseModal
-  } = useModal(modalMessages[0]);
+  } = useModal(cartModalMessages[0]);
 
   let { itemId } = useParams();
 
