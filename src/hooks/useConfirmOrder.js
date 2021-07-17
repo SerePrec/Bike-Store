@@ -47,7 +47,7 @@ export const useConfirmOrder = ({
   const { cart, setCart, totPriceInCart } = cartContext;
 
   const validateCart = () => {
-    setContentLoaderModal({ title: "Validando Productos" });
+    setContentLoaderModal({ title: "Validando Productos..." });
     handleShowLoaderModal();
     let modalMsg;
     let outOfRange = false;
@@ -128,7 +128,7 @@ export const useConfirmOrder = ({
   };
 
   const fakePayment = () => {
-    setContentLoaderModal({ title: "Procesando Pago" });
+    setContentLoaderModal({ title: "Procesando Pago..." });
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         // PRUEBA DE RECHAZO DE PAGO *****
@@ -163,8 +163,8 @@ export const useConfirmOrder = ({
     };
     const simplifyCart = cart.map(elem => {
       const { product, qty } = elem;
-      const { id, title, pictureURL, price } = product;
-      const simplifyProduct = { id, title, pictureURL, price };
+      const { id, title, pictureURL, price, discount } = product;
+      const simplifyProduct = { id, title, pictureURL, price, discount };
       return { product: simplifyProduct, qty };
     });
     const shipmentInfo =
@@ -175,7 +175,8 @@ export const useConfirmOrder = ({
     const subtotals = {
       productsSub: totPriceInCart,
       shipmentSub: shipmentForm.shipment === "1" ? shipmentCost : 0,
-      financialSub: (getInt(parseInt(form.partialsQty)) / 100) * totalPrice
+      financialSub: (getInt(parseInt(form.partialsQty)) / 100) * totalPrice,
+      partials: form.partialsQty
     };
 
     const newOrder = {

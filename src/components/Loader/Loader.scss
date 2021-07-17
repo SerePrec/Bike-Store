@@ -1,6 +1,8 @@
 @import "../../assets/scss/variables";
 @import "../../assets/scss/mixins";
 $loader: url("../../assets/img/puff.svg");
+$loaderBall: url("../../assets/img/ball-triangle.svg");
+$loaderDots: url("../../assets/img/three-dots.svg");
 
 .loader {
   height: 26rem;
@@ -22,6 +24,13 @@ $loader: url("../../assets/img/puff.svg");
   align-items: center;
   align-content: center;
   font-size: 2rem;
+  &.ball {
+    background-image: $loaderBall;
+  }
+  &.dots {
+    background-image: $loaderDots;
+    width: 50%;
+  }
 
   h3 {
     width: 100%;

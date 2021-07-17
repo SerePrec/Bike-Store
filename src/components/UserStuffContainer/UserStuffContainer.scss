@@ -14,17 +14,48 @@
     padding: 1rem;
     min-height: 30rem;
     overflow: hidden;
-    .alert-info {
-      .alert-heading span {
-        font-size: 1.3rem;
-      }
-      p .typicBtn {
-        display: inline-flex;
-        border-radius: 1rem;
-        margin-left: 0.25rem;
+
+    .userTools {
+      div {
+        font-family: $fuente-principal;
+        font-weight: bold;
+        background-color: #e9ecef;
+        border-radius: 0.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 1rem;
+        cursor: pointer;
+        transition: all 0.25s ease-in;
         img {
-          margin-left: 0.5rem;
+          width: 2rem;
+          height: 5rem;
+          margin-left: 1rem;
         }
+        &:hover {
+          background-color: rgba($rojoMarca, 0.7);
+          padding-left: 1rem;
+        }
+      }
+    }
+
+    .userToolsData {
+      padding-left: 1rem;
+      .image {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        img {
+          height: 20rem;
+        }
+      }
+      .loader {
+        background-color: transparent;
+        height: 20rem;
+      }
+      .emptyResults {
+        background-color: #fff;
+        height: 20rem;
       }
     }
   }

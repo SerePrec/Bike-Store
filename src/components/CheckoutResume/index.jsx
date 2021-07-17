@@ -27,6 +27,11 @@ const CheckoutResume = ({
           TOTAL DE COMPRA <span>${priceFormat(totalPrice)}</span>
         </p>
       </div>
+      <div className="help">
+        <p>
+          <b>¿Necesitas ayuda? </b>Llamanos al <span>0800-888-1234</span>
+        </p>
+      </div>
     </Col>
   );
 };

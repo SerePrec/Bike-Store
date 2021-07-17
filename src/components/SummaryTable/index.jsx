@@ -16,7 +16,9 @@ const SummaryTable = ({ cart, totPriceInCart }) => {
         </tbody>
       </Table>
       <div className="subTot">
-        <p>Total en productos ${priceFormat(totPriceInCart)}</p>
+        <p>
+          Total en productos <span>${priceFormat(totPriceInCart)}</span>
+        </p>
       </div>
     </>
   );

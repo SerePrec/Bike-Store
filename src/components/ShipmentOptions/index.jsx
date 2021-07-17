@@ -53,8 +53,11 @@ const ShipmentOptions = ({ shipmentForm, changeShipment, shipmentCost }) => {
       </Form.Group>
       <div className="subTot">
         <p>
-          Costo de envío $
-          {shipmentForm.shipment === "1" ? priceFormat(shipmentCost) : "0,00"}
+          Costo de envío{" "}
+          <span>
+            $
+            {shipmentForm.shipment === "1" ? priceFormat(shipmentCost) : "0,00"}
+          </span>
         </p>
       </div>
     </>

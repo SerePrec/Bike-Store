@@ -3,17 +3,19 @@
 
 .loaderModal {
   .modal-content {
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.75),
-      #fff 30%,
-      #fff 70%,
-      rgba(255, 255, 255, 0.75)
-    );
+    border: none;
+    background-color: rgba(255, 255, 255, 0.5);
     font-family: $fuente-principal;
-    .loader {
-      height: auto;
-      min-height: 10rem;
+    font-size: 1.6rem;
+    color: #fff;
+    .modal-body {
+      padding: 0.5rem;
+      .loader {
+        height: auto;
+        min-height: 10rem;
+        background-size: 34%;
+        background-color: $tonoMedio;
+      }
     }
   }
 }

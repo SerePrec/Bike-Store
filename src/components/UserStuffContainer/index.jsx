@@ -1,80 +1,124 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Alert } from "react-bootstrap";
-import TypicButton from "../TypicButton";
+import { Row, Col } from "react-bootstrap";
 import { CartContext } from "../../context/CartContext";
-import { priceFormat } from "../../utils/priceFormat";
-import iconCart from "../../assets/img/icon_cart2.png";
-import iconCheck from "../../assets/img/check.svg";
+import { UserContext } from "../../context/UserContext";
+import iconOrder from "../../assets/img/clipboard-list.svg";
+import iconHeart from "../../assets/img/heart-solid.svg";
+import cyclistImg from "../../assets/img/cyclist_shadow.png";
+import iconSearch from "../../assets/img/icon_search_r.svg";
 import "./UserStuffContainer.scss";
+import Loader from "../Loader";
+import SummaryOrderModal from "../SummaryOrderModal";
+import { useModal } from "../../hooks/useModal";
+import { getFirestore } from "../../firebase";
+import MyAccountAlert from "../MyAccountAlert";
+import OrdersTable from "../OrdersTable";
 
 const UserStuffContainer = ({ userName }) => {
-  const [isCartSaved, setIsCartSaved] = useState(false);
   const { totQtyInCart, totPriceInCart, checkInRange } =
     useContext(CartContext);
+  const { isLoading, orders, getUsersOrders } = useContext(UserContext);
+  const [isCartSaved, setIsCartSaved] = useState(false);
+  const [section, setSection] = useState(null);
+  const [modalLoading, setModalLoading] = useState(false);
+
+  const {
+    showModal,
+    contentModal,
+    setContentModal,
+    handleShowModal,
+    handleCloseModal
+  } = useModal(null);
 
   useEffect(() => {
     if (!!localStorage.getItem("myMammothSavedCart")) setIsCartSaved(true);
   }, []);
 
+  const getOrderById = id => {
+    setModalLoading(true);
+    handleShowModal();
+    const db = getFirestore();
+    const orders = db.collection("orders").doc(id);
+    orders
+      .get()
+      .then(doc => {
+        if (!doc.exist) {
+          setContentModal(null);
+        }
+        setContentModal({ id: doc.id, ...doc.data() });
+      })
+      .catch(error => {
+        console.error("Error obteniendo orden: ", error);
+      })
+      .finally(() => {
+        setModalLoading(false);
+      });
+  };
+
+  const myAccountAlertProps = {
+    userName,
+    isCartSaved,
+    totQtyInCart,
+    totPriceInCart,
+    checkInRange
+  };
+
+  const summayModalProps = {
+    showModal,
+    contentModal,
+    handleCloseModal,
+    backdrop: "static",
+    modalLoading
+  };
+
   return (
     <div className="container-xl userStuffContainer">
       <div className="userStuff animate__zoomIn">
-        <Alert variant="info" className="w-100">
-          <Alert.Heading>
-            HOLA, <span>{userName.toUpperCase()}</span>
-          </Alert.Heading>
-          <p>Nos alegra tenerte de vuelta por nuestra tienda.</p>
-          {isCartSaved && (
-            <>
-              <hr />
-              <p className="mb-0">
-                ¡Encontramos un <b>carrito guardado</b> en tu dispositivo! Si
-                deseas recuperarlo, deberás tener vacío tu carrito actual y
-                dirgirte a él{" "}
-                <TypicButton as={Link} to="/cart" size="sm" className="black">
-                  Ir al carrito
-                  <img src={iconCart} alt="" />
-                </TypicButton>
-              </p>
-            </>
-          )}
-          {totQtyInCart > 0 &&
-            (checkInRange ? (
-              <>
-                <hr />
-                <p className="mb-0">
-                  Tienes un carrito activo con un total de{" "}
-                  <b>{totQtyInCart} productos</b> y un importe total de{" "}
-                  <b>${priceFormat(totPriceInCart)}</b>. Puedes confirmar y
-                  pagar tu compra desde aquí{" "}
-                  <TypicButton
-                    as={Link}
-                    to="/checkout"
-                    size="sm"
-                    className="black"
-                  >
-                    Checkout
-                    <img src={iconCheck} alt="" />
-                  </TypicButton>
-                </p>
-              </>
-            ) : (
-              <>
-                <hr />
-                <p className="mb-0">
-                  Tienes un carrito activo que <b>necesita ser actualizado</b>{" "}
-                  con nuestra disponibilidad actual de productos. Ve a tu
-                  carrito para actualizarlo y poder continuar tu compra{" "}
-                  <TypicButton as={Link} to="/cart" size="sm">
-                    Actualizar carrito
-                    <img src={iconCart} alt="" />
-                  </TypicButton>
-                </p>
-              </>
-            ))}
-        </Alert>
+        <MyAccountAlert {...myAccountAlertProps}></MyAccountAlert>
+        <Row noGutters>
+          <Col md={4} className="userTools">
+            <div
+              onClick={() => {
+                getUsersOrders();
+                setSection("orders");
+              }}
+            >
+              MIS ORDENES
+              <img src={iconOrder} alt="" />
+            </div>
+            <div
+              onClick={() => {
+                setSection("favs");
+              }}
+            >
+              MIS FAVORITOS
+              <img src={iconHeart} alt="" />
+            </div>
+          </Col>
+          <Col md={8} className="userToolsData">
+            {isLoading && <Loader type="dots"></Loader>}
+            {!isLoading && !section && (
+              <div className="image">
+                <img src={cyclistImg} alt="" />
+              </div>
+            )}
+            {!isLoading &&
+              section === "orders" &&
+              (orders.length > 0 ? (
+                <OrdersTable
+                  orders={orders}
+                  getOrderById={getOrderById}
+                ></OrdersTable>
+              ) : (
+                <div className="emptyResults">
+                  <img src={iconSearch} alt="Lupa" />
+                  <h3>No hay resultados para mostrar</h3>
+                </div>
+              ))}
+          </Col>
+        </Row>
       </div>
+      <SummaryOrderModal {...summayModalProps}></SummaryOrderModal>
     </div>
   );
 };
