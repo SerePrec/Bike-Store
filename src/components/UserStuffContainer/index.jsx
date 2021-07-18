@@ -4,7 +4,7 @@ import { CartContext } from "../../context/CartContext";
 import { UserContext } from "../../context/UserContext";
 import iconOrder from "../../assets/img/clipboard-list.svg";
 import iconHeart from "../../assets/img/heart-solid.svg";
-import cyclistImg from "../../assets/img/cyclist_shadow.png";
+import cyclistImg from "../../assets/img/cyclist_shadow_w.png";
 import iconSearch from "../../assets/img/icon_search_r.svg";
 import "./UserStuffContainer.scss";
 import Loader from "../Loader";
