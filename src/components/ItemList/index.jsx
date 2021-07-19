@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
+import { UserContext } from "../../context/UserContext";
 import EmptyResults from "../EmptyResults";
 import Item from "../Item";
 import Loader from "../Loader";
 import "./ItemList.scss";
 
 const ItemList = ({ isLoading, isError, products, filters }) => {
+  const { checkIsFav } = useContext(UserContext);
   return (
     <>
       <div
@@ -23,7 +25,7 @@ const ItemList = ({ isLoading, isError, products, filters }) => {
           ) : (
             products.map(product => (
               <div key={product.id} className="col mb-4">
-                <Item product={product} />
+                <Item product={product} isFav={checkIsFav(product.id)} />
               </div>
             ))
           ))}

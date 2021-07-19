@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Card } from "react-bootstrap";
 import { priceFormat } from "../../utils/priceFormat";
+import regularHeart from "../../assets/img/heart-regular.svg";
+import solidHeart from "../../assets/img/heart-solid.svg";
 import "./Item.scss";
 
 import imgBlank from "../../assets/img/blank.gif";
 
-const Item = ({ product }) => {
+const Item = ({ product, isFav }) => {
   const { id, title, brand, price, discount, pictureURL, stock } = product;
   const [imgLoad, setImgLoad] = useState(false);
   let history = useHistory();
@@ -24,6 +26,9 @@ const Item = ({ product }) => {
       className={`h-100 shadow ${stock < 1 ? "card--noStock" : ""}`}
       onClick={stock > 0 ? () => goDetail(id) : null}
     >
+      <div className="fav">
+        <img src={isFav ? solidHeart : regularHeart} alt="" />
+      </div>
       {discount !== 0 && <div className="discount">{discount}%</div>}
       <Card.Img
         onLoad={handleLoad}

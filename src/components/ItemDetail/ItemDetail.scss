@@ -49,6 +49,24 @@
         object-fit: contain;
       }
 
+      .fav {
+        position: absolute;
+        top: 0;
+        left: 2rem;
+        width: 3.5rem;
+        height: 3.5rem;
+        background-color: rgba(255, 255, 255, 0.65);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        img {
+          width: 3rem;
+          padding: 0;
+          margin: 0;
+        }
+      }
+
       .discount {
         position: absolute;
         width: 5rem;

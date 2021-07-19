@@ -1,0 +1,26 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.setFavs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  margin-top: 1.5rem;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+  img {
+    margin-right: 0.5rem;
+    width: 1.75rem;
+  }
+  p {
+    margin-right: 0.5rem;
+  }
+  &.loading {
+    opacity: 0.5;
+  }
+  &:hover {
+    padding-left: 1rem;
+    color: $rojoMarca;
+  }
+}

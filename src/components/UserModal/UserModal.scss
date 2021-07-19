@@ -1,0 +1,39 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.userModal {
+  .modal-content {
+    background: linear-gradient(
+      90deg,
+      rgba($tonoOscuro, 0.75),
+      $tonoOscuro 30%,
+      $tonoOscuro 70%,
+      rgba($tonoOscuro, 0.75)
+    );
+    font-family: $fuente-principal;
+    color: #fff;
+    .modal-title {
+      color: $rojoMarca;
+    }
+    .modal-body {
+      p {
+        font-size: 1.15rem;
+        margin-bottom: 1rem;
+        &:last-child {
+          padding-top: 1rem;
+          font-size: 1rem;
+          font-weight: 300;
+        }
+      }
+    }
+    .modal-footer {
+      button {
+        background-color: $tonoMedio;
+      }
+      a {
+        background-color: $rojoMarca;
+        border-color: $rojoMarca;
+      }
+    }
+  }
+}

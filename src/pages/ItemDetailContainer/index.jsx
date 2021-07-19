@@ -6,8 +6,12 @@ import InfoBar from "../../components/InfoBar";
 import ItemDetail from "../../components/ItemDetail";
 import Loader from "../../components/Loader";
 import { getFirestore } from "../../firebase";
-import { cartModalMessages } from "../../utils/modalMessages";
+import {
+  cartModalMessages,
+  infoModalMessages
+} from "../../utils/modalMessages";
 import "./ItemDetailcontainer.scss";
+import UserModal from "../../components/UserModal";
 
 const ItemDetailContainer = () => {
   const [product, setProduct] = useState(null);
@@ -20,6 +24,13 @@ const ItemDetailContainer = () => {
     handleShowModal,
     handleCloseModal
   } = useModal(cartModalMessages[0]);
+  const {
+    showModal: showUserModal,
+    contentModal: contentUserModal,
+    setContentModal: setContentUserModal,
+    handleShowModal: handleShowUserModal,
+    handleCloseModal: handleCloseUserModal
+  } = useModal(infoModalMessages[0]);
 
   let { itemId } = useParams();
 
@@ -73,6 +84,11 @@ const ItemDetailContainer = () => {
   }, [itemId]);
 
   const cartModalProps = { showModal, handleCloseModal, contentModal };
+  const userModalProps = {
+    showModal: showUserModal,
+    handleCloseModal: handleCloseUserModal,
+    contentModal: contentUserModal
+  };
 
   return (
     <main>
@@ -91,10 +107,13 @@ const ItemDetailContainer = () => {
             product={product}
             handleShowModal={handleShowModal}
             setContentModal={setContentModal}
+            handleShowUserModal={handleShowUserModal}
+            setContentUserModal={setContentUserModal}
           ></ItemDetail>
         )}
       </div>
       <CartModal {...cartModalProps} />
+      <UserModal {...userModalProps}></UserModal>
     </main>
   );
 };

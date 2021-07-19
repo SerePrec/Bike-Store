@@ -2,22 +2,24 @@ import React, { useContext, useState, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import { CartContext } from "../../context/CartContext";
 import { UserContext } from "../../context/UserContext";
+import FavsTable from "../FavsTable";
+import Loader from "../Loader";
+import MyAccountAlert from "../MyAccountAlert";
+import OrdersTable from "../OrdersTable";
+import SummaryOrderModal from "../SummaryOrderModal";
+import { useModal } from "../../hooks/useModal";
+import { getFirestore } from "../../firebase";
 import iconOrder from "../../assets/img/clipboard-list.svg";
 import iconHeart from "../../assets/img/heart-solid.svg";
 import cyclistImg from "../../assets/img/cyclist_shadow_w.png";
 import iconSearch from "../../assets/img/icon_search_r.svg";
 import "./UserStuffContainer.scss";
-import Loader from "../Loader";
-import SummaryOrderModal from "../SummaryOrderModal";
-import { useModal } from "../../hooks/useModal";
-import { getFirestore } from "../../firebase";
-import MyAccountAlert from "../MyAccountAlert";
-import OrdersTable from "../OrdersTable";
 
 const UserStuffContainer = ({ userName }) => {
   const { totQtyInCart, totPriceInCart, checkInRange } =
     useContext(CartContext);
-  const { isLoading, orders, getUsersOrders } = useContext(UserContext);
+  const { isLoading, orders, getUsersOrders, favs, removeFav } =
+    useContext(UserContext);
   const [isCartSaved, setIsCartSaved] = useState(false);
   const [section, setSection] = useState(null);
   const [modalLoading, setModalLoading] = useState(false);
@@ -113,6 +115,16 @@ const UserStuffContainer = ({ userName }) => {
                 <div className="emptyResults">
                   <img src={iconSearch} alt="Lupa" />
                   <h3>No hay resultados para mostrar</h3>
+                </div>
+              ))}
+            {!isLoading &&
+              section === "favs" &&
+              (favs.length > 0 ? (
+                <FavsTable favs={favs} removeFav={removeFav}></FavsTable>
+              ) : (
+                <div className="emptyResults">
+                  <img src={iconSearch} alt="Lupa" />
+                  <h3>No hay productos en tu lista de favoritos</h3>
                 </div>
               ))}
           </Col>

@@ -2,19 +2,33 @@ import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 import { CartContext } from "../../context/CartContext";
+import { UserContext } from "../../context/UserContext";
 import InfoMessage from "../InfoMessage";
 import ItemCount from "../ItemCount";
+import SetFavs from "../SetFavs";
 import ShipmentInfo from "../ShipmentInfo";
 import TypicButton from "../TypicButton";
 import { priceFormat } from "../../utils/priceFormat";
-import { cartModalMessages } from "../../utils/modalMessages";
+import {
+  cartModalMessages,
+  infoModalMessages
+} from "../../utils/modalMessages";
 import cartIcon from "../../assets/img/icon_cart2.png";
+import regularHeart from "../../assets/img/heart-regular.svg";
+import solidHeart from "../../assets/img/heart-solid.svg";
 import "./ItemDetail.scss";
 
-const ItemDetail = ({ product, handleShowModal, setContentModal }) => {
+const ItemDetail = ({
+  product,
+  handleShowModal,
+  setContentModal,
+  handleShowUserModal,
+  setContentUserModal
+}) => {
   const [addedItemQuantity, setAddedItemQuantity] = useState(null);
   const { addToCart, isInCart, getFromCart, checkCartLength } =
     useContext(CartContext);
+  const { authUser, isLoading, checkIsFav, setFav } = useContext(UserContext);
 
   let {
     id,
@@ -39,7 +53,17 @@ const ItemDetail = ({ product, handleShowModal, setContentModal }) => {
     }
   };
 
+  const handleSetFav = () => {
+    if (!authUser) {
+      setContentUserModal(infoModalMessages[1]);
+      handleShowUserModal();
+      return;
+    }
+    setFav(product);
+  };
+
   const inCart = isInCart(id);
+  const isFav = checkIsFav(id);
   let qtyInCart = 0;
   if (inCart) {
     qtyInCart = getFromCart(id).qty;
@@ -59,6 +83,9 @@ const ItemDetail = ({ product, handleShowModal, setContentModal }) => {
       </Row>
       <Row className="productDetail_data">
         <Col xs={12} md={7}>
+          <div className="fav">
+            <img src={isFav ? solidHeart : regularHeart} alt="" />
+          </div>
           {discount !== 0 && <div className="discount">{discount}%</div>}
           <img
             src={process.env.PUBLIC_URL + `/img/${pictureURL}`}
@@ -107,6 +134,11 @@ const ItemDetail = ({ product, handleShowModal, setContentModal }) => {
           ) : (
             <ItemCount stock={stock - qtyInCart} initial={1} onAdd={onAdd} />
           )}
+          <SetFavs
+            isFav={isFav}
+            setFav={handleSetFav}
+            isLoading={isLoading}
+          ></SetFavs>
           <ShipmentInfo />
         </Col>
       </Row>

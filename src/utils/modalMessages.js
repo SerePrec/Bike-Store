@@ -117,3 +117,18 @@ export const orderModalMessages = [
     msg3: "Disculpa las molestias."
   }
 ];
+
+export const infoModalMessages = [
+  {
+    title: "",
+    msg1: "",
+    msg2: "",
+    msg3: ""
+  },
+  {
+    title: "Agregar Favorito",
+    msg1: "Registrate en el sitio para poder guardar productos favoritos!",
+    msg2: "",
+    msg3: "Luego podrás administrarlos desde el panel de tu cuenta o desde el detalle del producto"
+  }
+];

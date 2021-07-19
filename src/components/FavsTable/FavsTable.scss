@@ -1,0 +1,47 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.favsTable {
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 1rem;
+  text-align: center;
+  thead {
+    th {
+      border: none;
+      text-align: center;
+      padding-left: 2.5rem;
+      border-top-left-radius: 0.75rem;
+      border-top-right-radius: 0.75rem;
+    }
+  }
+  tbody {
+    tr {
+      td:first-child {
+        width: 25%;
+        img {
+          width: 70%;
+          filter: drop-shadow(2px 2px 5px $tonoOscuro);
+          border-radius: 0.5rem;
+          transition: all 0.25s ease-in-out;
+          &:hover {
+            transform: scale(1.05, 1.05);
+          }
+        }
+      }
+      td:nth-child(2) {
+        width: 60%;
+        vertical-align: middle;
+        text-align: left;
+        font-weight: 500;
+      }
+      td:last-child {
+        width: 15%;
+        vertical-align: middle;
+        img {
+          cursor: pointer;
+          width: 1.25rem;
+        }
+      }
+    }
+  }
+}
