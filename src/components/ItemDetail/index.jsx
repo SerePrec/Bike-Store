@@ -5,6 +5,7 @@ import { CartContext } from "../../context/CartContext";
 import { UserContext } from "../../context/UserContext";
 import InfoMessage from "../InfoMessage";
 import ItemCount from "../ItemCount";
+import PaymentBanner from "../PaymentBanner";
 import SetFavs from "../SetFavs";
 import ShipmentInfo from "../ShipmentInfo";
 import TypicButton from "../TypicButton";
@@ -91,6 +92,7 @@ const ItemDetail = ({
             src={process.env.PUBLIC_URL + `/img/${pictureURL}`}
             alt={title}
           />
+          <PaymentBanner></PaymentBanner>
         </Col>
         <Col xs={12} md={5}>
           <h4>{category.toUpperCase()}</h4>

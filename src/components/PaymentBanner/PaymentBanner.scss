@@ -1,0 +1,46 @@
+@import "../../assets/scss/variables";
+@import "../../assets/scss/mixins";
+
+.paymentBanner {
+  padding: 0.5rem 0;
+  border-top: 1px solid $tonoClaro;
+  border-bottom: 1px solid $tonoClaro;
+  margin-top: 0.35rem;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  & > div.paymentBanner__item {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    .image {
+      flex-shrink: 0;
+      background-color: $rojoMarca;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    &:first-child .image {
+      img {
+        width: 0.65rem;
+        margin: 0;
+        padding: 0;
+      }
+    }
+
+    span {
+      padding-left: 0.5rem;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+  }
+
+  @include responsive(sm) {
+    display: none;
+  }
+}

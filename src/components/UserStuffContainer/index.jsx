@@ -11,7 +11,7 @@ import { useModal } from "../../hooks/useModal";
 import { getFirestore } from "../../firebase";
 import iconOrder from "../../assets/img/clipboard-list.svg";
 import iconHeart from "../../assets/img/heart-solid.svg";
-import cyclistImg from "../../assets/img/cyclist_shadow_w.png";
+import logoImg from "../../assets/img/logo.svg";
 import iconSearch from "../../assets/img/icon_search_r.svg";
 import "./UserStuffContainer.scss";
 
@@ -101,7 +101,7 @@ const UserStuffContainer = ({ userName }) => {
             {isLoading && <Loader type="dots"></Loader>}
             {!isLoading && !section && (
               <div className="image">
-                <img src={cyclistImg} alt="" />
+                <img src={logoImg} alt="" />
               </div>
             )}
             {!isLoading &&

@@ -16,11 +16,14 @@
   }
   tbody {
     tr {
+      td {
+        padding: 0.5rem;
+      }
       td:first-child {
         width: 25%;
         img {
-          width: 70%;
-          filter: drop-shadow(2px 2px 5px $tonoOscuro);
+          width: 60%;
+          filter: drop-shadow(2px 2px 5px #555);
           border-radius: 0.5rem;
           transition: all 0.25s ease-in-out;
           &:hover {
