@@ -22,6 +22,8 @@
       td:first-child {
         width: 25%;
         img {
+          background: #fff url("../../assets/img/preloader.gif") no-repeat
+            center center;
           width: 60%;
           filter: drop-shadow(2px 2px 5px #555);
           border-radius: 0.5rem;

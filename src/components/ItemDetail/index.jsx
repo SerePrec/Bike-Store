@@ -17,6 +17,7 @@ import {
 import cartIcon from "../../assets/img/icon_cart2.png";
 import regularHeart from "../../assets/img/heart-regular.svg";
 import solidHeart from "../../assets/img/heart-solid.svg";
+import imgBlank from "../../assets/img/blank.gif";
 import "./ItemDetail.scss";
 
 const ItemDetail = ({
@@ -27,6 +28,8 @@ const ItemDetail = ({
   setContentUserModal
 }) => {
   const [addedItemQuantity, setAddedItemQuantity] = useState(null);
+  const [imgLoad, setImgLoad] = useState(false);
+
   const { addToCart, isInCart, getFromCart, checkCartLength } =
     useContext(CartContext);
   const { authUser, isLoading, checkIsFav, setFav } = useContext(UserContext);
@@ -63,6 +66,10 @@ const ItemDetail = ({
     setFav(product);
   };
 
+  const handleLoad = () => {
+    setImgLoad(true);
+  };
+
   const inCart = isInCart(id);
   const isFav = checkIsFav(id);
   let qtyInCart = 0;
@@ -89,8 +96,10 @@ const ItemDetail = ({
           </div>
           {discount !== 0 && <div className="discount">{discount}%</div>}
           <img
-            src={process.env.PUBLIC_URL + `/img/${pictureURL}`}
+            src={imgLoad ? pictureURL : imgBlank}
             alt={title}
+            onLoad={handleLoad}
+            className="ppalImg"
           />
           <PaymentBanner></PaymentBanner>
         </Col>

@@ -45,7 +45,9 @@
       align-items: center;
       flex-direction: column;
 
-      img {
+      .ppalImg {
+        background: #fff url("../../assets/img/preloader.gif") no-repeat center
+          center;
         width: 90%;
         object-fit: contain;
       }

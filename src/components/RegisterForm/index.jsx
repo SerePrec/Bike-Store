@@ -7,7 +7,8 @@ const RegisterForm = ({
   validated,
   isRegistering,
   handleSubmit,
-  regResults
+  regResults,
+  handleShowModal
 }) => {
   const { form, handleChange } = useSetForm({
     name: "",
@@ -83,7 +84,10 @@ const RegisterForm = ({
           checked={form.terms}
           label={
             <>
-              Acepto los <a href="#terms">Términos y Condiciones</a>
+              Acepto los{" "}
+              <a href="#terms" onClick={handleShowModal}>
+                Términos y Condiciones
+              </a>
             </>
           }
           onChange={handleChange}

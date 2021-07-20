@@ -14,11 +14,7 @@ const CartRow = ({ product, qty, removeFromCart, updateFromCart }) => {
       </td>
       <td>
         <Link to={`/item/${id}`}>
-          <img
-            src={process.env.PUBLIC_URL + `/img/${pictureURL}`}
-            className="card-img-top"
-            alt={title}
-          />
+          <img src={pictureURL} className="card-img-top" alt={title} />
         </Link>
       </td>
       <td>

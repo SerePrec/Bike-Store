@@ -130,5 +130,11 @@ export const infoModalMessages = [
     msg1: "Registrate en el sitio para poder guardar productos favoritos!",
     msg2: "",
     msg3: "Luego podrás administrarlos desde el panel de tu cuenta o desde el detalle del producto"
+  },
+  {
+    title: "Suscripción Realizada!",
+    msg1: "Ya estas participando de nuestro SORTEO ANUAL con el email",
+    msg2: "",
+    msg3: "Pronto comenzarás a recibir información de interés en esta casilla"
   }
 ];

@@ -1,6 +1,6 @@
 # Mammoth Bike Store App
 
-Este proyecto forma parte del trabajo final correspondiente al curso de React JS dictado por CoderHouse.
+Este proyecto forma parte del trabajo final correspondiente al curso de **React JS** dictado por **CoderHouse**.
 
 Se trata del desarrollo de una tienda virtual para una bicicletería (Mammoth).
 

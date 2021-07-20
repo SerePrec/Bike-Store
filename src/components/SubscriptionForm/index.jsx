@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { FormControl, InputGroup, Form } from "react-bootstrap";
+import { infoModalMessages } from "../../utils/modalMessages";
 import "./SubscriptionForm.scss";
 
-const SubscriptionForm = () => {
+const SubscriptionForm = ({
+  handleShowTermsModal,
+  handleShowUserModal,
+  setContentUserModal
+}) => {
   const [form, setForm] = useState({ email: "", subscribe: false });
 
   const handleChange = e => {
@@ -12,13 +17,15 @@ const SubscriptionForm = () => {
     setForm({ ...form, [name]: value });
   };
 
-  const handleSubmit = e => {
+  const fakeSubmit = e => {
     e.preventDefault();
-    alert("datos enviados");
+    setContentUserModal({ ...infoModalMessages[2], msg2: form.email });
+    handleShowUserModal();
+    setForm({ email: "", subscribe: false });
   };
 
   return (
-    <Form className="subscriptionForm" onSubmit={handleSubmit}>
+    <Form className="subscriptionForm" onSubmit={fakeSubmit}>
       <InputGroup>
         <FormControl
           type="email"
@@ -35,12 +42,14 @@ const SubscriptionForm = () => {
       <Form.Check
         type="checkbox"
         name="subscribe"
-        value={form.subscribe}
+        checked={form.subscribe}
         onChange={handleChange}
         label={
           <>
             Al enviar tu dirección de correo electrónico, aceptas los
-            <a href="#terms">Términos y Condiciones</a>
+            <a href="#terms" onClick={handleShowTermsModal}>
+              Términos y Condiciones
+            </a>
           </>
         }
         id="aceptSubscription"

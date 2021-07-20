@@ -3,7 +3,13 @@ import { Link } from "react-router-dom";
 import { Modal, Button } from "react-bootstrap";
 import "./UserModal.scss";
 
-const UserModal = ({ showModal, handleCloseModal, contentModal, backdrop }) => {
+const UserModal = ({
+  showModal,
+  handleCloseModal,
+  contentModal,
+  backdrop,
+  noLink
+}) => {
   return (
     <Modal
       show={showModal}
@@ -23,9 +29,11 @@ const UserModal = ({ showModal, handleCloseModal, contentModal, backdrop }) => {
         <Button variant="dark" onClick={handleCloseModal}>
           Cerrar
         </Button>
-        <Button as={Link} to="/myaccount" variant="danger">
-          Registrate...
-        </Button>
+        {!noLink && (
+          <Button as={Link} to="/myaccount" variant="danger">
+            Registrate...
+          </Button>
+        )}
       </Modal.Footer>
     </Modal>
   );

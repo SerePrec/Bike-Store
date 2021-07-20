@@ -4,9 +4,8 @@ import { Card } from "react-bootstrap";
 import { priceFormat } from "../../utils/priceFormat";
 import regularHeart from "../../assets/img/heart-regular.svg";
 import solidHeart from "../../assets/img/heart-solid.svg";
-import "./Item.scss";
-
 import imgBlank from "../../assets/img/blank.gif";
+import "./Item.scss";
 
 const Item = ({ product, isFav }) => {
   const { id, title, brand, price, discount, pictureURL, stock } = product;
@@ -33,7 +32,7 @@ const Item = ({ product, isFav }) => {
       <Card.Img
         onLoad={handleLoad}
         variant="top"
-        src={imgLoad ? process.env.PUBLIC_URL + `/img/${pictureURL}` : imgBlank}
+        src={imgLoad ? pictureURL : imgBlank}
         alt={title}
       />
       <Card.Body>

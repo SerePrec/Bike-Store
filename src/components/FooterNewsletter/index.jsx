@@ -2,7 +2,7 @@ import React from "react";
 import SubscriptionForm from "../SubscriptionForm";
 import "./FooterNewsletter.scss";
 
-const FormNewsletter = () => {
+const FormNewsletter = props => {
   return (
     <section className="newsletter">
       <p className="newsletter__title">Suscribite a nuestro newsletter</p>
@@ -11,7 +11,7 @@ const FormNewsletter = () => {
         Además participás de nuestro <span>SORTEO ANUAL</span> y sorteos
         mensuales.
       </p>
-      <SubscriptionForm />
+      <SubscriptionForm {...props} />
     </section>
   );
 };

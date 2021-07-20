@@ -4,13 +4,16 @@ import { getAuth } from "../../firebase";
 import InfoBar from "../../components/InfoBar";
 import InfoMessage from "../../components/InfoMessage";
 import RegisterForm from "../../components/RegisterForm";
+import TermsModal from "../../components/TermsModal";
 import TypicButton from "../../components/TypicButton";
+import { useModal } from "../../hooks/useModal";
 import "./Register.scss";
 
 const Register = () => {
   const [validated, setValidated] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
   const [regResults, setRegResults] = useState(null);
+  const { showModal, handleShowModal, handleCloseModal } = useModal(null);
 
   const handleSubmit = (e, form) => {
     e.preventDefault();
@@ -52,7 +55,8 @@ const Register = () => {
     validated,
     isRegistering,
     handleSubmit,
-    regResults
+    regResults,
+    handleShowModal
   };
 
   return (
@@ -78,6 +82,10 @@ const Register = () => {
           </TypicButton>
         )}
       </div>
+      <TermsModal
+        showModal={showModal}
+        handleCloseModal={handleCloseModal}
+      ></TermsModal>
     </main>
   );
 };
