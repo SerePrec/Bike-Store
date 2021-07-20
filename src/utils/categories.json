@@ -1,7 +1,0 @@
-[
-  { "id": "cat01bi", "key": "bicicletas", "description": "Bicicletas" },
-  { "id": "cat02co", "key": "componentes", "description": "Componentes" },
-  { "id": "cat03ac", "key": "accesorios", "description": "Accesorios" },
-  { "id": "cat04eq", "key": "equipamiento", "description": "Equipamiento" },
-  { "id": "cat05in", "key": "indumentaria", "description": "Indumentaria" }
-]

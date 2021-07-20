@@ -1,7 +1,0 @@
-[
-  { "id": "c1", "key": "bicicletas", "description": "Bicicletas" },
-  { "id": "c2", "key": "componentes", "description": "Componentes" },
-  { "id": "c3", "key": "accesorios", "description": "Accesorios" },
-  { "id": "c4", "key": "equipamiento", "description": "Equipamiento" },
-  { "id": "c5", "key": "indumentaria", "description": "Indumentaria" }
-]

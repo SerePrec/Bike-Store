@@ -1,16 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { Table } from "react-bootstrap";
+import ImgWidthLoader from "../ImgWidthLoader";
 import trashIcon from "../../assets/img/trash.svg";
-import imgBlank from "../../assets/img/blank.gif";
 import "./FavsTable.scss";
 
 const FavsTable = ({ favs, removeFav }) => {
-  const [imgLoad, setImgLoad] = useState(false);
-  const handleLoad = () => {
-    setImgLoad(true);
-  };
-
   return (
     <Table className="favsTable" striped>
       <thead className="table-dark">
@@ -24,11 +19,10 @@ const FavsTable = ({ favs, removeFav }) => {
             <tr key={elem.favId}>
               <td>
                 <Link to={`/item/${elem.favId}`}>
-                  <img
-                    src={imgLoad ? elem.pictureURL : imgBlank}
+                  <ImgWidthLoader
                     className="card-img-top"
+                    pictureURL={elem.pictureURL}
                     alt={elem.title}
-                    onLoad={handleLoad}
                   />
                 </Link>
               </td>

@@ -1,22 +1,17 @@
-import React, { useState } from "react";
-import imgBlank from "../../assets/img/blank.gif";
+import React from "react";
+import ImgWidthLoader from "../ImgWidthLoader";
 import { priceFormat } from "../../utils/priceFormat";
 
 const ResumeRow = ({ product, qty }) => {
   const { title, price, discount, pictureURL } = product;
-  const [imgLoad, setImgLoad] = useState(false);
-  const handleLoad = () => {
-    setImgLoad(true);
-  };
 
   return (
     <tr>
       <td>
-        <img
-          src={imgLoad ? pictureURL : imgBlank}
+        <ImgWidthLoader
           className="card-img-top"
+          pictureURL={pictureURL}
           alt={title}
-          onLoad={handleLoad}
         />
       </td>
       <td>

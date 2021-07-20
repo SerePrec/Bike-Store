@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import ImgWidthLoader from "../ImgWidthLoader";
 import ItemCount from "../ItemCount";
 import { priceFormat } from "../../utils/priceFormat";
 import times from "../../assets/img/times-circle.svg";
@@ -14,7 +15,11 @@ const CartRow = ({ product, qty, removeFromCart, updateFromCart }) => {
       </td>
       <td>
         <Link to={`/item/${id}`}>
-          <img src={pictureURL} className="card-img-top" alt={title} />
+          <ImgWidthLoader
+            className="card-img-top"
+            pictureURL={pictureURL}
+            alt={title}
+          />
         </Link>
       </td>
       <td>

@@ -1,23 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
 import { Card } from "react-bootstrap";
+import ImgWidthLoader from "../ImgWidthLoader";
 import { priceFormat } from "../../utils/priceFormat";
 import regularHeart from "../../assets/img/heart-regular.svg";
 import solidHeart from "../../assets/img/heart-solid.svg";
-import imgBlank from "../../assets/img/blank.gif";
 import "./Item.scss";
 
 const Item = ({ product, isFav }) => {
   const { id, title, brand, price, discount, pictureURL, stock } = product;
-  const [imgLoad, setImgLoad] = useState(false);
   let history = useHistory();
 
   const goDetail = id => {
     history.push(`/item/${id}`);
-  };
-
-  const handleLoad = () => {
-    setImgLoad(true);
   };
 
   return (
@@ -29,10 +24,9 @@ const Item = ({ product, isFav }) => {
         <img src={isFav ? solidHeart : regularHeart} alt="" />
       </div>
       {discount !== 0 && <div className="discount">{discount}%</div>}
-      <Card.Img
-        onLoad={handleLoad}
-        variant="top"
-        src={imgLoad ? pictureURL : imgBlank}
+      <ImgWidthLoader
+        className="card-img-top"
+        pictureURL={pictureURL}
         alt={title}
       />
       <Card.Body>

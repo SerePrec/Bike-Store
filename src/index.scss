@@ -63,3 +63,18 @@ p {
   border-color: #b30404;
   box-shadow: 0 0 0 0.2rem rgba(94, 24, 15, 0.452);
 }
+
+// para precargar las imagenes de loader de productos para mejor experiencia de usuario
+.imgPreload {
+  z-index: -10;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  &::before {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    content: url("./assets/img/blank.gif") url("./assets/img/preloader.gif");
+  }
+}
