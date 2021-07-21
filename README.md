@@ -2,7 +2,7 @@
 
 Este proyecto forma parte del trabajo final correspondiente al curso de **React JS** dictado por **CoderHouse**.
 
-Se trata del desarrollo de una tienda virtual para una bicicletería (Mammoth).
+Se trata del desarrollo de una tienda virtual para una bicicletería (Mammoth) utilizando la biblioteca de **React JS**.
 
 ### Inicios y origen del proyecto
 
@@ -25,9 +25,9 @@ Otro punto que me llevó por este camino fue el de contar con material ya utiliz
 A continuación, hago un punteo de algunos temas referidos a la lógica funcional que implemente y escogí para la programación de los componentes. Están ordenados en base al orden en que se fueron incorporando en las entregas de los **desafíos** de la cursada, pero reagrupados por tema.
 
 - Estructura de archivos
+- Asincronía y peticiones Firebase
 - Componente NavBar
 - Componente BrandBanner
-- Asincronía y peticiones Firebase
 - Componente ItemCount
 - Componente InfoMessage
 - Componente Item
@@ -69,6 +69,46 @@ La carpeta `src` se compone de otras subcarpetas para organizar todos los archiv
 
 - `utils`: Aquí coloco archivos js que sirven como utilidades para el proyecto y luego son llamados por el componente que los requiere. Constantes, Funciones, etc.
 
+### Asincronía y peticiones **Firebase** (**Firestore, Storage y Authentication**)
+
+Finalmente, las promesas de los async mock iniciales fueron remplazadas por peticiones reales.
+
+- Para obtener y mostrar en “home” el valor del dólar oficial, se hace un fetch a la API de **dolarsi.com**
+
+#### Firestore
+
+- Respecto a las peticiones de los productos, me encontraba en la disyuntiva entre traer todos los productos al acceder a la App o ir trayendo los mismos de acuerdo a lo que el usuario vaya necesitando. **Firestore** cuenta como lecturas cada elemento consultado de la BD y no como a la petición en sí, por lo que si en una petición leo todos mis productos, contabiliza tantas lecturas como productos tenga en mi BD. Finalmente, y luego de ver como **Firestore** maneja los límites de pago y conteo de lecturas, adopte una opción mixta, que me pareció una buena solución, frente a las ventajas que tiene cada planteo.
+
+  No me terminaba de convencer la idea de traer SIEMPRE todo al entrar en el sitio, ya que si por ejemplo un usuario guardó en favoritos el link a un determinado producto, debería traer todo mi catálogo en lugar de 1 solo producto. Así mismo con las categorías, en donde si un usuario va por un determinado rubro, sería más optimo traer solo los productos contenidos en el mismo.
+
+  Pero lo anterior tiene la contra que si el usuario se pone a navegar de un lado para el otro repitiendo “búsquedas” (es decir, pasando varias veces por una categoría a otra), se realizan llamados innecesarios a la base de datos.
+
+  En base a todo lo anterior opte por mantener el llamado parcial a la BD (no traer todo al inicio), e ir guardando en una especie de cache manejado por el contexto `SearchesContext` los **grupos de productos** que ya fueron consultados. Así si accedo a la categoría “bicicletas” y luego navego a otra parte para luego volver a pasar por bicicletas, no se realizan 2 peticiones. Sólo se hace la primera vez y luego se maneja con el listado correspondiente guardado en un estado del contexto. \_**Nota:**\_Como **Firestore** no dispone actualmente de búsqueda por texto y además por no generar un plan de pago que sería necesario para utilizar una herramienta de terceros, generó una simulación de esta búsqueda, trayendo todos los productos y luego buscando el texto de manera local. Debido a lo anterior, como ya tengo todos los productos, también considero esta opción a la hora de saber si generar o no una petición a nuestra BD. En caso de haber realizado antes una búsqueda, ya no hago peticiones al acceder a nuevas búsquedas, categorías o home.
+
+  Para finalizar el tema referente a las peticiones de productos, lo que si me parece mejor dejar, son las peticiones que se generan al consultar individualmente un producto, ya que por un lado representa solo el pedido de 1 elemento y por otro me parece muy útil que la información se encuentre totalmente actualizada en ese momento, ya que es la que dará origen a componer nuestro carrito. Igualmente, antes de generarse la orden y efectivizar el pago, se rechequea el stock de cada producto.
+
+- Petición de categorías a nuestra base de datos. Con ellas se genra dinámicamente el menu del navbar y sus respectivos links a las distintas categorías
+
+- A la hora de recuperar un carrito guardado en el localStorage por el usuario, se hace una petición a nuestra base de datos con los id de los productos presentes en el carrito (con un máximo de 10 diferentes que es lo que permite Firestore en una consulta)
+
+- Como primer paso luego de confirmar el checkout, se llama a la BD con los productos del carrito para validar su stock y dar diferentes resultados en base a la respuesta
+
+//TODO:TODO: Continuar con las demás que se generen: simul pago , gernerar ordenes, ajustes de stock en funcion de ventas, pedir ordenes guardadas, favoritos, etc
+
+#### Authentication
+
+- En las Pages **MyAccount** y **Register** se hace una comunicación con Firebase para registrar un nuevo usuario o iniciar sesión o salir de la misma con uno previamente creado.
+
+#### Storage
+
+Todas las imágenes del catálogo de productos fueron subidas al **Storage** de Firebase.
+
+Debido a que existe una demora apreciable en cargar dichas imágenes, generé una funcionalidad de loader que extraje en un componente `ImgWidthLoader` donde se maneja un estado junto a la escucha del evento “load” para hacer la transición entre la imagen de loading y la del producto.
+
+También para una mejor UX, hago la precarga de este loader en un `div` individual del index.html, así siempre están disponibles para cuando llegue su uso (ya que puede ser que el usuario acceda directamente a una page sin pasar antes por la carga), evitando saltos en la interfaz.
+
+En todos los casos anteriores, se realiza un manejo de los errores dando lugar a diferentes mensajes al usuario.
+
 ### Componente NavBar
 
 Esta maquetado con **React-Bootstrap** y presenta la siguiente funcionalidad:
@@ -82,30 +122,6 @@ Esta maquetado con **React-Bootstrap** y presenta la siguiente funcionalidad:
 ### Componente BrandBanner
 
 Sirve para representar el banner de marcas de la home page. Toma por props un array de objetos con los datos de cada ítem de marca (dirección web del sitio de la marca, imagen y nombre) y luego los mapea generando el banner mencionado.
-
-### Asincronía y peticiones Firebase
-
-Finalmente, las promesas de los async mock iniciales fueron remplazadas por peticiones reales.
-
-- Para obtener y mostrar en “home” el valor del dólar oficial, se hace un fetch a la API de **dolarsi.com**
-
-- Respecto a las peticiones de los productos, me encontraba en la disyuntiva entre traer todos los productos al acceder a la App o ir trayendo los mismos de acuerdo a lo que el usuario vaya necesitando. Finalmente, y luego de ver como **Firestore** maneja los límites de pago y conteo de peticiones, adopte una opción mixta, que me pareció una buena solución, frente a las ventajas que tiene cada planteo.
-
-  No me terminaba de convencer la idea de traer SIEMPRE todo al entrar en el sitio, ya que si por ejemplo un usuario guardó en favoritos el link a un determinado producto, debería traer todo mi catálogo en lugar de 1 solo producto. Así mismo con las categorías, en donde si un usuario va por un determinado rubro, sería más optimo traer solo los productos contenidos en el mismo.
-
-  Pero lo anterior tiene la contra que si el usuario se pone a navegar de un lado para el otro repitiendo “búsquedas” (es decir, pasando varias veces por una categoría a otra), se realizan llamados innecesarios a la base de datos.
-
-  En base a todo lo anterior opte por mantener el llamado parcial a la BD (no traer todo al inicio), e ir guardando en una especie de cache manejado por el contexto `SearchesContext` los **grupos de productos** que ya fueron consultados. Así si accedo a la categoría “bicicletas” y luego navego a otra parte para luego volver a pasar por bicicletas, no se realizan 2 peticiones. Sólo se hace la primera vez y luego se maneja con el listado correspondiente guardado en un estado del contexto. \_**Nota:**\_Como **Firestore** no dispone actualmente de búsqueda por texto y además por no generar un plan de pago que sería necesario para utilizar una herramienta de terceros, generó una simulación de esta búsqueda, trayendo todos los productos y luego buscando el texto de manera local. Debido a lo anterior, como ya tengo todos los productos, también considero esta opción a la hora de saber si generar o no una petición a nuestra BD. En caso de haber realizado antes una búsqueda, ya no hago peticiones al acceder a nuevas búsquedas, categorías o home.
-
-  Para finalizar el tema referente a las peticiones de productos, lo que si me parece mejor dejar, son las peticiones que se generan al consultar individualmente un producto, ya que por un lado representa solo el pedido de 1 elemento y por otro me parece muy útil que la información se encuentre totalmente actualizada en ese momento, ya que es la que dará origen a componer nuestro carrito. Igualmente, antes de generarse la orden y efectivizar el pago, se rechequea el stock de cada producto.
-
-- A la hora de recuperar un carrito guardado en el localStorage por el usuario, se hace una petición a nuestra base de datos con los id de los productos presentes en el carrito (con un máximo de 10 diferentes que es lo que permite Firestore en una consulta)
-
-- En las Pages **MyAccount** y **Register** se hace una comunicación con Firestore para registrar un nuevo usuario o iniciar sesión o salir de la misma con uno previamente creado.
-
-//TODO:TODO: Continuar con las demás que se generen: validar stock, gernerar ordenes, ajustes de stock en funcion de ventas, pedir ordenes guardadas, favoritos, etc
-
-En todos los casos, se realiza un manejo de los errores dando lugar a diferentes mensajes al usuario.
 
 ### Componente Itemcount
 
