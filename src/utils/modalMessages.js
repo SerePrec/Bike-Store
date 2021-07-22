@@ -135,6 +135,18 @@ export const infoModalMessages = [
     title: "Suscripción Realizada!",
     msg1: "Ya estas participando de nuestro SORTEO ANUAL con el email",
     msg2: "",
-    msg3: "Pronto comenzarás a recibir información de interés en esta casilla"
+    msg3: "Pronto comenzarás a recibir información de interés en esta casilla. Muchas gracias."
+  },
+  {
+    title: "Ya tienes una suscripción activa",
+    msg1: "Tu correo electrónico ya se encuentra en nuestra base de datos",
+    msg2: "",
+    msg3: "Si no estas recibiendo nuestros correos, por favor verifica tu bandeja de correo no deseado. De lo contrario comunicate con nosotros para solucionarlo."
+  },
+  {
+    title: "Algo salió mal",
+    msg1: "No pudimos registrar tu correo electrónico en nuestra base de datos",
+    msg2: "",
+    msg3: "Por favor, vuelve a intentarlo o hazlo más tarde. Disculpa las molestias."
   }
 ];

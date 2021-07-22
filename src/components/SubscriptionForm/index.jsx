@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FormControl, InputGroup, Form } from "react-bootstrap";
-import { infoModalMessages } from "../../utils/modalMessages";
 import "./SubscriptionForm.scss";
+import { useSubscription } from "../../hooks/useSubscription";
 
 const SubscriptionForm = ({
   handleShowTermsModal,
@@ -9,6 +9,11 @@ const SubscriptionForm = ({
   setContentUserModal
 }) => {
   const [form, setForm] = useState({ email: "", subscribe: false });
+  const { isLoading, subscribe } = useSubscription({
+    handleShowUserModal,
+    setContentUserModal,
+    setForm
+  });
 
   const handleChange = e => {
     const target = e.target;
@@ -17,15 +22,13 @@ const SubscriptionForm = ({
     setForm({ ...form, [name]: value });
   };
 
-  const fakeSubmit = e => {
-    e.preventDefault();
-    setContentUserModal({ ...infoModalMessages[2], msg2: form.email });
-    handleShowUserModal();
-    setForm({ email: "", subscribe: false });
-  };
-
   return (
-    <Form className="subscriptionForm" onSubmit={fakeSubmit}>
+    <Form
+      className="subscriptionForm"
+      onSubmit={e => {
+        subscribe(e, form);
+      }}
+    >
       <InputGroup>
         <FormControl
           type="email"
@@ -36,7 +39,11 @@ const SubscriptionForm = ({
           required
         />
         <InputGroup.Append>
-          <FormControl type="submit" value="SUSCRIBITE" />
+          <FormControl
+            type="submit"
+            value={isLoading ? "ENVIANDO.." : "SUSCRIBITE"}
+            disabled={isLoading}
+          />
         </InputGroup.Append>
       </InputGroup>
       <Form.Check

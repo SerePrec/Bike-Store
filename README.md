@@ -81,7 +81,7 @@ Finalmente, las promesas de los async mock iniciales fueron reemplazadas por pet
 
 - Para obtener y mostrar en “home” el valor del dólar oficial, se hace un fetch a la API de **dolarsi.com**
 
-#### Firestore (Colecciones: items, categories, orders, users)
+#### Firestore (Colecciones: items, categories, orders, users, subscriptions)
 
 - Respecto a las peticiones de los productos, me encontraba en la disyuntiva entre traer todos los productos al acceder a la App o ir trayendo los mismos de acuerdo a lo que el usuario vaya necesitando. **Firestore** cuenta como lecturas cada elemento consultado de la BD y no como a la petición en sí, por lo que si en una petición leo todos mis productos, contabiliza tantas lecturas como productos tenga en mi BD. Finalmente, y luego de ver como **Firestore** maneja los límites de pago y conteo de lecturas, adopte una opción mixta, que me pareció una buena solución, frente a las ventajas que tiene cada planteo.
 
@@ -106,6 +106,8 @@ Finalmente, las promesas de los async mock iniciales fueron reemplazadas por pet
 - Dentro del detalle del producto, es posible setear el estado de favorito. Es decir, añadirlo o quitarlo según sea su estado previo. Para esto se realizan peticiones a la colección `users\{userId}\favs` de Firestore.
 
 - El usuario puede ingresas a "Mi Cuenta" y realizar la petición a **Firestore** de sus órdenes y sus favoritos. Se detalla mejor en la sección **MyAccount**
+
+- Desde el **footer** se puede acceder al formulario para registrarse al newsletter. Al aceptar suscribirse, se realiza una conexión con la BD en donde primero se verifica si el email, ya existe y alerta de la situación. De no existir, lo crea dentro de la colección `subscriptions` y muestra un mensaje de éxito al usuario. si algo sale mal también se muestra un mensaje correspondiente.
 
 #### Authentication
 
@@ -499,6 +501,8 @@ Listado a modo de resumen ya que se mencionan en cada sección específica
 - `useSearch`: Hace uso de los hooks `useState`, `useEffect`, `useParams`, `useLocation`, `useContext` y de algunas funciones contenidas en la carpeta `utils`. Contiene la lógica completa relacionada a la petición a la base de datos de los productos que son consultados. Maneja el estado de loading y de error.
 
 - `useSetForm`: Hace uso del hook `useState`. Contiene la lógica común al manejo de formularios de componentes controlados.
+
+- `useSubscription`: Hace uso del hook `useState`. Contiene la lógica para la consulta y posterior registro del email en la base de datos para recibir el newsletter.
 
 - `useUserFavs`: Hace uso de los hooks `useState`, `useEffect` y de otras funciones importadas y también declaradas dentro del mismo hook. Contiene la lógica relativa al seteo de los favoritos del usuario y su sincronización con Firestore.
 
