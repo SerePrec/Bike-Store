@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { getFirestore, firestoreTimeStamp } from "../firebase";
 
 export const useUserFavs = ({ authUser, setIsLoading }) => {
   const [favs, setFavs] = useState([]);
+  let { pathname } = useLocation();
 
   const getFav = id => {
     return favs.find(elem => elem.favId === id);
@@ -95,7 +97,9 @@ export const useUserFavs = ({ authUser, setIsLoading }) => {
         setFavs(querySnapshot.docs.map(doc => doc.data()));
       })
       .catch(error => {
-        console.error("Error obteniendo favoritos: ", error);
+        if (pathname !== "/register") {
+          console.error("Error obteniendo favoritos: ", error);
+        }
       })
       .finally(() => {
         setIsLoading(false);
