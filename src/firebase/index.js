@@ -3,7 +3,7 @@ import "firebase/firestore";
 import "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBppw7GARXS3noybA7EivVW3xbunl8yM7w",
+  apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
   authDomain: "mammoth-bike-store.firebaseapp.com",
   projectId: "mammoth-bike-store",
   storageBucket: "mammoth-bike-store.appspot.com",
