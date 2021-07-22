@@ -55,6 +55,8 @@
 
     .userToolsData {
       padding-left: 1rem;
+      max-height: 42rem;
+      overflow-y: auto;
       .image {
         display: flex;
         justify-content: center;
@@ -73,6 +75,29 @@
         background-color: transparent;
         height: 20rem;
         text-shadow: 2px 2px 3px #fff;
+      }
+
+      &::-webkit-scrollbar {
+        -webkit-appearance: none;
+      }
+
+      &::-webkit-scrollbar:vertical {
+        width: 0.5rem;
+      }
+
+      &::-webkit-scrollbar-button:increment,
+      &::-webkit-scrollbar-button {
+        display: none;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: $tonoClaro;
+        border-radius: 20px;
+      }
+
+      &::-webkit-scrollbar-track {
+        border-radius: 10px;
+        background-color: $tonoOscuro;
       }
     }
   }

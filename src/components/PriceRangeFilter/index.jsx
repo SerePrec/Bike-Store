@@ -14,6 +14,7 @@ const PriceRangeFilter = ({ priceRange, setPriceRange, clean }) => {
       minPriceSel: priceRange.minPrice,
       maxPriceSel: priceRange.maxPrice
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [priceRange.minPrice, priceRange.maxPrice, clean]);
 
   const handleChangeRange = e => {

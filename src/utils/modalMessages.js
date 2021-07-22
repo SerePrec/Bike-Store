@@ -94,13 +94,13 @@ export const orderModalMessages = [
   },
   {
     title: "Compra Registrada!",
-    msg1: "Tu compra finalizó con éxito y fue registrada con el identificador",
+    msg1: "Tu compra finalizó con éxito y en unos instantes recibirás un correo electrónico con el detalle de la misma. Fue registrada con el identificador",
     msg2: "...",
     msg3: "Más adelante podrás consultar tus órdenes en la sección MI CUENTA"
   },
   {
     title: "Compra Registrada!",
-    msg1: "Tu compra fue registrada con el identificador",
+    msg1: "Tu compra fue registrada y en unos instantes recibirás un correo electrónico con el detalle de la misma. Se registró con el identificador",
     msg2: "...",
     msg3: "Pero ocurrió un error que impidió registrarla en tu historial. Cualquier consulta al respecto, puedes comunicarte con nosotros a través de los canales oficiales."
   },

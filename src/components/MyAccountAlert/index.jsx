@@ -39,7 +39,7 @@ const MyAccountAlert = ({
             <hr />
             <p className="mb-0">
               Tienes un carrito activo con un total de{" "}
-              <b>{totQtyInCart} productos</b> y un importe total de{" "}
+              <b>{totQtyInCart} producto/s</b> y un importe total de{" "}
               <b>${priceFormat(totPriceInCart)}</b>. Puedes confirmar y pagar tu
               compra desde aquí{" "}
               <TypicButton as={Link} to="/checkout" size="sm" className="black">

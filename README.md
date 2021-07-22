@@ -26,6 +26,7 @@ A continuación, hago un punteo de algunos temas referidos a la lógica funciona
 
 - Estructura de archivos
 - Asincronía y peticiones Firebase
+- Proceso simulado de confirmación del checkout
 - Componente NavBar
 - Componente BrandBanner
 - Componente ItemCount
@@ -40,6 +41,7 @@ A continuación, hago un punteo de algunos temas referidos a la lógica funciona
 - Reestructuración de ItemListContainner (HomeItemListContainer y page SearchItemListContainer)
 - Componente SearchForm
 - Componente PictureHeader
+- SearchesContext
 - Page Error404
 - Componente ScrollToTop
 - Componente ButtonScroll
@@ -47,8 +49,12 @@ A continuación, hago un punteo de algunos temas referidos a la lógica funciona
 - Componente CartWidget
 - Componente Cart (CartDetail y EmptyCart)
 - Page MyAccount y Register
+- UserContext
 - Page Checkout
+- Componente UserStuffContainer
+- Componentes Modales (CartModal, LoaderModal, OrderModal, SummaryorderModal, TermsModal y UserModal )
 - Hooks personalizados
+- React.memo
 
 ### Estructura de archivos
 
@@ -71,11 +77,11 @@ La carpeta `src` se compone de otras subcarpetas para organizar todos los archiv
 
 ### Asincronía y peticiones **Firebase** (**Firestore, Storage y Authentication**)
 
-Finalmente, las promesas de los async mock iniciales fueron remplazadas por peticiones reales.
+Finalmente, las promesas de los async mock iniciales fueron reemplazadas por peticiones reales.
 
 - Para obtener y mostrar en “home” el valor del dólar oficial, se hace un fetch a la API de **dolarsi.com**
 
-#### Firestore
+#### Firestore (Colecciones: items, categories, orders, users)
 
 - Respecto a las peticiones de los productos, me encontraba en la disyuntiva entre traer todos los productos al acceder a la App o ir trayendo los mismos de acuerdo a lo que el usuario vaya necesitando. **Firestore** cuenta como lecturas cada elemento consultado de la BD y no como a la petición en sí, por lo que si en una petición leo todos mis productos, contabiliza tantas lecturas como productos tenga en mi BD. Finalmente, y luego de ver como **Firestore** maneja los límites de pago y conteo de lecturas, adopte una opción mixta, que me pareció una buena solución, frente a las ventajas que tiene cada planteo.
 
@@ -87,13 +93,19 @@ Finalmente, las promesas de los async mock iniciales fueron remplazadas por peti
 
   Para finalizar el tema referente a las peticiones de productos, lo que si me parece mejor dejar, son las peticiones que se generan al consultar individualmente un producto, ya que por un lado representa solo el pedido de 1 elemento y por otro me parece muy útil que la información se encuentre totalmente actualizada en ese momento, ya que es la que dará origen a componer nuestro carrito. Igualmente, antes de generarse la orden y efectivizar el pago, se rechequea el stock de cada producto.
 
-- Petición de categorías a nuestra base de datos. Con ellas se genra dinámicamente el menu del navbar y sus respectivos links a las distintas categorías
+- Petición de categorías a la colección `categories` de nuestra base de datos. Con ellas se genra dinámicamente el menu del navbar y sus respectivos links a las distintas categorías
 
 - A la hora de recuperar un carrito guardado en el localStorage por el usuario, se hace una petición a nuestra base de datos con los id de los productos presentes en el carrito (con un máximo de 10 diferentes que es lo que permite Firestore en una consulta)
 
-- Como primer paso luego de confirmar el checkout, se llama a la BD con los productos del carrito para validar su stock y dar diferentes resultados en base a la respuesta
+- Como primer paso luego de confirmar el checkout, se llama a la BD con los productos del carrito para validar su stock y dar diferentes resultados y mensajes en base a la respuesta. Si el stock es el correcto, se procede a actualizar el stock de la BD, restando las cantidades compradas.
 
-//TODO:TODO: Continuar con las demás que se generen: simul pago , gernerar ordenes, ajustes de stock en funcion de ventas, pedir ordenes guardadas, favoritos, etc
+  Luego hice una `Promise` con la simulación de una validación de pago. También se puede rechazar para verificar el resultado en ese caso.
+
+  Finalmente si todo sucede correctamente, se procede a guardar en la colección `orders` de Firestore, el detalle de la orden generada con todos los valores útiles para una posterior consulta. También se guardan los datos de referencia de esta orden en una sub-colección dentro de la colección `users` (`users\{userId}\orders`) . Esta sub-colección se encuentra dentro de un documento con el **ID del usuario** que sólo él a través del manejo de reglas, puede leer y escribir.
+
+- Dentro del detalle del producto, es posible setear el estado de favorito. Es decir, añadirlo o quitarlo según sea su estado previo. Para esto se realizan peticiones a la colección `users\{userId}\favs` de Firestore.
+
+- El usuario puede ingresas a "Mi Cuenta" y realizar la petición a **Firestore** de sus órdenes y sus favoritos. Se detalla mejor en la sección **MyAccount**
 
 #### Authentication
 
@@ -108,6 +120,19 @@ Debido a que existe una demora apreciable en cargar dichas imágenes, generé un
 También para una mejor UX, hago la precarga de este loader en un `div` individual del index.html, así siempre están disponibles para cuando llegue su uso (ya que puede ser que el usuario acceda directamente a una page sin pasar antes por la carga), evitando saltos en la interfaz.
 
 En todos los casos anteriores, se realiza un manejo de los errores dando lugar a diferentes mensajes al usuario.
+
+### Proceso post confirmación del checkout
+
+A fin de simular un proceso más completo y probar las distintas herramientas que fui incorporando, me planteé **Simular un procedimiento de validación para el checkout**. Opté por esta opción frente a incorporar **Mercado Pago**, ya que quería tener el control sobre el total del proceso, incluyendo simular aprobar o no el pago y sus correspondientes acciones “inmediatas” en consecuencia. Si bien en la práctica real se realiza de manera diferente, me pareció un camino válido a fin de hacer una simulación con las herramientas que cuento actualmente y plantear distintos escenarios para poder utilizar distintos caminos y herramientas.
+
+El esquema es el siguiente:
+
+- Una vez el usuario completa y acepta el checkout, lo que primero se realiza es una validación de stock con la base de datos. Si algún producto actualmente está con stock = 0, se quita del carrito y se notifica. En caso de que alguno, tenga stock > 0, pero insuficiente para la selección del usuario, se notifica y lleva al carrito para que adecue su cantidad o lo elimine. Aparecen notificaciones indicando esto y hasta no proceder, no se permite volver al checkout.
+- Si el stock se valida correctamente, se procede a descontar de **Firestore** esas cantidades compradas, de los respectivos stock
+- Luego se pasa a una situación de validación de pago simulado (Dejé comentado un posible rechazo para ver el resultado en este caso). En caso de rechazo, se notifica y se vuelve a conectar con Firestore para devolver al stock las cantidades previamente “reservadas”. Esto lo hago así para evitar la situación de sin haber descontado las cantidades, proceder al pago y luego del mismo (por otra compra en ese momento), no contar con el stock de la mercadería. Debiendo comunicarle esta situación embarazosa al cliente. De la manera que propongo es como se realiza una reserva de stock, y si no se concreta correctamente el pago, vuelve a estar disponible para futuros compradores.
+- En caso de aprobarse el pago, se procede a guardar la orden la colección `orders` en **Firestore** con todos los datos de la compra. También a continuación, se guarda una referencia de ella en la colección `users` dentro de un documento con el Id del usuario que solo él puede leer y modificar. En este paso también deje comentados distintos casos para simular errores. En cada uno se notifica al cliente debidamente. Si no se pudiera generar la orden, igualmente el stock ya fue reservado luego de verificarse el pago, así que no se corre el riesgo de sobrevenderlo, aunque se deberá manejar la situación personalizadamente con el cliente. Por último, se muestra un mensaje con el id de la orden generada.
+
+Toda esta lógica la extraje en un **hook personalizado** llamado `useConfirmOrder` y como dije, dejé comentadas varias líneas de código para simular situaciones de rechazo o errores.
 
 ### Componente NavBar
 
@@ -319,6 +344,14 @@ Se le pasa por props la información de manera condicional. Si estamos en una ca
 
 De esta manera, logramos tener distintas imágenes y titulares para cada caso con sus respectivas reglas de estilos CSS.
 
+### SearchesContext
+
+Sirve para mantener el estado de las consultas del usuario y evitar peticiones innecesarias a nuestra base de dartos. Generé un componente **SearchesContextProvider** que hace el papel de un provider personalizado para el contexto `SearchesContext`.
+
+En este componente se incluye la lógica para ir almacenando las consultas que el usuario va realizando. Esta relacionado a lo explicado en la sección de mi decisión en cuanto a cómo manejar las peticiones a la base de datos. Se guarda en un estado (que luego pasa como contexto) los productos que son devueltos cuando el usuario consulta una categoría o la página principal (home). También guarda todos los productos en el caso de una consulta por búsqueda de palabra, ya que se traen todos para realizarla como se explicó más arriba.
+
+Cada vez que el usuario hace una consulta navegando a la sección correspondiente, se verifica si ya esta guardada esa consulta. De ser así, se devuelve ese resultado, evitándose una nueva petición y lográndose un balance adecuando de lecturas de la BD.
+
 ### Page Error404
 
 Se encarga de mostrar el característico _error 404_ si la ruta navegada no coincide con una válida. Proporcina un botón para navegar a Home.
@@ -405,28 +438,53 @@ Por ejemplo, en el botón “mi cuenta”, se produce el cambio del ícono, por 
 
 También, se evita pasar al checkout si el usuario no está registrado y ha iniciado sesión. Para validar mejor esta situación ante el posible ingreso directo a dicha página (por ejemplo, guardada en favoritos), generé el componente `PrivateRoute` asociado al `Route` de **React-router-dom**. En él verifico si el usuario se encuentra logueado y lo redirijo a la page MyAccount, en donde de ser el caso válido, va a poder ir directo al checkout mediante el link de un mensaje personalizado. También en la page Checkout, realizo una validación extra en donde se redirige al componente Cart en caso de que no hayan productos para proceder a un checkout o los mismos estén pendientes de actualizarse (por la carga de un carrito que se encuentra fuera de rango con la disponibilidad actual).
 
+### UserContext
+
+Sirve para mantener el estado de autenticación del usuario y manejar su historial de favoritos y órdenes. Generé un componente **UserContextProvider** que hace el papel de un provider personalizado para el contexto `UserContext`.
+
+Este componente hace uso de tres hooks personalizados `useFirebaseAuth`, `useUserOrders` y `useUserFavs` que de manera independiente contienen la lógica asociada al manejo del estado de autenticación, la consulta del historial de órdenes del usuario, y por último la consulta y manejo de sus productos favoritos.
+
 #### Page Checkout
 
 Se muestra la información previa a generar la orden de compra y efectivizarse el pago.
 
-A la izquierda, aparece un resumen de los productos a comprar, con sus cantidades, precios e importe total.
+A la izquierda, aparece un resumen de los productos a comprar, con sus cantidades, precios e importe total. Luego de ello la opción de envío a domicilio con su respectivo costo asociado, o la opción de retiro por sucursal.
 
 A la derecha, se encuentra un formulario que se puede dividir en 3 secciones:
 
-- Datos personales: Donde el usuario completará con sus datos, salvo la casilla de email en donde se completa con el del usuario logueado y se deshabilita su edición.
+- Datos personales: Donde el usuario completará con sus datos, salvo la casilla de email en donde se completa con el del usuario logueado y se deshabilita su edición. También se oculta la casilla de dirección y CP en caso que se elija retiro por sucursal.
 - Selector de cuotas: Se da la opción al usuario de realizar el pago en diferente cantidad de cuotas con sus respectivos intereses y montos finales
 - Datos de la tarjeta de crédito
-- Opciónes y cargos de envió
 
 Este formulario posee las validaciones respectivas, y sus correspondientes mensajes en caso de no cumplir con alguna de ellas.
 
-Se muestra la información previa a generar la orden
+Desde la parte inferior, se puede por optar regresar al carrito o confirmar la orden, dandose lugar al proceso de validación descripto en secciones anteriores.
+
+### Componente UserStuffContainer
+
+Es el encargado de mostrar información asociada a cada usuario. Existe un componente `MyAccountAlert` en donde aparte de mostrarse el nombre del usuario, se muestra según corresponda: información del estado de compra permitiendo acceder directamente al checkout, aviso de si hay un carrito guardado manualmente por el usuario y aviso si el carrito se encuentra fuera de rango y es necesario actualizarlo con la disponibilidad actual.
+
+Por otro lado ofrece la posibilidad de listar todos los productos favoritos que fue seleccionando el usuario (componente `FavsTable`), permitiendo desde éstos acceder directamente a cada uno de ellos y de ahí poder escoger la cantidad deseada con valores actualizados del stock disponible y precio. También se permite eliminar un determinado favorito, los cuales se setean desde el detalle de cada producto.
+
+Por último, se puede consultar el historial de compras del usuario, ordenadas por fecha de cada orden (componente `OrdersTable`). Desde cada fila de esta tabla, es posible entrar al detalle de cada una de ellas, que es exhibida en un componente modal.
+
+### Componentes Modales (CartModal, LoaderModal, OrderModal, SummaryOrderModal, TermsModal y UserModal )
+
+Son todos modales de **React Bootstrap** con diferentes diseños y tipo de contenido.
+
+Todos son manejados por el hook personalizado `useSetModal` y se renderizan en un `div` fuera del `root` como suele suceder con los modales y el uso de portales.
+
+Se hace uso de un archivo `modalMessages.js` en donde se almacenan los diferentes tipos de mensajes a presentar de acuerdo al tipo de modal. Aparecen en diferentes situaciones a lo largo del uso de la App, como puede ser mostrar mensajes relacionados al carrito de compras, generación de orden de compra, mensajes relacionados a la autenticación del usuario, términos y condiciones, detalle de las órdenes, etc.
+
+En el caso de `SummaryOrderModal`, dentro del mismo se muestra un resumen detallado de una determinada compra del usuario que es pedida a demanda a la BD. Aparece la fecha de compra, el tipo de envío elegido, un detalle con fotos, descripción, precio y cantidades de los productos, la fecha de compra, el desglose de los subtotales y costos financieros, el plan de pago y el importe total.
 
 ### Hooks personalizados
 
 Listado a modo de resumen ya que se mencionan en cada sección específica
 
 - `useCategories`: Hace uso de los hooks `useState` y `useEffect`. Maneja la lógica de la petición de la categorías a la base de datos, para luego hidratar al NavBar con la data obtenida.
+
+- `useConfirmOrder`: Hace uso de los hooks `useState` y `useRef` y de otras funciones importadas y también declaradas dentro del mismo hook. Maneja la lógica de las validaciones post checkout que se detallaron más arriba.
 
 - `useDollar`: Hace uso de los hooks `useState` y `useEffect`. Maneja la lógica de la petición del valor del dólar a una API, para luego hidratar al componente InfoDollar con la data obtenida.
 
@@ -440,7 +498,17 @@ Listado a modo de resumen ya que se mencionan en cada sección específica
 
 - `useSearch`: Hace uso de los hooks `useState`, `useEffect`, `useParams`, `useLocation`, `useContext` y de algunas funciones contenidas en la carpeta `utils`. Contiene la lógica completa relacionada a la petición a la base de datos de los productos que son consultados. Maneja el estado de loading y de error.
 
-- `useSearch`: Hace uso del hook `useState`. Contiene la lógica común al manejo de formularios de componentes controlados.
+- `useSetForm`: Hace uso del hook `useState`. Contiene la lógica común al manejo de formularios de componentes controlados.
+
+- `useUserFavs`: Hace uso de los hooks `useState`, `useEffect` y de otras funciones importadas y también declaradas dentro del mismo hook. Contiene la lógica relativa al seteo de los favoritos del usuario y su sincronización con Firestore.
+
+- `useUserOrders`: Hace uso del hook `useState`. Contiene la lógica relativa a la petición del listado de ordenes históricas del usuario almacendas en Firestore.
+
+### React.memo
+
+Para no sobre optimizar innecesariamente, aplique **React.memo** al componente `Item` (tarjeta de productos), que en mi App es quién puede llegar a consumir más recursos al realizarse renderizados innecesario, ya que forma parte de un listado que puede ser largo y que contiene imágenes.
+
+Utilizo una función comparadora de las `prevProps` y `nextProps` para determinar cuando solamente debería volver a renderizarse. Probé los resultados las devTools de React y el cambio de cantidad de renderizados es muy significativo, sobre todo al ordenar y/o filtrar las mismas tarjetas por precio, marca, etc
 
 ---
 
@@ -453,5 +521,3 @@ Aparte de las dependencias base vistas en la cursada, utilice unas pocas más qu
 - **React-Bootstrap:** Como herramienta para el maquetado del sitio. Adopté esta opción frente al Bootstrap convencional, ya que según la documentación oficial es lo recomendado para React. Los métodos y eventos que usan jQuery se realizan imperativamente manipulando directamente el DOM. “Por el contrario, React usa actualizaciones del estado para actualizar el DOM virtual. De esta manera, React-Bootstrap proporciona una solución más confiable al incorporar la funcionalidad Bootstrap en el DOM virtual de React”.
 
   Simplifica notablemente la escritura y cantidad de líneas de código. Dado que **React-Bootstrap** está construido con **React JavaScript**, el estado se puede pasar dentro de los componentes de React-Bootstrap como una prop. También facilita la gestión del estado, ya que las actualizaciones se realizan utilizando el estado de React en lugar de manipular directamente el estado del DOM.
-
-- **React-transition-group:** Instalé esta librería con el fin de realizar animaciones de entrada y salida de componentes de manera declarativa y compatibles con la manipulación del DOM virtual de React. Es recomendada por la documentación oficial de React para realizar animaciones. Aún no he hecho uso de la misma, pero la estuve probando y seguramente la utilicé para el final del proyecto, de lo contrario, quitaré la dependencia.
