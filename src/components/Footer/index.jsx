@@ -34,7 +34,7 @@ const Footer = () => {
         <FooterSocial />
       </div>
       <address>
-        <p className="font-italic">Copyright &copy; 2020 SerE PreC </p>
+        <p className="font-italic">Copyright &copy; 2021 SerE PreC </p>
       </address>
       <TermsModal
         showModal={showTermsModal}
