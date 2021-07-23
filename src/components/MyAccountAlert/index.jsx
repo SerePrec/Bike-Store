@@ -25,7 +25,7 @@ const MyAccountAlert = ({
           <hr />
           <p className="mb-0">
             ¡Encontramos un <b>carrito guardado</b> en tu dispositivo! Si deseas
-            recuperarlo, deberás tener vacío tu carrito actual y dirgirte a él{" "}
+            recuperarlo, deberás tener vacío tu carrito actual y dirigirte a él{" "}
             <TypicButton as={Link} to="/cart" size="sm" className="black">
               Ir al carrito
               <img src={iconCart} alt="" />
