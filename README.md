@@ -5,7 +5,7 @@ Este proyecto forma parte del trabajo final correspondiente al curso de **React 
 Se trata del desarrollo de una tienda virtual para una bicicletería (Mammoth) utilizando la biblioteca de **React JS**.
 
 ## Deploy 
-https://mammoth-compras.netlify.app/
+https://mammoth-bike-store.netlify.app/
 
 ### Inicios y origen del proyecto
 
